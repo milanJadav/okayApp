@@ -6,7 +6,7 @@ import {COLORS} from '../../Common/Constants/colors';
 import {IMAGES} from '../../Common/Constants/images';
 import {FONTS} from '../../Common/Constants/fonts';
 
-const Onboarding = () => {
+const Onboarding = props => {
   const [onBoarding1, setOnBoarding1] = useState(true);
   const [onBoarding2, setOnBoarding2] = useState(false);
   const [onBoarding3, setOnBoarding3] = useState(false);
@@ -24,7 +24,7 @@ const Onboarding = () => {
   };
 
   const onPressThirdOnBoardBtn = () => {
-    alert('i am third nav');
+    props.navigation.replace('Login');
   };
 
   // RENDER METHODS
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flex: 0.5,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.pr_background,
     paddingHorizontal: 10,
     alignItems: 'center',
   },

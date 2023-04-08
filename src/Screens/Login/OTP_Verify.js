@@ -1,0 +1,156 @@
+import React, {useState} from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
+
+import {safeAreaStyle} from '../../Common/CommonStyles';
+import {COLORS} from '../../Common/Constants/colors';
+import {FONTS} from '../../Common/Constants/fonts';
+import HightBox from '../Components/HightBox';
+import IBackButton from '../Components/IBackButton';
+import IButton from '../Components/IButton';
+
+const CELL_COUNT = 6;
+
+const OTP_Verify = props => {
+  const [value, setValue] = useState('');
+
+  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
+
+  //CLICK EVENTS
+  const onBackPress = () => {
+    props.navigation.goBack();
+  };
+
+  const onVerify = () => {
+    props.navigation.navigate('RoleSelection');
+  };
+
+  return (
+    <SafeAreaView style={safeAreaStyle}>
+      <View style={{flex: 1, justifyContent: 'space-between'}}>
+        <View style={{paddingHorizontal: 20}}>
+          <IBackButton onPress={onBackPress} />
+          <HightBox height={30} />
+          <Text style={styles.titleText}>We just sent you an OTP</Text>
+          <Text style={styles.subTitleText}>
+            To log in, enter the security code we sent to{'\n'}*******8901.
+          </Text>
+          <HightBox height={27} />
+
+          <CodeField
+            ref={ref}
+            {...prop}
+            value={value}
+            onChangeText={setValue}
+            // onSubmitEditing={() => checking()}
+            cellCount={CELL_COUNT}
+            rootStyle={styles.codeFieldRoot}
+            keyboardType="number-pad"
+            textContentType="oneTimeCode"
+            renderCell={({index, symbol, isFocused}) => (
+              <View
+                onLayout={getCellOnLayoutHandler(index)}
+                key={index}
+                style={[styles.cellRoot, isFocused && styles.focusCell]}>
+                <Text style={styles.cellText}>
+                  {symbol || (isFocused ? <Cursor /> : null)}
+                </Text>
+              </View>
+            )}
+          />
+          <HightBox height={20} />
+          <TouchableOpacity style={{width: '40%', paddingVertical: 5}}>
+            <Text
+              style={{
+                fontFamily: FONTS.OUTFIT_REGULAR,
+                fontSize: 14,
+                color: COLORS.pr_blue,
+                textDecorationLine: 'underline',
+              }}>
+              I didn’t receive a code
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.bottomContainer}>
+          <View style={{marginTop: 30}}>
+            <IButton title={'Verify'} onPress={onVerify} />
+          </View>
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default OTP_Verify;
+
+const styles = StyleSheet.create({
+  titleText: {
+    fontFamily: FONTS.OUTFIT_MEDIUM,
+    fontSize: 26,
+    lineHeight: 34,
+    color: COLORS.textColor,
+  },
+  subTitleText: {
+    fontFamily: FONTS.OUTFIT_REGULAR,
+    fontSize: 14,
+    lineHeight: 20,
+    color: COLORS.textColor64,
+    marginTop: 8,
+  },
+  countryCode: {
+    height: 48,
+    borderColor: COLORS.textColor64,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: COLORS.white,
+  },
+  codeText: {
+    fontFamily: FONTS.OUTFIT_REGULAR,
+    fontSize: 16,
+    color: COLORS.textColor,
+  },
+  bottomContainer: {paddingHorizontal: 20, marginBottom: 30},
+  //CODE FIELD
+  codeFieldRoot: {
+    width: '100%',
+  },
+  cellRoot: {
+    width: 48,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.textColor64,
+    borderWidth: 1,
+    borderRadius: 10,
+  },
+  cellText: {
+    color: COLORS.textColor,
+    fontFamily: FONTS.OUTFIT_REGULAR,
+    fontSize: 25,
+    textAlign: 'center',
+  },
+  focusCell: {
+    borderColor: COLORS.textColor,
+    borderWidth1: 1.5,
+  },
+});
