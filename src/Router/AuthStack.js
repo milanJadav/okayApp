@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+//Screens
 import Onboarding from '../Screens/Login/Onboarding';
 import Login from '../Screens/Login/Login';
 import OTP_Verify from '../Screens/Login/OTP_Verify';
 import RoleSelection from '../Screens/Login/RoleSelection';
-
-//Screens
-// import Login from './../Scenes/Login/Login';
 
 const AuthStack = createNativeStackNavigator();
 

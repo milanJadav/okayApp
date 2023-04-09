@@ -44,7 +44,10 @@ const Login = props => {
             <ITextField
               keyboardType="phone-pad"
               maxLength={10}
-              mainViewStyle={{backgroundColor: COLORS.pr_background}}
+              mainViewStyle={{
+                backgroundColor: COLORS.pr_background,
+                marginLeft: 7,
+              }}
             />
           </View>
         </View>

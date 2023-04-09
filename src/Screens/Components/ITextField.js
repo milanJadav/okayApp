@@ -13,6 +13,7 @@ const ITextField = ({
   autoCapitalize,
   maxLength,
   onSubmitEditing,
+  multiline = false,
 }) => {
   return (
     <View style={[styles.container, mainViewStyle]}>
@@ -28,6 +29,7 @@ const ITextField = ({
         autoCapitalize={autoCapitalize}
         maxLength={maxLength}
         onSubmitEditing={onSubmitEditing}
+        multiline={multiline}
       />
     </View>
   );
@@ -42,8 +44,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.textColor64,
     borderWidth: 1,
     borderRadius: 10,
-    marginLeft: 7,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.pr_background,
   },
   inputStyle: {
     flex: 1,

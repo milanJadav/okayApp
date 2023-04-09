@@ -7,36 +7,49 @@ import {
   View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-
 import {safeAreaStyle} from '../../Common/CommonStyles';
 import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
-import {windowHeight, windowWidth} from '../../Utils/Dimentions';
 import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
 
-var roles = [
+var types = [
   {
-    title: 'Architect / Interior',
+    id: 1,
+    title: '2 BHK',
     selected: true,
-    img: IMAGES.IC_ARCHITECT,
   },
   {
-    title: 'Agency',
+    id: 2,
+    title: '3 BHK',
     selected: false,
-    img: IMAGES.IC_AGENCY,
   },
   {
-    title: 'Customer',
+    id: 3,
+    title: 'Bungalow',
     selected: false,
-    img: IMAGES.IC_CUSTOMER,
+  },
+  {
+    id: 4,
+    title: 'Commercial',
+    selected: false,
+  },
+  {
+    id: 5,
+    title: 'Interior design',
+    selected: false,
+  },
+  {
+    id: 6,
+    title: 'Industrial architecture',
+    selected: false,
   },
 ];
 
-const RoleSelection = props => {
-  const [role, setRole] = useState(roles);
+const ArchitectProjectType = props => {
+  const [type, setType] = useState(types);
 
   //CLICK EVENTS
   const onBackPress = () => {
@@ -44,20 +57,18 @@ const RoleSelection = props => {
   };
 
   const onContinue = () => {
-    props.navigation.navigate('ArchitectStack');
+    props.navigation.navigate('CreateProject');
   };
 
-  const onRolePress = async text => {
-    const role = roles.map(data => {
+  const onTypePress = async text => {
+    const type = types.map(data => {
       if (data.title == text) {
-        data.selected = true;
-      } else {
-        data.selected = false;
+        data.selected = !data.selected;
       }
       return data;
     });
 
-    setRole(role);
+    setType(type);
   };
 
   //RENDER METHODS
@@ -68,19 +79,14 @@ const RoleSelection = props => {
           ...styles.boxContainer,
           backgroundColor: item.selected ? COLORS.pr_blue : COLORS.white,
         }}
-        onPress={() => onRolePress(item.title)}>
-        <View
-          style={{
-            ...styles.iconContainer,
-            backgroundColor: item.selected ? COLORS.white : COLORS.textColor14,
-          }}>
+        onPress={() => onTypePress(item.title)}>
+        {item.selected && (
           <FastImage
-            source={item.img}
-            style={{height: 30, width: 30}}
+            source={IMAGES.IC_CHECK}
+            style={{height: 16, width: 16, marginRight: 6}}
             resizeMode="contain"
           />
-        </View>
-        <HightBox height={10} />
+        )}
         <Text
           style={{
             ...styles.boxText,
@@ -99,14 +105,14 @@ const RoleSelection = props => {
           <IBackButton onPress={onBackPress} />
           <HightBox height={30} />
           <Text style={styles.titleText}>
-            Hey there, down here 👋 Choose your role to continue
+            Which project types you are working on?
           </Text>
 
           <HightBox height={27} />
 
-          <View style={{flexDirection: 'row'}}>
-            {role.map(data => {
-              return <RenderItem key={data.title} item={data} />;
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+            {type.map(data => {
+              return <RenderItem key={data.id} item={data} />;
             })}
           </View>
         </View>
@@ -121,7 +127,7 @@ const RoleSelection = props => {
   );
 };
 
-export default RoleSelection;
+export default ArchitectProjectType;
 
 const styles = StyleSheet.create({
   titleText: {
@@ -134,31 +140,26 @@ const styles = StyleSheet.create({
   bottomContainer: {paddingHorizontal: 20, marginBottom: 30},
   boxContainer: {
     backgroundColor: COLORS.pr_blue,
-    width: windowWidth / 3.55,
-    height: windowHeight / 6,
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 24,
     marginRight: 8,
-    paddingTop: 25,
+    marginBottom: 10,
+    // paddingTop: 25,
     alignItems: 'center',
-    borderRadius: 8,
+    justifyContent: 'center',
+    borderRadius: 30,
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.2,
-  },
-  iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.white,
-    height: 48,
-    width: 48,
-    borderRadius: 50,
+    shadowOpacity: 0.1,
   },
   boxText: {
     fontFamily: FONTS.OUTFIT_REGULAR,
     fontSize: 14,
     color: COLORS.white,
     textAlign: 'center',
-    lineHeight: 18,
+    // lineHeight: 18,
   },
 });

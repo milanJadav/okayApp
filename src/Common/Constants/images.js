@@ -4,6 +4,8 @@ export const IMAGES = {
   //ICONS
   IC_ARROW_RIGHT: require('../../assets/images/arrow_right.png'),
   IC_ARROW_LEFT: require('../../assets/images/arrow_left.png'),
+  IC_CHECK: require('../../assets/images/check.png'),
+  IC_PLUS: require('../../assets/images/plus.png'),
   IC_CHEVRON_RIGHT: require('../../assets/images/chevron_right.png'),
   IC_CUSTOMER: require('../../assets/images/ic_customer.png'),
   IC_AGENCY: require('../../assets/images/ic_Agency.png'),

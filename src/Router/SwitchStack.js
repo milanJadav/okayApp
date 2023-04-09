@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Splash from '../Screens/Splash/Splash';
 import AuthStack from './AuthStack';
 import AppStack from './AppStack';
+import ArchitectStack from './ArchitectStack';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ const SwitchStack = () => {
       <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="AppStack" component={AppStack} />
       <Stack.Screen name="AuthStack" component={AuthStack} />
+      <Stack.Screen name="ArchitectStack" component={ArchitectStack} />
     </Stack.Navigator>
   );
 };
