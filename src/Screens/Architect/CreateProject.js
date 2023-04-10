@@ -25,7 +25,7 @@ const CreateProject = props => {
   };
 
   const onCreate = () => {
-    // props.navigation.navigate('CreateProject');
+    props.navigation.navigate('ArchitectBottomTab');
   };
   return (
     <SafeAreaView style={safeAreaStyle}>
@@ -85,7 +85,7 @@ const CreateProject = props => {
         </KeyboardAwareScrollView>
         <View style={styles.bottomContainer}>
           <View style={{marginTop: 30}}>
-            <IButton title={'Create a project'} />
+            <IButton title={'Create a project'} onPress={onCreate} />
           </View>
           <HightBox height={10} />
           <Text

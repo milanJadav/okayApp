@@ -10,4 +10,10 @@ export const IMAGES = {
   IC_CUSTOMER: require('../../assets/images/ic_customer.png'),
   IC_AGENCY: require('../../assets/images/ic_Agency.png'),
   IC_ARCHITECT: require('../../assets/images/ic_architect.png'),
+  IC_USER: require('../../assets/images/user.png'),
+  IC_SEARCH: require('../../assets/images/search.png'),
+  IC_LOCATION: require('../../assets/images/location.png'),
+  IC_HOME: require('../../assets/images/home.png'),
+  IC_FILE: require('../../assets/images/file_text.png'),
+  IC_BELL: require('../../assets/images/bell.png'),
 };
