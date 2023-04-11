@@ -22,12 +22,14 @@ import INavBar from '../Components/INavBar';
 
 const ArchitectSelectCategory = props => {
   const title = props.route?.params?.title;
+
+  //CLICK EVENTS
   const onBackPress = () => {
     props.navigation.goBack();
   };
 
-  const onCreate = () => {
-    props.navigation.navigate('ArchitectBottomTab');
+  const onCategoryPress = title => {
+    props.navigation.navigate('AgencyList', {title});
   };
 
   //RENDER METHODS
@@ -35,8 +37,7 @@ const ArchitectSelectCategory = props => {
     return (
       <TouchableOpacity
         style={styles.boxContainer}
-        // onPress={() => onRolePress(item.title)}
-      >
+        onPress={() => onCategoryPress(item.title)}>
         <FastImage
           source={item.img}
           style={{height: 60, width: 60, borderRadius: 50}}

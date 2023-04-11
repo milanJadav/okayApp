@@ -13,6 +13,7 @@ import {IMAGES} from '../Common/Constants/images';
 import {StyleSheet, Text, View} from 'react-native';
 import {FONTS} from '../Common/Constants/fonts';
 import ArchitectSelectCategory from '../Screens/Architect/ArchitectSelectCategory';
+import AgencyList from '../Screens/Architect/AgencyList';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -116,6 +117,7 @@ const ArchitectStack = () => {
         name="ArchitectSelectCategory"
         component={ArchitectSelectCategory}
       />
+      <Stack.Screen name="AgencyList" component={AgencyList} />
     </Stack.Navigator>
   );
 };
