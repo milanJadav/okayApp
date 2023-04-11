@@ -35,3 +35,48 @@ export const dashboadData = [
     img: require('../assets/temp/tempCarpenter.png'),
   },
 ];
+
+export const categoryData = [
+  {
+    id: 1,
+    title: 'Wooden door',
+    img: require('../assets/temp/wooden.png'),
+  },
+  {
+    id: 2,
+    title: 'Aluminum door',
+    img: require('../assets/temp/wooden.png'),
+  },
+  {
+    id: 3,
+    title: 'Sintex door',
+    img: require('../assets/temp/wooden.png'),
+  },
+  {
+    id: 4,
+    title: 'Wooden door',
+    img: require('../assets/temp/wooden.png'),
+  },
+  {
+    id: 5,
+    title: 'Aluminum door',
+    img: require('../assets/temp/wooden.png'),
+  },
+  {
+    id: 6,
+    title: 'Sintex door',
+    img: require('../assets/temp/wooden.png'),
+  },
+];
+
+export const agencies = [
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+  {
+    id: 3,
+  },
+];

@@ -16,4 +16,6 @@ export const IMAGES = {
   IC_HOME: require('../../assets/images/home.png'),
   IC_FILE: require('../../assets/images/file_text.png'),
   IC_BELL: require('../../assets/images/bell.png'),
+  IC_STAR: require('../../assets/images/star.png'),
+  IC_EYE: require('../../assets/images/eye.png'),
 };

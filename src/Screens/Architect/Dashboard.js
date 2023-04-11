@@ -17,10 +17,16 @@ import HightBox from '../Components/HightBox';
 import ISearchBar from '../Components/ISearchBar';
 import LocationNavBar from '../Components/LocationNavBar';
 
-const Dashboard = () => {
+const Dashboard = props => {
+  const onCategoryClick = ({title}) => {
+    props.navigation.navigate('ArchitectSelectCategory', {title});
+  };
+
   const renderItem = ({item, index}) => {
     return (
-      <TouchableOpacity style={{...styles.boxContainer}}>
+      <TouchableOpacity
+        style={{...styles.boxContainer}}
+        onPress={() => onCategoryClick({title: item.title})}>
         <ImageBackground
           source={item.img}
           style={styles.imgBackGround}

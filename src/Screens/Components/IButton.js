@@ -3,9 +3,11 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
 
-const IButton = ({title, onPress = () => {}}) => {
+const IButton = ({title, onPress = () => {}, customContainer}) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => onPress()}>
+    <TouchableOpacity
+      style={[styles.container, customContainer]}
+      onPress={() => onPress()}>
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   );

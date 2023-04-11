@@ -12,6 +12,7 @@ import FastImage from 'react-native-fast-image';
 import {IMAGES} from '../Common/Constants/images';
 import {StyleSheet, Text, View} from 'react-native';
 import {FONTS} from '../Common/Constants/fonts';
+import ArchitectSelectCategory from '../Screens/Architect/ArchitectSelectCategory';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -111,6 +112,10 @@ const ArchitectStack = () => {
       />
       <Stack.Screen name="CreateProject" component={CreateProject} />
       <Stack.Screen name="ArchitectBottomTab" component={ArchitectBottomTab} />
+      <Stack.Screen
+        name="ArchitectSelectCategory"
+        component={ArchitectSelectCategory}
+      />
     </Stack.Navigator>
   );
 };
