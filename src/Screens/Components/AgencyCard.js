@@ -6,7 +6,7 @@ import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
 import {windowHeight} from '../../Utils/Dimentions';
 
-const AgencyCard = ({onViewAgency = () => {}}) => {
+const AgencyCard = ({onViewAgency = () => {}, onChooseAgency = () => {}}) => {
   return (
     <TouchableOpacity style={styles.container}>
       <FastImage
@@ -29,7 +29,9 @@ const AgencyCard = ({onViewAgency = () => {}}) => {
           </View>
         </View>
         <View style={styles.btnRow}>
-          <TouchableOpacity style={[styles.filledBtn]}>
+          <TouchableOpacity
+            style={[styles.filledBtn]}
+            onPress={() => onChooseAgency()}>
             <Text style={styles.btnText}>{'Choose this'}</Text>
           </TouchableOpacity>
 

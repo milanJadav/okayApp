@@ -15,6 +15,7 @@ import {FONTS} from '../Common/Constants/fonts';
 import ArchitectSelectCategory from '../Screens/Architect/ArchitectSelectCategory';
 import AgencyList from '../Screens/Architect/AgencyList';
 import AgencyDetail from '../Screens/Agency/AgencyDetail';
+import SelectProjects from '../Screens/Architect/SelectProjects';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -120,6 +121,7 @@ const ArchitectStack = () => {
       />
       <Stack.Screen name="AgencyList" component={AgencyList} />
       <Stack.Screen name="AgencyDetail" component={AgencyDetail} />
+      <Stack.Screen name="SelectProjects" component={SelectProjects} />
     </Stack.Navigator>
   );
 };
