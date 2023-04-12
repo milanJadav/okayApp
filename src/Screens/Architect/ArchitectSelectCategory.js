@@ -32,6 +32,10 @@ const ArchitectSelectCategory = props => {
     props.navigation.navigate('AgencyList', {title});
   };
 
+  const onViewAgency = () => {
+    props.navigation.navigate('AgencyDetail');
+  };
+
   //RENDER METHODS
   const renderCategoryItem = ({item}) => {
     return (
@@ -53,7 +57,7 @@ const ArchitectSelectCategory = props => {
   };
 
   const renderAgency = ({item}) => {
-    return <AgencyCard />;
+    return <AgencyCard onViewAgency={onViewAgency} />;
   };
 
   const renderCategories = () => {

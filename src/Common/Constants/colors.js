@@ -9,4 +9,5 @@ export const COLORS = {
   pr_blue: '#0064E5',
   pr_background: '#F9FBFD',
   bottomTabText: '#666A72',
+  orange: '#E56000',
 };

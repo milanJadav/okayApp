@@ -18,4 +18,8 @@ export const IMAGES = {
   IC_BELL: require('../../assets/images/bell.png'),
   IC_STAR: require('../../assets/images/star.png'),
   IC_EYE: require('../../assets/images/eye.png'),
+  IC_VERIFY: require('../../assets/images/verified.png'),
+  IC_DOWNLOAD: require('../../assets/images/download.png'),
+  IC_CALL: require('../../assets/images/phone.png'),
+  IC_MESSAGE: require('../../assets/images/message.png'),
 };
