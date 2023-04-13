@@ -110,3 +110,26 @@ export const agenciesList = [
     id: 9,
   },
 ];
+
+export const projectsData = [
+  {
+    id: 1,
+    name: 'Rock and Roll Hall of Fame',
+    selected: false,
+  },
+  {
+    id: 2,
+    name: 'Duplex height',
+    selected: false,
+  },
+  {
+    id: 3,
+    name: 'The main royal orchid',
+    selected: false,
+  },
+  {
+    id: 4,
+    name: 'Gateway royal',
+    selected: false,
+  },
+];

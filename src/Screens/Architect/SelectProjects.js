@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
+  Animated,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -12,23 +13,86 @@ import {safeAreaStyle} from '../../Common/CommonStyles';
 import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
+import {projectsData} from '../../Utils/Data';
 import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
 import ICheckBox from '../Components/ICheckBox';
 
 const SelectProjects = props => {
-  const [check, setCheck] = useState(false);
-
+  const [showSearch, setShowSearch] = useState(false);
+  const [showSelectedPro, setShowSelectedPro] = useState(false);
+  const [projectData, setProjectData] = useState(projectsData);
+  const [selectedProject, setSelectedProject] = useState([]);
+  const [fadeAnim, setFadeAnim] = useState(new Animated.Value(0));
   //CLICK EVENTS
   const onBackPress = () => {
     props.navigation.goBack();
   };
 
   const onContinue = () => {
-    props.navigation.navigate('CreateProject');
+    // props.navigation.navigate('CreateProject');
   };
 
+  const onShowSearch = value => {
+    setShowSearch(!showSearch);
+    setShowSelectedPro(false);
+    if (!value) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => {
+        setFadeAnim(new Animated.Value(1));
+      });
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0.1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => {
+        setFadeAnim(new Animated.Value(0));
+      });
+    }
+  };
+
+  const onCheckBoxClick = name => {
+    const newArray = projectData.map(i => {
+      if (i.name == name) {
+        return {
+          ...i,
+          selected: !i.selected,
+        };
+      } else {
+        return {...i};
+      }
+    });
+
+    setProjectData(newArray);
+  };
+
+  const onApplyProjectSelection = () => {
+    const filteredArray = projectData.filter(i => i.selected);
+    if (filteredArray.length == 0) {
+      alert('Please Select Project!!');
+      return;
+    }
+    setSelectedProject(filteredArray);
+    onShowSearch(showSearch);
+    setShowSelectedPro(!showSelectedPro);
+  };
+
+  const onClearAll = () => {
+    const newArray = projectData.map(i => {
+      return {...i, selected: false};
+    });
+    setProjectData(newArray);
+  };
+
+  const onRemoveProject = value => {
+    const filterData = selectedProject.filter(i => i.name !== value);
+    setSelectedProject(filterData);
+  };
   return (
     <SafeAreaView style={safeAreaStyle}>
       <View style={{flex: 1, justifyContent: 'space-between'}}>
@@ -41,7 +105,10 @@ const SelectProjects = props => {
 
           <HightBox height={30} />
 
-          <TouchableOpacity style={styles.dropDowncontainer}>
+          <TouchableOpacity
+            style={styles.dropDowncontainer}
+            onPress={() => onShowSearch(showSearch)}
+            activeOpacity={0.9}>
             <Text style={styles.dropText}>Select projects</Text>
             <FastImage
               source={IMAGES.IC_ARROW_DOWN}
@@ -51,28 +118,78 @@ const SelectProjects = props => {
           </TouchableOpacity>
 
           {/* project search */}
-          <View style={styles.projectSearchContainer}>
-            <View style={styles.searchBoxContainer}>
-              <FastImage
-                source={IMAGES.IC_SEARCH}
-                style={{height: 16, width: 16}}
-                resizeMode="contain"
-              />
+          {showSearch && (
+            <Animated.View
+              style={[styles.projectSearchContainer, {opacity: fadeAnim}]}>
+              <View style={styles.searchBoxContainer}>
+                <FastImage
+                  source={IMAGES.IC_SEARCH}
+                  style={{height: 16, width: 16}}
+                  resizeMode="contain"
+                />
 
-              <TextInput
-                style={styles.inputStyle}
-                placeholder={'Search projects'}
-                placeholderTextColor={COLORS.textColor44}
-              />
+                <TextInput
+                  style={styles.inputStyle}
+                  placeholder={'Search projects'}
+                  placeholderTextColor={COLORS.textColor44}
+                />
+              </View>
+              <HightBox height={15.5} />
+              {projectData.map(item => {
+                return (
+                  <View key={item.id} style={styles.projectRow}>
+                    <ICheckBox
+                      value={item.selected}
+                      onCheckClick={() => onCheckBoxClick(item.name)}
+                    />
+                    <View style={{width: 10}} />
+                    <Text style={styles.projectNameText}>{item.name}</Text>
+                  </View>
+                );
+              })}
+              <HightBox height={15} />
+              <View style={[styles.projectRow, {marginBottom: 0}]}>
+                <TouchableOpacity
+                  style={[styles.filledBtn]}
+                  onPress={() => onApplyProjectSelection()}>
+                  <Text style={styles.btnText}>{'Apply'}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{marginLeft: 15}}
+                  onPress={() => onClearAll()}>
+                  <Text style={[styles.btnText, {color: COLORS.pr_blue}]}>
+                    {'Clear all'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </Animated.View>
+          )}
+          <HightBox height={20} />
+
+          {showSelectedPro && (
+            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+              {selectedProject.map(i => {
+                return (
+                  <View key={i.id} style={styles.selectedProRow}>
+                    <Text style={styles.projectNameText}>{i.name}</Text>
+                    <TouchableOpacity onPress={() => onRemoveProject(i.name)}>
+                      <FastImage
+                        source={IMAGES.IC_CROSS}
+                        style={{height: 16, width: 16, marginLeft: 5}}
+                        resizeMode="contain"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                );
+              })}
             </View>
-            <HightBox height={15.5} />
-            <ICheckBox value={check} onCheckClick={() => setCheck(!check)} />
-          </View>
+          )}
         </View>
 
         <View style={styles.bottomContainer}>
           <View style={{marginTop: 30}}>
-            <IButton title={'Continue'} onPress={onContinue} />
+            <IButton title={'Save'} onPress={onContinue} />
           </View>
         </View>
       </View>
@@ -133,5 +250,43 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTS.OUTFIT_LIGHT,
     color: COLORS.textColor,
+  },
+  projectRow: {
+    flexDirection: 'row',
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  projectNameText: {
+    fontFamily: FONTS.OUTFIT_REGULAR,
+    fontSize: 14,
+    color: COLORS.textColor,
+  },
+  filledBtn: {
+    backgroundColor: COLORS.pr_blue,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+    paddingHorizontal: 15,
+    paddingVertical: 7,
+  },
+  btnText: {
+    fontFamily: FONTS.OUTFIT_MEDIUM,
+    fontSize: 14,
+    color: COLORS.white,
+  },
+  selectedProRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    backgroundColor: COLORS.white,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    borderRadius: 30,
+    marginRight: 8,
+    marginBottom: 10,
   },
 });
