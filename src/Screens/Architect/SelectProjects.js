@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,8 +15,11 @@ import {IMAGES} from '../../Common/Constants/images';
 import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
+import ICheckBox from '../Components/ICheckBox';
 
 const SelectProjects = props => {
+  const [check, setCheck] = useState(false);
+
   //CLICK EVENTS
   const onBackPress = () => {
     props.navigation.goBack();
@@ -62,6 +65,8 @@ const SelectProjects = props => {
                 placeholderTextColor={COLORS.textColor44}
               />
             </View>
+            <HightBox height={15.5} />
+            <ICheckBox value={check} onCheckClick={() => setCheck(!check)} />
           </View>
         </View>
 
