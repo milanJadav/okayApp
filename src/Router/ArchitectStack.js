@@ -18,6 +18,7 @@ import AgencyDetail from '../Screens/Agency/AgencyDetail';
 import SelectProjects from '../Screens/Architect/SelectProjects';
 import ProjectDetail from '../Screens/Architect/ProjectDetail';
 import EditProfile from '../Screens/Architect/EditProfile';
+import AccountDelete from '../Screens/Architect/AccountDelete';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -126,6 +127,7 @@ const ArchitectStack = () => {
       <Stack.Screen name="SelectProjects" component={SelectProjects} />
       <Stack.Screen name="ProjectDetail" component={ProjectDetail} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="AccountDelete" component={AccountDelete} />
     </Stack.Navigator>
   );
 };

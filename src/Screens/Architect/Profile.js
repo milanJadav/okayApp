@@ -51,7 +51,9 @@ const Profile = props => {
     switch (id) {
       case 1:
         break;
-
+      case 3:
+        props.navigation.navigate('AccountDelete');
+        break;
       default:
         break;
     }
@@ -92,6 +94,7 @@ const Profile = props => {
   const renderProfileItems = ({item}) => {
     return (
       <TouchableOpacity
+        onPress={() => onProfileSettingClick(item.id)}
         style={{...styles.profileContainer, alignItems: 'flex-start'}}>
         <FastImage
           source={item.logo}
