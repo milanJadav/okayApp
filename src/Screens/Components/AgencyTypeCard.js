@@ -6,11 +6,11 @@ import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
 import {windowHeight} from '../../Utils/Dimentions';
 
-const AgencyCard = ({onViewAgency = () => {}, onChooseAgency = () => {}}) => {
+const AgencyTypeCard = ({onViewAgency = () => {}}) => {
   return (
-    <TouchableOpacity style={styles.container} disabled>
+    <TouchableOpacity style={styles.container} onPress={() => onViewAgency()}>
       <FastImage
-        source={require('../../assets/temp/agencyPic.png')}
+        source={require('../../assets/temp/agency1Temp.png')}
         style={styles.img}
         resizeMode="cover"
       />
@@ -20,7 +20,7 @@ const AgencyCard = ({onViewAgency = () => {}, onChooseAgency = () => {}}) => {
             The Beyark agency
           </Text>
           <Text style={styles.subTitle} numberOfLines={1}>
-            Year of working: 2 yrs
+            Type : Interior design{' '}
           </Text>
           <View style={styles.ratingRow}>
             <FastImage
@@ -32,37 +32,26 @@ const AgencyCard = ({onViewAgency = () => {}, onChooseAgency = () => {}}) => {
             <Text style={styles.rating}>Rating </Text>
           </View>
         </View>
-        <View style={styles.btnRow}>
-          <TouchableOpacity
-            style={[styles.filledBtn]}
-            onPress={() => onChooseAgency()}>
-            <Text style={styles.btnText}>{'Choose this'}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.unfilledBtn]}
-            onPress={() => onViewAgency()}>
-            <FastImage
-              source={IMAGES.IC_EYE}
-              style={{height: 16, width: 16, marginRight: 5}}
-              resizeMode="contain"
-            />
-            <Text style={styles.title}>{'View'}</Text>
-          </TouchableOpacity>
-        </View>
+      </View>
+      <View style={{justifyContent: 'center', paddingRight: 14}}>
+        <FastImage
+          source={IMAGES.IC_ARROW_DOWN}
+          style={{height: 24, width: 24, transform: [{rotate: '-90deg'}]}}
+          resizeMode="contain"
+        />
       </View>
     </TouchableOpacity>
   );
 };
 
-export default AgencyCard;
+export default AgencyTypeCard;
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: COLORS.white,
     borderRadius: 8,
-    height: windowHeight / 5.9,
+    height: windowHeight / 8.7,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -71,7 +60,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   img: {
-    height: windowHeight / 5.9,
+    height: windowHeight / 8.7,
     width: '35%',
     borderBottomLeftRadius: 8,
     borderTopLeftRadius: 8,
@@ -112,33 +101,5 @@ const styles = StyleSheet.create({
     color: COLORS.textColor,
     fontSize: 14,
     lineHeight: 18,
-  },
-  btnRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  filledBtn: {
-    backgroundColor: COLORS.pr_blue,
-    height: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 50,
-    paddingHorizontal: 15,
-  },
-  unfilledBtn: {
-    backgroundColor: COLORS.white,
-    height: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 50,
-    paddingHorizontal: 15,
-    borderColor: COLORS.pr_blue,
-    borderWidth: 1,
-    flexDirection: 'row',
-  },
-  btnText: {
-    fontFamily: FONTS.OUTFIT_MEDIUM,
-    fontSize: 14,
-    color: COLORS.white,
   },
 });

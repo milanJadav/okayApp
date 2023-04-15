@@ -20,9 +20,18 @@ import ISearchBar from '../Components/ISearchBar';
 import LocationNavBar from '../Components/LocationNavBar';
 import ProjectCard from '../Components/ProjectCard';
 
-const Projects = () => {
+const Projects = props => {
+  //CLICK EVENTS
+  const onCreate = () => {
+    props.navigation.navigate('CreateProject');
+  };
+
+  const onCardPress = () => {
+    props.navigation.navigate('ProjectDetail');
+  };
+
   const renderItem = ({item}) => {
-    return <ProjectCard />;
+    return <ProjectCard onPress={onCardPress} />;
   };
 
   return (
@@ -43,7 +52,9 @@ const Projects = () => {
           ListFooterComponent={() => <HightBox height={15} />}
         />
 
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => onCreate()}>
           <FastImage
             source={IMAGES.IC_PLUS}
             style={{height: 24, width: 24}}

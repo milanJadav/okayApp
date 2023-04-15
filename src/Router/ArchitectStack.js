@@ -16,6 +16,7 @@ import ArchitectSelectCategory from '../Screens/Architect/ArchitectSelectCategor
 import AgencyList from '../Screens/Architect/AgencyList';
 import AgencyDetail from '../Screens/Agency/AgencyDetail';
 import SelectProjects from '../Screens/Architect/SelectProjects';
+import ProjectDetail from '../Screens/Architect/ProjectDetail';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -122,6 +123,7 @@ const ArchitectStack = () => {
       <Stack.Screen name="AgencyList" component={AgencyList} />
       <Stack.Screen name="AgencyDetail" component={AgencyDetail} />
       <Stack.Screen name="SelectProjects" component={SelectProjects} />
+      <Stack.Screen name="ProjectDetail" component={ProjectDetail} />
     </Stack.Navigator>
   );
 };

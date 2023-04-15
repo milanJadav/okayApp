@@ -7,9 +7,9 @@ import {IMAGES} from '../../Common/Constants/images';
 import {windowHeight} from '../../Utils/Dimentions';
 import HightBox from './HightBox';
 
-const ProjectCard = () => {
+const ProjectCard = ({onPress = () => {}}) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={() => onPress()}>
       <FastImage
         source={require('../../assets/temp/agencyPic.png')}
         style={styles.img}
