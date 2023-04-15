@@ -50,6 +50,7 @@ const Profile = props => {
   const onProfileSettingClick = id => {
     switch (id) {
       case 1:
+        props.navigation.navigate('SelectedAgencies');
         break;
       case 3:
         props.navigation.navigate('AccountDelete');
