@@ -41,7 +41,22 @@ const profileData = [
   },
 ];
 
-const Profile = () => {
+const Profile = props => {
+  //CLICK EVENTS
+  const onEditProfile = () => {
+    props.navigation.navigate('EditProfile');
+  };
+
+  const onProfileSettingClick = id => {
+    switch (id) {
+      case 1:
+        break;
+
+      default:
+        break;
+    }
+  };
+
   //RENDER METHOD
   const renderProfileContainer = () => {
     return (
@@ -60,7 +75,9 @@ const Profile = () => {
           </Text>
         </View>
         <View>
-          <TouchableOpacity style={styles.editBtn}>
+          <TouchableOpacity
+            style={styles.editBtn}
+            onPress={() => onEditProfile()}>
             <FastImage
               source={IMAGES.IC_PENCIL}
               style={{height: 13, width: 13}}
@@ -74,7 +91,8 @@ const Profile = () => {
 
   const renderProfileItems = ({item}) => {
     return (
-      <View style={{...styles.profileContainer, alignItems: 'flex-start'}}>
+      <TouchableOpacity
+        style={{...styles.profileContainer, alignItems: 'flex-start'}}>
         <FastImage
           source={item.logo}
           style={{height: 24, width: 24}}
@@ -98,7 +116,7 @@ const Profile = () => {
             />
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 

@@ -27,6 +27,9 @@ export const IMAGES = {
   IC_BRIEFCASE: require('../../assets/images/briefcase.png'),
   IC_LOGOUT: require('../../assets/images/log_out.png'),
   IC_PENCIL: require('../../assets/images/pencil.png'),
+  IC_CAMERA: require('../../assets/images/camera.png'),
+  IC_DUSTBIN: require('../../assets/images/dustbin.png'),
+  IC_PROFILE_DOTS: require('../../assets/images/profileBG.png'),
   FILLED_CHECKBOX: require('../../assets/images/FilledCheckbox.png'),
   UNFILLED_CHECKBOX: require('../../assets/images/UnFilledCheckbox.png'),
 };
