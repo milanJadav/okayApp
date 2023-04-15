@@ -24,6 +24,9 @@ export const IMAGES = {
   IC_CALL: require('../../assets/images/phone.png'),
   IC_CROSS: require('../../assets/images/cross.png'),
   IC_MESSAGE: require('../../assets/images/message.png'),
+  IC_BRIEFCASE: require('../../assets/images/briefcase.png'),
+  IC_LOGOUT: require('../../assets/images/log_out.png'),
+  IC_PENCIL: require('../../assets/images/pencil.png'),
   FILLED_CHECKBOX: require('../../assets/images/FilledCheckbox.png'),
   UNFILLED_CHECKBOX: require('../../assets/images/UnFilledCheckbox.png'),
 };
