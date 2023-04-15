@@ -52,6 +52,9 @@ const Profile = props => {
       case 1:
         props.navigation.navigate('SelectedAgencies');
         break;
+      case 2:
+        props.navigation.navigate('PastProjects');
+        break;
       case 3:
         props.navigation.navigate('AccountDelete');
         break;
