@@ -7,61 +7,48 @@ import {
   View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-
 import {safeAreaStyle} from '../../Common/CommonStyles';
 import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
-import {windowHeight, windowWidth} from '../../Utils/Dimentions';
 import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
 
-var roles = [
+var types = [
   {
-    title: 'Architect / Interior',
+    id: 1,
+    title: 'Repairing/small work',
     selected: true,
-    img: IMAGES.IC_ARCHITECT,
   },
   {
-    title: 'Agency',
+    id: 2,
+    title: 'Larger/big work',
     selected: false,
-    img: IMAGES.IC_AGENCY,
-  },
-  {
-    title: 'Customer',
-    selected: false,
-    img: IMAGES.IC_CUSTOMER,
   },
 ];
 
-const RoleSelection = props => {
-  const [role, setRole] = useState(roles);
-  const [roleName, setRoleName] = useState('Architect / Interior');
+const CustomerProjectType = props => {
+  const [type, setType] = useState(types);
+
   //CLICK EVENTS
   const onBackPress = () => {
     props.navigation.goBack();
   };
 
   const onContinue = () => {
-    if (roleName == 'Architect / Interior') {
-      props.navigation.navigate('ArchitectStack');
-    } else if (roleName == 'Customer') {
-      props.navigation.navigate('CustomerStack');
-    }
+    // props.navigation.navigate('CreateProject');
   };
 
-  const onRolePress = async text => {
-    const role = roles.map(data => {
+  const onTypePress = async text => {
+    const type = types.map(data => {
       if (data.title == text) {
-        data.selected = true;
-      } else {
-        data.selected = false;
+        data.selected = !data.selected;
       }
       return data;
     });
-    setRoleName(text);
-    setRole(role);
+
+    setType(type);
   };
 
   //RENDER METHODS
@@ -70,26 +57,23 @@ const RoleSelection = props => {
       <TouchableOpacity
         style={{
           ...styles.boxContainer,
-          backgroundColor: item.selected ? COLORS.pr_blue : COLORS.white,
+          //   backgroundColor: item.selected ? COLORS.pr_blue : COLORS.white,
         }}
-        onPress={() => onRolePress(item.title)}>
-        <View
-          style={{
-            ...styles.iconContainer,
-            backgroundColor: item.selected ? COLORS.white : COLORS.textColor14,
-          }}>
+        onPress={() => onTypePress(item.title)}>
+        {/* {item.selected && (
           <FastImage
-            source={item.img}
-            style={{height: 30, width: 30}}
+            source={IMAGES.IC_CHECK}
+            style={{height: 16, width: 16, marginRight: 6}}
             resizeMode="contain"
           />
-        </View>
-        <HightBox height={10} />
+        )} */}
         <Text
-          style={{
-            ...styles.boxText,
-            color: item.selected ? COLORS.white : COLORS.textColor,
-          }}>
+          style={
+            {
+              // ...styles.boxText,
+              // color: item.selected ? COLORS.white : COLORS.textColor,
+            }
+          }>
           {item.title}
         </Text>
       </TouchableOpacity>
@@ -102,15 +86,13 @@ const RoleSelection = props => {
         <View style={{paddingHorizontal: 20}}>
           <IBackButton onPress={onBackPress} />
           <HightBox height={30} />
-          <Text style={styles.titleText}>
-            Hey there, down here 👋 Choose your role to continue
-          </Text>
+          <Text style={styles.titleText}>Select your work type</Text>
 
           <HightBox height={27} />
 
-          <View style={{flexDirection: 'row'}}>
-            {role.map(data => {
-              return <RenderItem key={data.title} item={data} />;
+          <View style={{}}>
+            {type.map(data => {
+              return <RenderItem key={data.id} item={data} />;
             })}
           </View>
         </View>
@@ -125,7 +107,7 @@ const RoleSelection = props => {
   );
 };
 
-export default RoleSelection;
+export default CustomerProjectType;
 
 const styles = StyleSheet.create({
   titleText: {
@@ -137,32 +119,28 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {paddingHorizontal: 20, marginBottom: 30},
   boxContainer: {
-    backgroundColor: COLORS.pr_blue,
-    width: windowWidth / 3.55,
-    height: windowHeight / 6,
-    marginRight: 8,
-    paddingTop: 25,
-    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    flexDirection: 'row',
+    // flex: 1,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    // marginRight: 8,
+    marginBottom: 10,
+    // paddingTop: 25,
+    // alignItems: 'center',
+    // justifyContent: 'center',/
     borderRadius: 8,
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.2,
-  },
-  iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.white,
-    height: 48,
-    width: 48,
-    borderRadius: 50,
+    shadowOpacity: 0.1,
   },
   boxText: {
     fontFamily: FONTS.OUTFIT_REGULAR,
     fontSize: 14,
-    color: COLORS.white,
+    color: COLORS.textColor,
     textAlign: 'center',
-    lineHeight: 18,
+    // lineHeight: 18,
   },
 });

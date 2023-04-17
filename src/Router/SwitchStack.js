@@ -5,6 +5,7 @@ import Splash from '../Screens/Splash/Splash';
 import AuthStack from './AuthStack';
 import AppStack from './AppStack';
 import ArchitectStack from './ArchitectStack';
+import CustomerStack from './CustomerStack';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ const SwitchStack = () => {
       <Stack.Screen name="AppStack" component={AppStack} />
       <Stack.Screen name="AuthStack" component={AuthStack} />
       <Stack.Screen name="ArchitectStack" component={ArchitectStack} />
+      <Stack.Screen name="CustomerStack" component={CustomerStack} />
     </Stack.Navigator>
   );
 };
