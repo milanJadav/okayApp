@@ -5,17 +5,20 @@ import FastImage from 'react-native-fast-image';
 import {COLORS} from '../../Common/Constants/colors';
 import {IMAGES} from '../../Common/Constants/images';
 import {FONTS} from '../../Common/Constants/fonts';
+import {useDispatch} from 'react-redux';
+import {LogUserIn} from '../../redux/auth/authActions';
 
 const Onboarding = props => {
   const [onBoarding1, setOnBoarding1] = useState(true);
   const [onBoarding2, setOnBoarding2] = useState(false);
   const [onBoarding3, setOnBoarding3] = useState(false);
-
+  const dispatch = useDispatch();
   //CLICK EVENTS
 
   const onPressFirstOnBoardBtn = () => {
     setOnBoarding1(false);
     setOnBoarding2(true);
+    dispatch(LogUserIn(11));
   };
 
   const onPressSecondOnBoardBtn = () => {
