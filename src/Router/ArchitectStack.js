@@ -111,9 +111,12 @@ const ArchitectBottomTab = () => {
   );
 };
 
-const ArchitectStack = () => {
+const ArchitectStack = props => {
+  const {initialRoute} = props.route.params || {};
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      screenOptions={{headerShown: false, animation: 'slide_from_right'}}
+      initialRouteName={initialRoute ? initialRoute : 'ArchitectProjectType'}>
       <Stack.Screen
         name="ArchitectProjectType"
         component={ArchitectProjectType}

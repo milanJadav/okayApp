@@ -15,7 +15,7 @@ userAuthFetch.interceptors.request.use(config =>
   localStorageHelper
     .getItemFromStorage(StorageKeys.ACCESS_TOKEN)
     .then(tokenResponse => {
-      config.headers.authorization = tokenResponse;
+      config.headers.authorization = `Bearer ${tokenResponse}`;
       console.log(`API called: ${config.url}`);
       return Promise.resolve(config);
     }),

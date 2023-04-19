@@ -1,14 +1,30 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
 
-const IButton = ({title, onPress = () => {}, customContainer}) => {
+const IButton = ({
+  title,
+  onPress = () => {},
+  customContainer,
+  loading = false,
+}) => {
   return (
     <TouchableOpacity
       style={[styles.container, customContainer]}
+      disabled={loading}
       onPress={() => onPress()}>
-      <Text style={styles.title}>{title}</Text>
+      {loading ? (
+        <ActivityIndicator size={'small'} color={COLORS.white} />
+      ) : (
+        <Text style={styles.title}>{title}</Text>
+      )}
     </TouchableOpacity>
   );
 };

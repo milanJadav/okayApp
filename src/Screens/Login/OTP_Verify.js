@@ -19,11 +19,17 @@ import {FONTS} from '../../Common/Constants/fonts';
 import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
+import {useDispatch} from 'react-redux';
+import {VerifyOTP} from '../../redux/auth/authActions';
 
-const CELL_COUNT = 6;
+const CELL_COUNT = 4;
 
 const OTP_Verify = props => {
+  const {mobileNum} = props.route.params || {};
+
   const [value, setValue] = useState('');
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -37,7 +43,24 @@ const OTP_Verify = props => {
   };
 
   const onVerify = () => {
+    if (!value) {
+      alert('Please Enter OTP');
+    } else if (value.length !== 4) {
+      alert('Please Enter valid OTP');
+    } else {
+      setLoading(true);
+      dispatch(VerifyOTP({mobileNum, otpValue: value, onSuccess, onFailure}));
+    }
+  };
+
+  const onSuccess = () => {
+    setLoading(false);
     props.navigation.navigate('RoleSelection');
+  };
+
+  const onFailure = msg => {
+    setLoading(false);
+    alert(msg || 'Error');
   };
 
   return (
@@ -48,7 +71,8 @@ const OTP_Verify = props => {
           <HightBox height={30} />
           <Text style={styles.titleText}>We just sent you an OTP</Text>
           <Text style={styles.subTitleText}>
-            To log in, enter the security code we sent to{'\n'}*******8901.
+            To log in, enter the security code we sent to{'\n'}*******
+            {mobileNum ? mobileNum.substr(mobileNum.length - 4) : 1234}.
           </Text>
           <HightBox height={27} />
 
@@ -89,7 +113,7 @@ const OTP_Verify = props => {
 
         <View style={styles.bottomContainer}>
           <View style={{marginTop: 30}}>
-            <IButton title={'Verify'} onPress={onVerify} />
+            <IButton title={'Verify'} onPress={onVerify} loading={loading} />
           </View>
         </View>
       </View>
@@ -132,7 +156,8 @@ const styles = StyleSheet.create({
   bottomContainer: {paddingHorizontal: 20, marginBottom: 30},
   //CODE FIELD
   codeFieldRoot: {
-    width: '100%',
+    width: '70%',
+    alignSelf: 'center',
   },
   cellRoot: {
     width: 48,

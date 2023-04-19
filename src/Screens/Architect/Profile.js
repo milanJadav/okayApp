@@ -13,6 +13,7 @@ import {FONTS} from '../../Common/Constants/fonts';
 import {COLORS} from '../../Common/Constants/colors';
 import HightBox from '../Components/HightBox';
 import {IMAGES} from '../../Common/Constants/images';
+import {localStorageHelper} from '../../Common/localStorageHelper';
 
 const profileData = [
   {
@@ -47,6 +48,13 @@ const Profile = props => {
     props.navigation.navigate('EditProfile');
   };
 
+  const onLogout = () => {
+    localStorageHelper.clearStorage().then(resp => {
+      console.log('Logout done');
+      props.navigation.replace('Splash');
+    });
+  };
+
   const onProfileSettingClick = id => {
     switch (id) {
       case 1:
@@ -57,6 +65,9 @@ const Profile = props => {
         break;
       case 3:
         props.navigation.navigate('AccountDelete');
+        break;
+      case 4:
+        onLogout();
         break;
       default:
         break;

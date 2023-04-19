@@ -16,19 +16,25 @@ import {windowHeight, windowWidth} from '../../Utils/Dimentions';
 import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
+import {UpdateUserType} from '../../redux/auth/authActions';
+import {useDispatch} from 'react-redux';
+import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 
 var roles = [
   {
+    id: 1,
     title: 'Architect / Interior',
     selected: true,
     img: IMAGES.IC_ARCHITECT,
   },
   {
+    id: 2,
     title: 'Agency',
     selected: false,
     img: IMAGES.IC_AGENCY,
   },
   {
+    id: 3,
     title: 'Customer',
     selected: false,
     img: IMAGES.IC_CUSTOMER,
@@ -38,20 +44,40 @@ var roles = [
 const RoleSelection = props => {
   const [role, setRole] = useState(roles);
   const [roleName, setRoleName] = useState('Architect / Interior');
+  const [loading, setLoading] = useState(false);
+  const [roleId, setRoleId] = useState('1');
+
+  const dispatch = useDispatch();
   //CLICK EVENTS
   const onBackPress = () => {
     props.navigation.goBack();
   };
 
   const onContinue = () => {
+    setLoading(true);
+    dispatch(UpdateUserType({user_type: roleId, onSuccess, onFailure}));
+  };
+
+  const onSuccess = () => {
+    setLoading(false);
+    localStorageHelper
+      .setStorageItem({key: StorageKeys.USER_TYPE, value: roleName})
+      .then(res => {
+        console.log('user type set success');
+      });
     if (roleName == 'Architect / Interior') {
-      props.navigation.navigate('ArchitectStack');
+      props.navigation.replace('ArchitectStack');
     } else if (roleName == 'Customer') {
-      props.navigation.navigate('CustomerStack');
+      props.navigation.replace('CustomerStack');
     }
   };
 
-  const onRolePress = async text => {
+  const onFailure = msg => {
+    setLoading(false);
+    alert(msg || 'Error');
+  };
+
+  const onRolePress = async (text, id) => {
     const role = roles.map(data => {
       if (data.title == text) {
         data.selected = true;
@@ -61,6 +87,7 @@ const RoleSelection = props => {
       return data;
     });
     setRoleName(text);
+    setRoleId(id);
     setRole(role);
   };
 
@@ -72,7 +99,7 @@ const RoleSelection = props => {
           ...styles.boxContainer,
           backgroundColor: item.selected ? COLORS.pr_blue : COLORS.white,
         }}
-        onPress={() => onRolePress(item.title)}>
+        onPress={() => onRolePress(item.title, item.id)}>
         <View
           style={{
             ...styles.iconContainer,
@@ -117,7 +144,11 @@ const RoleSelection = props => {
 
         <View style={styles.bottomContainer}>
           <View style={{marginTop: 30}}>
-            <IButton title={'Continue'} onPress={onContinue} />
+            <IButton
+              title={'Continue'}
+              onPress={onContinue}
+              loading={loading}
+            />
           </View>
         </View>
       </View>
