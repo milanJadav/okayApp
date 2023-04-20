@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   FlatList,
   ImageBackground,
+  RefreshControl,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -16,10 +17,45 @@ import {windowHeight, windowWidth} from '../../Utils/Dimentions';
 import HightBox from '../Components/HightBox';
 import ISearchBar from '../Components/ISearchBar';
 import LocationNavBar from '../Components/LocationNavBar';
+import {useEffect} from 'react';
+import {getDashboardCategory} from '../../redux/dashboard/dashboardActions';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Dashboard = props => {
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const categoryData = useSelector(
+    state => state.dashboard?.categoryData || [],
+  );
+  useEffect(() => {
+    setLoading(true);
+    dispatch(getDashboardCategory({onSuccess, onFailure}));
+  }, []);
+
+  const onSuccess = () => {
+    setLoading(false);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
+
   const onCategoryClick = ({title}) => {
     props.navigation.navigate('ArchitectSelectCategory', {title});
+  };
+
+  const ListEmptyComponent = () => {
+    return (
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={styles.titleText}>No Data Available.</Text>
+      </View>
+    );
+  };
+
+  const onRefresh = () => {
+    console.log('---------s');
+    dispatch(getDashboardCategory({onSuccess, onFailure}));
   };
 
   const renderItem = ({item, index}) => {
@@ -49,9 +85,17 @@ const Dashboard = props => {
         <FlatList
           data={dashboadData}
           renderItem={renderItem}
+          refreshControl={
+            <RefreshControl
+              refreshing={loading}
+              colors={[COLORS.black]}
+              onRefresh={() => onRefresh()}
+            />
+          }
           keyExtractor={({id}) => id.toString()}
           numColumns={2}
           style={{flex: 1}}
+          ListEmptyComponent={() => ListEmptyComponent()}
         />
       </View>
     </SafeAreaView>

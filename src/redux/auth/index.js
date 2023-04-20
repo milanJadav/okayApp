@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {compProperties} from '../../utils/compProperties';
 
 const initialState = {
   data: [],
