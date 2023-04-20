@@ -12,7 +12,7 @@ const Splash = props => {
           let loginPreserved = resp[StorageKeys.IS_LOGGED];
           let userType = resp[StorageKeys.USER_TYPE];
 
-          if (loginPreserved == 'true') {
+          if (loginPreserved == 'true' && userType !== 'null') {
             if (userType == 'Architect / Interior') {
               props.navigation.replace('ArchitectStack', {
                 initialRoute: 'ArchitectBottomTab',

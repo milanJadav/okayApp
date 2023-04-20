@@ -9,13 +9,21 @@ export const LogUserIn = ({mobileNum, onSuccess, onFailure}) => {
       var formdata = new FormData();
       formdata.append('mobile', mobileNum);
 
-      signIn(formdata).then(response => {
-        console.log('login response---', response);
-        if (isFunction(onSuccess)) {
-          onSuccess();
-        }
-        dispatch(onLogin(response));
-      });
+      signIn(formdata)
+        .then(response => {
+          console.log('login response---', response);
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+            dispatch(onLogin(response));
+          }
+        })
+        .catch(err => {
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
     } catch (error) {
       console.log('Error!', error);
       if (isFunction(onFailure)) {
@@ -35,20 +43,21 @@ export const VerifyOTP = ({mobileNum, otpValue, onSuccess, onFailure}) => {
       verifyOtp(formdata).then(response => {
         console.log('verify otp response---', response);
 
-        if (response.access_token) {
+        if (response.status == 200) {
           const storageData = {};
 
           storageData[StorageKeys.ACCESS_TOKEN] = response?.access_token || '';
           storageData[StorageKeys.IS_LOGGED] = 'true';
           storageData[StorageKeys.USER_ID] = String(response?.user_id) || '';
-
+          storageData[StorageKeys.USER_TYPE] =
+            response?.user_type_name || 'null';
           localStorageHelper
             .setStorageItems(storageData)
             .then(() => {
               console.log('Saved user credentials in localstorage');
 
               if (isFunction(onSuccess)) {
-                onSuccess();
+                onSuccess(response);
               }
             })
             .catch(error => {

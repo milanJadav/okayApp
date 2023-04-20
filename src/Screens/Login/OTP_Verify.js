@@ -53,9 +53,19 @@ const OTP_Verify = props => {
     }
   };
 
-  const onSuccess = () => {
+  const onSuccess = data => {
     setLoading(false);
-    props.navigation.navigate('RoleSelection');
+    if (data?.user_type_name !== null) {
+      if (data?.user_type_name == 'Architect / Interior') {
+        props.navigation.replace('ArchitectStack', {
+          initialRoute: 'ArchitectBottomTab',
+        });
+      } else if (data?.user_type_name == 'Customer') {
+        props.navigation.replace('CustomerStack');
+      }
+    } else {
+      props.navigation.navigate('RoleSelection');
+    }
   };
 
   const onFailure = msg => {

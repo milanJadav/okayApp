@@ -13,7 +13,7 @@ export const authSlice = createSlice({
       // const {
       //   payload: {item},
       // } = data;
-      console.log('iam in reduxer', data);
+      // console.log('iam in reduxer', data);
     },
   },
 });
