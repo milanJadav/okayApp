@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   ImageBackground,
@@ -19,8 +19,27 @@ import HightBox from '../Components/HightBox';
 import ISearchBar from '../Components/ISearchBar';
 import LocationNavBar from '../Components/LocationNavBar';
 import ProjectCard from '../Components/ProjectCard';
+import {useDispatch} from 'react-redux';
+import {getUserProjects} from '../../redux/dashboard/dashboardActions';
 
 const Projects = props => {
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setLoading(true);
+    dispatch(getUserProjects({onSuccess, onFailure}));
+  }, []);
+
+  const onSuccess = () => {
+    setLoading(false);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
+
   //CLICK EVENTS
   const onCreate = () => {
     props.navigation.navigate('CreateProject');

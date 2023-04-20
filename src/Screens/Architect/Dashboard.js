@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {
   FlatList,
   ImageBackground,
@@ -28,6 +28,7 @@ const Dashboard = props => {
   const categoryData = useSelector(
     state => state.dashboard?.categoryData || [],
   );
+
   useEffect(() => {
     setLoading(true);
     dispatch(getDashboardCategory({onSuccess, onFailure}));
@@ -54,7 +55,6 @@ const Dashboard = props => {
   };
 
   const onRefresh = () => {
-    console.log('---------s');
     dispatch(getDashboardCategory({onSuccess, onFailure}));
   };
 
