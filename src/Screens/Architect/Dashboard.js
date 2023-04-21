@@ -20,9 +20,10 @@ import LocationNavBar from '../Components/LocationNavBar';
 import {useEffect} from 'react';
 import {getDashboardCategory} from '../../redux/dashboard/dashboardActions';
 import {useDispatch, useSelector} from 'react-redux';
+import {ActivityIndicator} from 'react-native';
 
 const Dashboard = props => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
   const categoryData = useSelector(
@@ -30,7 +31,6 @@ const Dashboard = props => {
   );
 
   useEffect(() => {
-    setLoading(true);
     dispatch(getDashboardCategory({onSuccess, onFailure}));
   }, []);
 
@@ -58,16 +58,20 @@ const Dashboard = props => {
     dispatch(getDashboardCategory({onSuccess, onFailure}));
   };
 
+  const renderLoading = () => (
+    <ActivityIndicator size={'small'} color={COLORS.black} />
+  );
+
   const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
         style={{...styles.boxContainer}}
         onPress={() => onCategoryClick({title: item.title})}>
         <ImageBackground
-          source={item.img}
+          source={item?.img || require('../../assets/temp/tempCarpenter.png')}
           style={styles.imgBackGround}
           resizeMode="contain">
-          <Text style={styles.itemText}>{item.title}</Text>
+          <Text style={styles.itemText}>{item.category_name}</Text>
         </ImageBackground>
       </TouchableOpacity>
     );
@@ -82,21 +86,25 @@ const Dashboard = props => {
         <HightBox height={25} />
         <Text style={styles.titleText}>Choose your services</Text>
         <HightBox height={20} />
-        <FlatList
-          data={dashboadData}
-          renderItem={renderItem}
-          refreshControl={
-            <RefreshControl
-              refreshing={loading}
-              colors={[COLORS.black]}
-              onRefresh={() => onRefresh()}
-            />
-          }
-          keyExtractor={({id}) => id.toString()}
-          numColumns={2}
-          style={{flex: 1}}
-          ListEmptyComponent={() => ListEmptyComponent()}
-        />
+        {loading ? (
+          renderLoading()
+        ) : (
+          <FlatList
+            data={categoryData}
+            renderItem={renderItem}
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                colors={[COLORS.black]}
+                onRefresh={() => onRefresh()}
+              />
+            }
+            keyExtractor={({id}) => id.toString()}
+            numColumns={2}
+            style={{flex: 1}}
+            ListEmptyComponent={() => ListEmptyComponent()}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

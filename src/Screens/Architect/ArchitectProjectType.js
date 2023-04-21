@@ -57,7 +57,7 @@ const ArchitectProjectType = props => {
   };
 
   const onContinue = () => {
-    props.navigation.navigate('CreateProject');
+    props.navigation.navigate('CreateProject', {showSkipBtn: true});
   };
 
   const onTypePress = async text => {

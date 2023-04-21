@@ -8,17 +8,22 @@ import {
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import ImagePicker from 'react-native-image-crop-picker';
 import {safeAreaStyle} from '../../Common/CommonStyles';
 import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
-import {windowHeight} from '../../Utils/Dimentions';
+import {windowHeight, windowWidth} from '../../Utils/Dimentions';
 import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
 import ITextField from '../Components/ITextField';
+import {ImageBackground} from 'react-native';
 
 const CreateProject = props => {
+  const {showSkipBtn} = props.route.params || {};
+
+  const [images, setImages] = useState([]);
   //CLICK EVENTS
   const onBackPress = () => {
     props.navigation.goBack();
@@ -27,6 +32,55 @@ const CreateProject = props => {
   const onCreate = () => {
     props.navigation.navigate('ArchitectBottomTab');
   };
+
+  const onRemoveImage = imgName => {
+    const newArr = images.filter(item => item.creationDate !== imgName);
+    setImages(newArr);
+  };
+
+  const onUploadPhoto = () => {
+    if (images.length == 4) return;
+
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      maxFiles: 4 - images.length,
+      multiple: true,
+    }).then(image => {
+      setImages([...images, ...image]);
+    });
+  };
+
+  const renderImageRow = () => {
+    return (
+      <View style={styles.imgRow}>
+        {images.length > 0
+          ? images.map(img => {
+              return (
+                <>
+                  <ImageBackground
+                    key={img.filename}
+                    source={{uri: img.sourceURL}}
+                    style={styles.imageStyle}
+                    imageStyle={{borderRadius: 12}}
+                    resizeMode={'cover'}>
+                    <TouchableOpacity
+                      onPress={() => onRemoveImage(img.creationDate)}>
+                      <FastImage
+                        source={IMAGES.IC_CROSS}
+                        style={{height: 16, width: 16}}
+                        resizeMode="contain"
+                      />
+                    </TouchableOpacity>
+                  </ImageBackground>
+                </>
+              );
+            })
+          : null}
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView style={safeAreaStyle}>
       <View style={{paddingHorizontal: 20}}>
@@ -73,7 +127,9 @@ const CreateProject = props => {
               }}
             />
             <HightBox height={25} />
-            <TouchableOpacity style={styles.uploadBtn}>
+            <TouchableOpacity
+              style={styles.uploadBtn}
+              onPress={() => onUploadPhoto()}>
               <FastImage
                 source={IMAGES.IC_PLUS}
                 style={{height: 20, width: 20, marginRight: 5}}
@@ -81,6 +137,7 @@ const CreateProject = props => {
               />
               <Text style={styles.uploadText}>Upload photo</Text>
             </TouchableOpacity>
+            {renderImageRow()}
           </View>
         </KeyboardAwareScrollView>
         <View style={styles.bottomContainer}>
@@ -88,10 +145,12 @@ const CreateProject = props => {
             <IButton title={'Create a project'} onPress={onCreate} />
           </View>
           <HightBox height={10} />
-          <Text
-            style={[styles.uploadText, {textAlign: 'center', fontSize: 16}]}>
-            Skip for now
-          </Text>
+          {showSkipBtn && (
+            <Text
+              style={[styles.uploadText, {textAlign: 'center', fontSize: 16}]}>
+              Skip for now
+            </Text>
+          )}
         </View>
       </View>
     </SafeAreaView>
@@ -131,5 +190,17 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.OUTFIT_MEDIUM,
     color: COLORS.pr_blue,
     fontSize: 14,
+  },
+  imgRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+  },
+  imageStyle: {
+    height: windowHeight / 6,
+    width: windowWidth / 3.5,
+    marginVertical: 10,
+    alignItems: 'flex-end',
+    padding: 7,
   },
 });

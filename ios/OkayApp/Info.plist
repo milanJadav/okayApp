@@ -24,6 +24,11 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+  	<string>OkayApp requires access to your phone’s camera.</string>
+  	<key>NSPhotoLibraryUsageDescription</key>
+  	<string>OkayApp requires read access to the photo library.</string>
+  
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
