@@ -1,7 +1,13 @@
-import {onLogin} from '.';
+import {getArchitectWorkTypesSuccess, onLogin} from '.';
 import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 import {isFunction} from '../../Utils/Utils';
-import {signIn, updateUserType, verifyOtp} from '../../api/authApis';
+import {
+  getArchitectWorkTypes,
+  saveArchitectWorkTypes,
+  signIn,
+  updateUserType,
+  verifyOtp,
+} from '../../api/authApis';
 
 export const LogUserIn = ({mobileNum, onSuccess, onFailure}) => {
   return async dispatch => {
@@ -109,6 +115,65 @@ export const UpdateUserType = ({user_type, onSuccess, onFailure}) => {
                 onFailure();
               }
             });
+        });
+    } catch (error) {
+      console.log('Error!', error);
+      if (isFunction(onFailure)) {
+        onFailure();
+      }
+    }
+  };
+};
+
+export const getArchitectWorkType = ({onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      getArchitectWorkTypes()
+        .then(response => {
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+            if (response?.data) {
+              var updatedArr = response.data.map((item, index) => {
+                if (index == 0) {
+                  return {...item, selected: true};
+                } else {
+                  return {...item, selected: false};
+                }
+              });
+            }
+            dispatch(getArchitectWorkTypesSuccess(updatedArr || []));
+          }
+        })
+        .catch(err => {
+          console.log('error in get architect work type', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+    }
+  };
+};
+
+export const saveArchitectWorkType = ({payload, onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      saveArchitectWorkTypes(payload)
+        .then(response => {
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+          }
+        })
+        .catch(err => {
+          console.log('error in save architect work type', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
         });
     } catch (error) {
       console.log('Error!', error);

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,6 +14,11 @@ import {IMAGES} from '../../Common/Constants/images';
 import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getArchitectWorkType,
+  saveArchitectWorkType,
+} from '../../redux/auth/authActions';
 
 var types = [
   {
@@ -49,7 +54,23 @@ var types = [
 ];
 
 const ArchitectProjectType = props => {
-  const [type, setType] = useState(types);
+  const [type, setType] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch();
+  const workTypes = useSelector(state => state.auth?.architectWorkType || []);
+
+  useEffect(() => {
+    dispatch(getArchitectWorkType({onSuccess, onFailure}));
+  }, []);
+
+  const onSuccess = () => {
+    setLoading(false);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
 
   //CLICK EVENTS
   const onBackPress = () => {
@@ -57,12 +78,31 @@ const ArchitectProjectType = props => {
   };
 
   const onContinue = () => {
+    setLoading(true);
+    const payload = [];
+
+    workTypes.forEach(element => {
+      if (element.selected) {
+        payload.push({
+          id: element.id,
+          work_type_name: element.work_type_name,
+        });
+      }
+    });
+
+    dispatch(
+      saveArchitectWorkType({payload, onSuccess: onSaveWorktype, onFailure}),
+    );
+  };
+
+  const onSaveWorktype = () => {
+    setLoading(false);
     props.navigation.navigate('CreateProject', {showSkipBtn: true});
   };
 
   const onTypePress = async text => {
-    const type = types.map(data => {
-      if (data.title == text) {
+    const type = workTypes.map(data => {
+      if (data.work_type_name == text) {
         data.selected = !data.selected;
       }
       return data;
@@ -79,7 +119,7 @@ const ArchitectProjectType = props => {
           ...styles.boxContainer,
           backgroundColor: item.selected ? COLORS.pr_blue : COLORS.white,
         }}
-        onPress={() => onTypePress(item.title)}>
+        onPress={() => onTypePress(item.work_type_name)}>
         {item.selected && (
           <FastImage
             source={IMAGES.IC_CHECK}
@@ -92,7 +132,7 @@ const ArchitectProjectType = props => {
             ...styles.boxText,
             color: item.selected ? COLORS.white : COLORS.textColor,
           }}>
-          {item.title}
+          {item.work_type_name}
         </Text>
       </TouchableOpacity>
     );
@@ -111,7 +151,7 @@ const ArchitectProjectType = props => {
           <HightBox height={27} />
 
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            {type.map(data => {
+            {workTypes.map(data => {
               return <RenderItem key={data.id} item={data} />;
             })}
           </View>
@@ -119,7 +159,11 @@ const ArchitectProjectType = props => {
 
         <View style={styles.bottomContainer}>
           <View style={{marginTop: 30}}>
-            <IButton title={'Continue'} onPress={onContinue} />
+            <IButton
+              title={'Continue'}
+              onPress={onContinue}
+              loading={loading}
+            />
           </View>
         </View>
       </View>

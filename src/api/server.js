@@ -6,9 +6,9 @@ export const BASE_URL = ENVIRONMENT.baseUrl;
 
 const axiosOptions = {
   baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'multipart/form-data',
-  },
+  // headers: {
+  //   'Content-Type': 'multipart/form-data',
+  // },
 };
 
 export const userAuthFetch = axios.create(axiosOptions);

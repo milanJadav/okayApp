@@ -8,3 +8,9 @@ export const verifyOtp = data =>
 
 export const updateUserType = data =>
   userAuthFetch.post('/editusertype', data).then(extractData);
+
+export const getArchitectWorkTypes = data =>
+  userAuthFetch.get('/viewworktype').then(extractData);
+
+export const saveArchitectWorkTypes = data =>
+  userAuthFetch.post('/saveworktype', data).then(extractData);
