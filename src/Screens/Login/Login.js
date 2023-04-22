@@ -83,7 +83,7 @@ const Login = props => {
 
           <View style={styles.bottomContainer}>
             <Text style={styles.bottomText}>
-              By registering, you accept our
+              By registering, you accept our{' '}
               <Text style={styles.underlineText}>Terms of Use</Text> and{' '}
               <Text style={styles.underlineText}>Privacy Policy</Text>
             </Text>

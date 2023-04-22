@@ -20,6 +20,7 @@ export const LogUserIn = ({mobileNum, onSuccess, onFailure}) => {
           }
         })
         .catch(err => {
+          console.log(err);
           if (isFunction(onFailure)) {
             onFailure();
           }
@@ -40,36 +41,41 @@ export const VerifyOTP = ({mobileNum, otpValue, onSuccess, onFailure}) => {
       formdata.append('mobile', mobileNum);
       formdata.append('otp', otpValue);
 
-      verifyOtp(formdata).then(response => {
-        console.log('verify otp response---', response);
+      verifyOtp(formdata)
+        .then(response => {
+          console.log('verify otp response---', response);
 
-        if (response.status == 200) {
-          const storageData = {};
+          if (response.status == 200) {
+            const storageData = {};
 
-          storageData[StorageKeys.ACCESS_TOKEN] = response?.access_token || '';
-          storageData[StorageKeys.IS_LOGGED] = 'true';
-          storageData[StorageKeys.USER_ID] = String(response?.user_id) || '';
-          storageData[StorageKeys.USER_TYPE] =
-            response?.user_type_name || 'null';
-          localStorageHelper
-            .setStorageItems(storageData)
-            .then(() => {
-              console.log('Saved user credentials in localstorage');
+            storageData[StorageKeys.ACCESS_TOKEN] =
+              response?.access_token || '';
+            storageData[StorageKeys.IS_LOGGED] = 'true';
+            storageData[StorageKeys.USER_ID] = String(response?.user_id) || '';
+            storageData[StorageKeys.USER_TYPE] =
+              response?.user_type_name || 'null';
+            localStorageHelper
+              .setStorageItems(storageData)
+              .then(() => {
+                console.log('Saved user credentials in localstorage');
 
-              if (isFunction(onSuccess)) {
-                onSuccess(response);
-              }
-            })
-            .catch(error => {
-              console.log('handleOTPForMainApp error:', error);
-              throw new Error('Error saving data.');
-            });
-        } else {
-          if (isFunction(onFailure)) {
-            onFailure(response?.message);
+                if (isFunction(onSuccess)) {
+                  onSuccess(response);
+                }
+              })
+              .catch(error => {
+                console.log('handleOTPForMainApp error:', error);
+                throw new Error('Error saving data.');
+              });
+          } else {
+            if (isFunction(onFailure)) {
+              onFailure(response?.message);
+            }
           }
-        }
-      });
+        })
+        .catch(err => {
+          console.log(err.response.data);
+        });
     } catch (error) {
       console.log('Error!', error);
       if (isFunction(onFailure)) {
