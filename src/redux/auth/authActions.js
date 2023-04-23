@@ -4,6 +4,7 @@ import {isFunction} from '../../Utils/Utils';
 import {
   getArchitectWorkTypes,
   saveArchitectWorkTypes,
+  saveProject,
   signIn,
   updateUserType,
   verifyOtp,
@@ -171,6 +172,33 @@ export const saveArchitectWorkType = ({payload, onSuccess, onFailure}) => {
         })
         .catch(err => {
           console.log('error in save architect work type', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+      if (isFunction(onFailure)) {
+        onFailure();
+      }
+    }
+  };
+};
+
+export const saveArchitectProject = ({payload, onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      saveProject(JSON.stringify(payload))
+        .then(response => {
+          console.log('save project response', response);
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+          }
+        })
+        .catch(err => {
+          console.log('error in save project', err.response.data);
           if (isFunction(onFailure)) {
             onFailure();
           }

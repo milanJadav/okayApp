@@ -1,4 +1,4 @@
-import {extractData, userAuthFetch} from './server';
+import {extractData, userAuthFetch, userRawFetch} from './server';
 
 export const signIn = data =>
   userAuthFetch.post('/register', data).then(extractData);
@@ -13,4 +13,7 @@ export const getArchitectWorkTypes = data =>
   userAuthFetch.get('/viewworktype').then(extractData);
 
 export const saveArchitectWorkTypes = data =>
-  userAuthFetch.post('/saveworktype', data).then(extractData);
+  userRawFetch.post('/saveworktype', data).then(extractData);
+
+export const saveProject = data =>
+  userRawFetch.post('/saveproject', data).then(extractData);
