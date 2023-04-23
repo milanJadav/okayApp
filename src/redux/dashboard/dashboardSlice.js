@@ -15,7 +15,6 @@ export const dashboardSlice = createSlice({
     },
     onGetProjectsSuccess: (state, data) => {
       const {payload} = data;
-      console.log('in reducer', payload);
       state.projectsData = payload;
     },
   },

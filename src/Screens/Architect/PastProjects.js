@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {safeAreaStyle} from '../../Common/CommonStyles';
 import INavBar from '../Components/INavBar';
-import {agenciesList} from '../../Utils/Data';
+import {agenciesList, projectsData} from '../../Utils/Data';
 import HightBox from '../Components/HightBox';
 import ProjectCard from '../Components/ProjectCard';
 
@@ -18,7 +18,7 @@ const PastProjects = props => {
 
   //RENDER METHOD
   const renderItem = ({item}) => {
-    return <ProjectCard onPress={onCardPress} />;
+    return <ProjectCard onPress={onCardPress} data={item} />;
   };
 
   return (
@@ -27,9 +27,9 @@ const PastProjects = props => {
         <INavBar title="Selected agencies" onBackPress={onBackPress} />
         <HightBox height={27} />
         <FlatList
-          data={agenciesList}
+          data={projectsData}
           renderItem={renderItem}
-          keyExtractor={({id}) => id.toString()}
+          keyExtractor={({id}) => id?.toString()}
           style={{flex: 1}}
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <HightBox height={15} />}

@@ -33,7 +33,7 @@ export const getUserProjects = ({onSuccess, onFailure}) => {
     try {
       getProjects()
         .then(response => {
-          console.log('projects response---', response);
+          //   console.log('projects response---', response);
           if (response?.status == 200) {
             if (isFunction(onSuccess)) {
               onSuccess();

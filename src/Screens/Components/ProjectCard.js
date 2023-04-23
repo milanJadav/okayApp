@@ -7,7 +7,7 @@ import {IMAGES} from '../../Common/Constants/images';
 import {windowHeight} from '../../Utils/Dimentions';
 import HightBox from './HightBox';
 
-const ProjectCard = ({onPress = () => {}}) => {
+const ProjectCard = ({onPress = () => {}, data = {}}) => {
   return (
     <TouchableOpacity style={styles.container} onPress={() => onPress()}>
       <FastImage
@@ -16,7 +16,7 @@ const ProjectCard = ({onPress = () => {}}) => {
         resizeMode="cover"
       />
       <View style={{padding: 14}}>
-        <Text style={styles.title}>Rock and Roll Hall of Fame</Text>
+        <Text style={styles.title}>{data?.project_name || ''}</Text>
         <HightBox height={14} />
         <View style={styles.row}>
           <FastImage
@@ -26,9 +26,7 @@ const ProjectCard = ({onPress = () => {}}) => {
           />
 
           <View style={{width: '90%', marginLeft: 10}}>
-            <Text style={styles.address}>
-              106 - City plaza 2, near sciencity,sola, Ahmedabad - 9008
-            </Text>
+            <Text style={styles.address}>{data?.location || ''}</Text>
           </View>
         </View>
 
@@ -42,7 +40,9 @@ const ProjectCard = ({onPress = () => {}}) => {
           />
 
           <View style={{width: '90%', marginLeft: 10}}>
-            <Text style={styles.address}>Client: Mexon Menon</Text>
+            <Text style={styles.address}>
+              Client: {data?.client_name || ''}
+            </Text>
           </View>
         </View>
       </View>

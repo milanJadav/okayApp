@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   ImageBackground,
+  RefreshControl,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -19,13 +21,15 @@ import HightBox from '../Components/HightBox';
 import ISearchBar from '../Components/ISearchBar';
 import LocationNavBar from '../Components/LocationNavBar';
 import ProjectCard from '../Components/ProjectCard';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getUserProjects} from '../../redux/dashboard/dashboardActions';
 
 const Projects = props => {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
+
+  const projectData = useSelector(state => state.dashboard?.projectsData || []);
 
   useEffect(() => {
     setLoading(true);
@@ -49,8 +53,16 @@ const Projects = props => {
     props.navigation.navigate('ProjectDetail');
   };
 
+  const onRefresh = () => {
+    dispatch(getUserProjects({onSuccess, onFailure}));
+  };
+
+  const renderLoading = () => (
+    <ActivityIndicator size={'small'} color={COLORS.black} />
+  );
+
   const renderItem = ({item}) => {
-    return <ProjectCard onPress={onCardPress} />;
+    return <ProjectCard onPress={onCardPress} data={item} />;
   };
 
   return (
@@ -61,15 +73,26 @@ const Projects = props => {
         <ISearchBar />
         <HightBox height={25} />
 
-        <FlatList
-          data={agenciesList}
-          renderItem={renderItem}
-          keyExtractor={({id}) => id.toString()}
-          style={{flex: 1}}
-          showsVerticalScrollIndicator={false}
-          ItemSeparatorComponent={() => <HightBox height={15} />}
-          ListFooterComponent={() => <HightBox height={15} />}
-        />
+        {loading ? (
+          renderLoading()
+        ) : (
+          <FlatList
+            data={projectData}
+            renderItem={renderItem}
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                colors={[COLORS.black]}
+                onRefresh={() => onRefresh()}
+              />
+            }
+            keyExtractor={({id}) => id.toString()}
+            style={{flex: 1}}
+            showsVerticalScrollIndicator={false}
+            ItemSeparatorComponent={() => <HightBox height={15} />}
+            ListFooterComponent={() => <HightBox height={15} />}
+          />
+        )}
 
         <TouchableOpacity
           style={styles.actionButton}

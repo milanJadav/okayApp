@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {Platform, StyleSheet, Text, TextInput, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.textColor44,
     borderWidth: 1,
     borderRadius: 24,
-    paddingVertical: 15,
+    paddingVertical: Platform.OS == 'ios' ? 15 : 0,
     paddingHorizontal: 18,
     flexDirection: 'row',
     alignItems: 'center',
