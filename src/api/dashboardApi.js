@@ -5,3 +5,6 @@ export const getCategory = () =>
 
 export const getProjects = () =>
   userAuthFetch.get('/viewproject').then(extractData);
+
+export const searchCategory = text =>
+  userAuthFetch.post('/searchcategory', text).then(extractData);

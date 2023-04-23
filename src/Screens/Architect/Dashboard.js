@@ -18,16 +18,24 @@ import HightBox from '../Components/HightBox';
 import ISearchBar from '../Components/ISearchBar';
 import LocationNavBar from '../Components/LocationNavBar';
 import {useEffect} from 'react';
-import {getDashboardCategory} from '../../redux/dashboard/dashboardActions';
+import {
+  getDashboardCategory,
+  searchCategories,
+} from '../../redux/dashboard/dashboardActions';
 import {useDispatch, useSelector} from 'react-redux';
 import {ActivityIndicator} from 'react-native';
 
 const Dashboard = props => {
   const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState('');
 
   const dispatch = useDispatch();
   const categoryData = useSelector(
     state => state.dashboard?.categoryData || [],
+  );
+
+  const categorySearchData = useSelector(
+    state => state.dashboard?.categorySearchData || [],
   );
 
   useEffect(() => {
@@ -58,6 +66,12 @@ const Dashboard = props => {
     dispatch(getDashboardCategory({onSuccess, onFailure}));
   };
 
+  const onSearchTextChange = text => {
+    setSearchText(text);
+    setLoading(true);
+    dispatch(searchCategories({text, onSuccess, onFailure}));
+  };
+
   const renderLoading = () => (
     <ActivityIndicator size={'small'} color={COLORS.black} />
   );
@@ -82,13 +96,16 @@ const Dashboard = props => {
       <View style={{paddingHorizontal: 20, flex: 1}}>
         <LocationNavBar />
         <HightBox height={25} />
-        <ISearchBar />
+        <ISearchBar
+          value={searchText}
+          onChangeText={text => onSearchTextChange(text)}
+        />
         <HightBox height={25} />
         <Text style={styles.titleText}>Choose your services</Text>
         <HightBox height={20} />
         {loading ? (
           renderLoading()
-        ) : (
+        ) : !searchText ? (
           <FlatList
             data={categoryData}
             renderItem={renderItem}
@@ -99,6 +116,15 @@ const Dashboard = props => {
                 onRefresh={() => onRefresh()}
               />
             }
+            keyExtractor={({id}) => id.toString()}
+            numColumns={2}
+            style={{flex: 1}}
+            ListEmptyComponent={() => ListEmptyComponent()}
+          />
+        ) : (
+          <FlatList
+            data={categorySearchData}
+            renderItem={renderItem}
             keyExtractor={({id}) => id.toString()}
             numColumns={2}
             style={{flex: 1}}

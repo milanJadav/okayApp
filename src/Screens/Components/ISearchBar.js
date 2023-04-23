@@ -5,7 +5,7 @@ import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
 
-const ISearchBar = () => {
+const ISearchBar = ({value, onChangeText = () => {}}) => {
   return (
     <View style={styles.container}>
       <FastImage
@@ -15,6 +15,8 @@ const ISearchBar = () => {
       />
 
       <TextInput
+        value={value}
+        onChangeText={text => onChangeText(text)}
         style={styles.inputStyle}
         placeholder={'Search here'}
         placeholderTextColor={COLORS.textColor44}
