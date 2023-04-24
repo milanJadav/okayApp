@@ -72,9 +72,11 @@ const CustomerProjectType = props => {
       }
     });
 
-    dispatch(
-      saveCustomerWorkType({payload, onSuccess: onSaveWorktype, onFailure}),
-    );
+    // TODO: uncomment this code to save work type
+    // dispatch(
+    //   saveCustomerWorkType({payload, onSuccess: onSaveWorktype, onFailure}),
+    // );
+    props.navigation.replace('CustomerBottomTab');
   };
 
   const onSaveWorktype = () => {

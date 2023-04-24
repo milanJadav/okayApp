@@ -18,7 +18,9 @@ const Splash = props => {
                 initialRoute: 'ArchitectBottomTab',
               });
             } else if (userType == 'Customer') {
-              props.navigation.replace('CustomerStack');
+              props.navigation.replace('CustomerStack', {
+                initialRoute: 'CustomerBottomTab',
+              });
             }
           } else {
             props.navigation.replace('AuthStack');
