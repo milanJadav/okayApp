@@ -72,7 +72,7 @@ const CreateProject = props => {
 
   const onSuccess = () => {
     setLoading(false);
-    props.navigation.navigate('ArchitectBottomTab');
+    props.navigation.replace('ArchitectBottomTab');
   };
 
   const onFailure = () => {
@@ -235,7 +235,8 @@ const CreateProject = props => {
           <HightBox height={10} />
           {showSkipBtn && (
             <Text
-              style={[styles.uploadText, {textAlign: 'center', fontSize: 16}]}>
+              style={[styles.uploadText, {textAlign: 'center', fontSize: 16}]}
+              onPress={() => props.navigation.replace('ArchitectBottomTab')}>
               Skip for now
             </Text>
           )}

@@ -38,7 +38,8 @@ const Login = props => {
     }
   };
 
-  const onSuccess = () => {
+  const onSuccess = data => {
+    alert(data.otp);
     setLoading(false);
     props.navigation.navigate('OTP_Verify', {mobileNum});
   };

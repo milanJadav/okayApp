@@ -1,9 +1,15 @@
-import {getArchitectWorkTypesSuccess, onLogin} from '.';
+import {
+  getArchitectWorkTypesSuccess,
+  getCustomerWorkTypesSuccess,
+  onLogin,
+} from '.';
 import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 import {isFunction} from '../../Utils/Utils';
 import {
   getArchitectWorkTypes,
+  getCustomerWorkTypes,
   saveArchitectWorkTypes,
+  saveCustomerWorkTypes,
   saveProject,
   signIn,
   updateUserType,
@@ -18,10 +24,9 @@ export const LogUserIn = ({mobileNum, onSuccess, onFailure}) => {
 
       signIn(formdata)
         .then(response => {
-          console.log('login response---', response);
           if (response?.status == 200) {
             if (isFunction(onSuccess)) {
-              onSuccess();
+              onSuccess(response);
             }
             dispatch(onLogin(response));
           }
@@ -199,6 +204,66 @@ export const saveArchitectProject = ({payload, onSuccess, onFailure}) => {
         })
         .catch(err => {
           console.log('error in save project', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+      if (isFunction(onFailure)) {
+        onFailure();
+      }
+    }
+  };
+};
+
+export const getCustomerWorkType = ({onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      getCustomerWorkTypes()
+        .then(response => {
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+            if (response?.data) {
+              var updatedArr = response.data.map((item, index) => {
+                if (index == 0) {
+                  return {...item, selected: true};
+                } else {
+                  return {...item, selected: false};
+                }
+              });
+            }
+            dispatch(getCustomerWorkTypesSuccess(updatedArr || []));
+          }
+        })
+        .catch(err => {
+          console.log('error in get customer work type', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+    }
+  };
+};
+
+export const saveCustomerWorkType = ({payload, onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      saveCustomerWorkTypes(payload)
+        .then(response => {
+          console.log('save cust work type', response);
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+          }
+        })
+        .catch(err => {
+          console.log('error in save customer work type', err.response.data);
           if (isFunction(onFailure)) {
             onFailure();
           }

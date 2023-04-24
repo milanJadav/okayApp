@@ -32,4 +32,6 @@ export const IMAGES = {
   IC_PROFILE_DOTS: require('../../assets/images/profileBG.png'),
   FILLED_CHECKBOX: require('../../assets/images/FilledCheckbox.png'),
   UNFILLED_CHECKBOX: require('../../assets/images/UnFilledCheckbox.png'),
+  FILLED_RADIO: require('../../assets/images/selectedRadio.png'),
+  UNFILLED_RADIO: require('../../assets/images/unselectRadio.png'),
 };

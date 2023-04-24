@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,6 +14,11 @@ import {IMAGES} from '../../Common/Constants/images';
 import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getCustomerWorkType,
+  saveCustomerWorkType,
+} from '../../redux/auth/authActions';
 
 var types = [
   {
@@ -29,7 +34,25 @@ var types = [
 ];
 
 const CustomerProjectType = props => {
-  const [type, setType] = useState(types);
+  const [type, setType] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch();
+  const customerTypes = useSelector(
+    state => state.auth?.customerWorkType || [],
+  );
+
+  useEffect(() => {
+    dispatch(getCustomerWorkType({onSuccess, onFailure}));
+  }, []);
+
+  const onSuccess = () => {
+    setLoading(false);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
 
   //CLICK EVENTS
   const onBackPress = () => {
@@ -37,13 +60,34 @@ const CustomerProjectType = props => {
   };
 
   const onContinue = () => {
-    // props.navigation.navigate('CreateProject');
+    setLoading(true);
+    const payload = [];
+
+    customerTypes.forEach(element => {
+      if (element.selected) {
+        payload.push({
+          id: element.id,
+          work_type_name: element.work_type_name,
+        });
+      }
+    });
+
+    dispatch(
+      saveCustomerWorkType({payload, onSuccess: onSaveWorktype, onFailure}),
+    );
+  };
+
+  const onSaveWorktype = () => {
+    setLoading(false);
+    // props.navigation.replace('');
   };
 
   const onTypePress = async text => {
-    const type = types.map(data => {
-      if (data.title == text) {
-        data.selected = !data.selected;
+    const type = customerTypes.map(data => {
+      if (data.work_type_name == text) {
+        data.selected = true;
+      } else {
+        data.selected = false;
       }
       return data;
     });
@@ -55,26 +99,30 @@ const CustomerProjectType = props => {
   const RenderItem = ({item}) => {
     return (
       <TouchableOpacity
+        activeOpacity={0.9}
         style={{
           ...styles.boxContainer,
-          //   backgroundColor: item.selected ? COLORS.pr_blue : COLORS.white,
         }}
-        onPress={() => onTypePress(item.title)}>
-        {/* {item.selected && (
+        onPress={() => onTypePress(item.work_type_name)}>
+        {item.selected ? (
           <FastImage
-            source={IMAGES.IC_CHECK}
-            style={{height: 16, width: 16, marginRight: 6}}
+            source={IMAGES.FILLED_RADIO}
+            style={{height: 16, width: 16, marginRight: 12}}
             resizeMode="contain"
           />
-        )} */}
+        ) : (
+          <FastImage
+            source={IMAGES.UNFILLED_RADIO}
+            style={{height: 16, width: 16, marginRight: 12}}
+            resizeMode="contain"
+          />
+        )}
         <Text
-          style={
-            {
-              // ...styles.boxText,
-              // color: item.selected ? COLORS.white : COLORS.textColor,
-            }
-          }>
-          {item.title}
+          style={{
+            ...styles.boxText,
+            // color: item.selected ? COLORS.white : COLORS.textColor,
+          }}>
+          {item.work_type_name}
         </Text>
       </TouchableOpacity>
     );
@@ -91,7 +139,7 @@ const CustomerProjectType = props => {
           <HightBox height={27} />
 
           <View style={{}}>
-            {type.map(data => {
+            {customerTypes.map(data => {
               return <RenderItem key={data.id} item={data} />;
             })}
           </View>
@@ -99,7 +147,11 @@ const CustomerProjectType = props => {
 
         <View style={styles.bottomContainer}>
           <View style={{marginTop: 30}}>
-            <IButton title={'Continue'} onPress={onContinue} />
+            <IButton
+              title={'Continue'}
+              onPress={onContinue}
+              loading={loading}
+            />
           </View>
         </View>
       </View>
@@ -127,7 +179,7 @@ const styles = StyleSheet.create({
     // marginRight: 8,
     marginBottom: 10,
     // paddingTop: 25,
-    // alignItems: 'center',
+    alignItems: 'center',
     // justifyContent: 'center',/
     borderRadius: 8,
     shadowOffset: {
@@ -138,7 +190,7 @@ const styles = StyleSheet.create({
   },
   boxText: {
     fontFamily: FONTS.OUTFIT_REGULAR,
-    fontSize: 14,
+    fontSize: 16,
     color: COLORS.textColor,
     textAlign: 'center',
     // lineHeight: 18,

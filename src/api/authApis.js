@@ -17,3 +17,9 @@ export const saveArchitectWorkTypes = data =>
 
 export const saveProject = data =>
   userRawFetch.post('/saveproject', data).then(extractData);
+
+export const getCustomerWorkTypes = data =>
+  userAuthFetch.get('/viewcustomerworktype').then(extractData);
+
+export const saveCustomerWorkTypes = data =>
+  userRawFetch.post('/savecustomerworktype', data).then(extractData);

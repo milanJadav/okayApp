@@ -10,7 +10,7 @@ import Projects from '../Screens/Architect/Projects';
 import Profile from '../Screens/Architect/Profile';
 import FastImage from 'react-native-fast-image';
 import {IMAGES} from '../Common/Constants/images';
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import {FONTS} from '../Common/Constants/fonts';
 import ArchitectSelectCategory from '../Screens/Architect/ArchitectSelectCategory';
 import AgencyList from '../Screens/Architect/AgencyList';
@@ -58,7 +58,7 @@ const ArchitectBottomTab = () => {
         tabBarActiveTintColor: COLORS.pr_blue,
         tabBarStyle: {
           // position: 'absolute',
-          // height: 100,
+          height: '8%',
           backgroundColor: COLORS.white,
         },
         tabBarHideOnKeyboard: true,
@@ -144,7 +144,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    paddingTop: 15,
+    flex: 1,
+    // paddingTop: 15,
+    // paddingBottom: Platform.OS == 'android' ? 15 : 0,
   },
 
   textStyle: {
