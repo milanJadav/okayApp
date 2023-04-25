@@ -36,7 +36,9 @@ const AgencyCard = ({onViewAgency = () => {}, onChooseAgency = () => {}}) => {
           <TouchableOpacity
             style={[styles.filledBtn]}
             onPress={() => onChooseAgency()}>
-            <Text style={styles.btnText}>{'Choose this'}</Text>
+            <Text style={styles.btnText} numberOfLines={1}>
+              {'Choose this'}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -119,19 +121,21 @@ const styles = StyleSheet.create({
   },
   filledBtn: {
     backgroundColor: COLORS.pr_blue,
-    height: 35,
+    // height: 35,
+    width: '55%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
-    paddingHorizontal: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
   },
   unfilledBtn: {
     backgroundColor: COLORS.white,
-    height: 35,
+    width: '40%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
-    paddingHorizontal: 15,
+    paddingHorizontal: 5,
     borderColor: COLORS.pr_blue,
     borderWidth: 1,
     flexDirection: 'row',

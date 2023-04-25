@@ -32,10 +32,12 @@ export const getDashboardCategory = ({onSuccess, onFailure}) => {
   };
 };
 
-export const getUserProjects = ({onSuccess, onFailure}) => {
+export const getUserProjects = ({status = 0, onSuccess, onFailure}) => {
   return async dispatch => {
     try {
-      getProjects()
+      var formdata = new FormData();
+      formdata.append('status', status);
+      getProjects(formdata)
         .then(response => {
           //   console.log('projects response---', response);
           if (response?.status == 200) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {COLORS} from '../../Common/Constants/colors';
 import {IMAGES} from '../../Common/Constants/images';
@@ -20,6 +20,7 @@ export default IBackButton;
 
 const styles = StyleSheet.create({
   container: {
+    // marginTop: Platform.OS == 'android' ? 10 : 0,
     padding: 7,
     backgroundColor: COLORS.textColor14,
     width: 38,

@@ -1,3 +1,6 @@
+// [9:30 PM, 4/25/2023] F. Mohil: Status 0 means - Past project
+// [9:30 PM, 4/25/2023] F. Mohil: and status 1 means ongoing project
+
 export const dashboadData = [
   {
     id: 1,

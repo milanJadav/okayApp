@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
 import {windowWidth} from '../../Utils/Dimentions';
@@ -21,6 +21,7 @@ export default INavBar;
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: Platform.OS == 'android' ? 10 : 0,
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',

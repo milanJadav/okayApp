@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
@@ -34,6 +34,7 @@ export default LocationNavBar;
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: Platform.OS == 'android' ? 10 : 0,
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',

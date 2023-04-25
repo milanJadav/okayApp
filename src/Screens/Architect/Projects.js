@@ -33,7 +33,7 @@ const Projects = props => {
 
   useEffect(() => {
     setLoading(true);
-    dispatch(getUserProjects({onSuccess, onFailure}));
+    dispatch(getUserProjects({status: 1, onSuccess, onFailure}));
   }, []);
 
   const onSuccess = () => {
@@ -54,7 +54,7 @@ const Projects = props => {
   };
 
   const onRefresh = () => {
-    dispatch(getUserProjects({onSuccess, onFailure}));
+    dispatch(getUserProjects({status: 1, onSuccess, onFailure}));
   };
 
   const renderLoading = () => (

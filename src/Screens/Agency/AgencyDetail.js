@@ -80,7 +80,7 @@ const AgencyDetail = () => {
             </Text>
           </View>
         </View>
-        <HightBox height={50} />
+        <HightBox height={'10%'} />
         <View style={styles.agencyRow}>
           <TouchableOpacity style={[styles.filledBtn]}>
             <FastImage
