@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -13,7 +13,9 @@ import {FONTS} from '../../Common/Constants/fonts';
 import {COLORS} from '../../Common/Constants/colors';
 import HightBox from '../Components/HightBox';
 import {IMAGES} from '../../Common/Constants/images';
-import {localStorageHelper} from '../../Common/localStorageHelper';
+import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
+import {useDispatch, useSelector} from 'react-redux';
+import {getProfileData} from '../../redux/profile/profileActions';
 
 const profileData = [
   {
@@ -43,9 +45,35 @@ const profileData = [
 ];
 
 const Profile = props => {
+  const [loading, setLoading] = useState(false);
+  const [userType, setUserType] = useState('');
+  const dispatch = useDispatch();
+
+  const userProfileData = useSelector(
+    state => state.profile?.profileData || {},
+  );
+
+  useEffect(() => {
+    setLoading(true);
+    dispatch(getProfileData({onSuccess, onFailure}));
+
+    localStorageHelper
+      .getItemFromStorage(StorageKeys.USER_TYPE)
+      .then(async type => {
+        setUserType(type);
+      });
+  }, []);
+
+  const onSuccess = () => {
+    setLoading(false);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
   //CLICK EVENTS
   const onEditProfile = () => {
-    props.navigation.navigate('EditProfile');
+    props.navigation.navigate('EditProfile', {userProfileData});
   };
 
   const onLogout = () => {
@@ -85,10 +113,10 @@ const Profile = props => {
         />
         <View style={{...styles.rightContainer, marginLeft: 12}}>
           <Text style={styles.title} numberOfLines={1}>
-            Alexian Menoin
+            {userProfileData?.full_name || 'Name'}
           </Text>
           <Text style={styles.subTitle} numberOfLines={1}>
-            Architect / Interior
+            {userType || 'Architect / Interior'}
           </Text>
         </View>
         <View>
