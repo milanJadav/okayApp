@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   ImageBackground,
   Platform,
@@ -21,8 +22,33 @@ import AgencyTypeCard from '../Components/AgencyTypeCard';
 import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import ProgressBar from '../Components/ProgressBar';
+import {useDispatch, useSelector} from 'react-redux';
+import {getUserProjectDetail} from '../../redux/dashboard/dashboardActions';
 
 const ProjectDetail = props => {
+  const {projectId} = props.route.params || {};
+
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const projectDetail = useSelector(
+    state => state.dashboard?.projectDetail || {},
+  );
+
+  useEffect(() => {
+    setLoading(true);
+    dispatch(getUserProjectDetail({projectId, onSuccess, onFailure}));
+  }, []);
+
+  const onSuccess = () => {
+    setLoading(false);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
+
   //CLICK EVENTS
   const onBackPress = () => {
     props.navigation.goBack();
@@ -53,87 +79,102 @@ const ProjectDetail = props => {
     );
   };
 
+  const renderLoading = () => (
+    <ActivityIndicator size={'small'} color={COLORS.black} />
+  );
+
   return (
     <SafeAreaView edges={['bottom']} style={safeAreaStyle}>
-      <KeyboardAwareScrollView style={{flex: 1}}>
-        <View
-          style={{
-            flex: 0.53,
-          }}>
-          <ImageBackground
-            source={require('../../assets/temp/agencyDetail.png')}
-            style={styles.topImg}
-            imageStyle={{
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-            }}
-            resizeMode="cover">
-            <IBackButton onPress={onBackPress} />
-          </ImageBackground>
+      {loading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          {renderLoading()}
         </View>
-        <HightBox height={25} />
-        <View style={{paddingHorizontal: 20, flex: 0.47}}>
-          <Text style={styles.agencyName} numberOfLines={1}>
-            Rock and Roll Hall of Fame
-          </Text>
-
-          <HightBox height={16} />
-
-          <View style={styles.ratingRow}>
-            <FastImage
-              source={IMAGES.IC_USER}
-              style={{height: 16, width: 16}}
-              resizeMode="contain"
-            />
-
-            <View style={{width: '90%', marginLeft: 10}}>
-              <Text style={styles.clientName}>Client: Mexon Menon</Text>
-            </View>
+      ) : (
+        <KeyboardAwareScrollView style={{flex: 1}}>
+          <View
+            style={{
+              flex: 0.53,
+            }}>
+            <ImageBackground
+              source={require('../../assets/temp/agencyDetail.png')}
+              style={styles.topImg}
+              imageStyle={{
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
+              }}
+              resizeMode="cover">
+              <IBackButton onPress={onBackPress} />
+            </ImageBackground>
           </View>
+          <HightBox height={25} />
+          <View style={{paddingHorizontal: 20, flex: 0.47}}>
+            <Text style={styles.agencyName} numberOfLines={1}>
+              {projectDetail?.project_name}
+            </Text>
 
-          <View style={styles.border} />
-          <Text style={[styles.agencyName, {fontSize: 18}]} numberOfLines={1}>
-            Location
-          </Text>
-          <HightBox height={15} />
-          <View style={styles.ratingRow}>
-            <View style={styles.locationRound}>
+            <HightBox height={16} />
+
+            <View style={styles.ratingRow}>
               <FastImage
-                source={IMAGES.IC_LOCATION}
-                style={{height: 24, width: 24}}
+                source={IMAGES.IC_USER}
+                style={{height: 16, width: 16}}
                 resizeMode="contain"
-                tintColor={COLORS.orange}
+              />
+
+              <View style={{width: '90%', marginLeft: 10}}>
+                <Text style={styles.clientName}>
+                  Client: {projectDetail?.client_name}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.border} />
+            <Text style={[styles.agencyName, {fontSize: 18}]} numberOfLines={1}>
+              Location
+            </Text>
+            <HightBox height={15} />
+            <View style={styles.ratingRow}>
+              <View style={styles.locationRound}>
+                <FastImage
+                  source={IMAGES.IC_LOCATION}
+                  style={{height: 24, width: 24}}
+                  resizeMode="contain"
+                  tintColor={COLORS.orange}
+                />
+              </View>
+              <View style={{width: '70%', marginLeft: 10}}>
+                <Text style={styles.address}>
+                  {projectDetail?.location}
+                  {/* 106 - City plaza 2, near sciencity,sola, Ahmedabad - 9008 */}
+                </Text>
+              </View>
+            </View>
+            <HightBox height={20} />
+
+            <Text style={[styles.agencyName, {fontSize: 18}]} numberOfLines={1}>
+              Progress
+            </Text>
+            <View style={{marginVertical: 10}}>
+              <ProgressBar
+                height={10}
+                backgroundColor={'rgba(0, 100, 229, 0.12)'}
+                completedColor={COLORS.pr_blue}
+                percentage={`${projectDetail?.progress}%`}
               />
             </View>
-            <View style={{width: '70%', marginLeft: 10}}>
-              <Text style={styles.address}>
-                106 - City plaza 2, near sciencity,sola, Ahmedabad - 9008
-              </Text>
-            </View>
-          </View>
-          <HightBox height={20} />
+            <Text style={styles.progressText}>
+              {projectDetail?.progress}% Completed
+            </Text>
+            <View style={styles.border} />
 
-          <Text style={[styles.agencyName, {fontSize: 18}]} numberOfLines={1}>
-            Progress
-          </Text>
-          <View style={{marginVertical: 10}}>
-            <ProgressBar
-              height={10}
-              backgroundColor={'rgba(0, 100, 229, 0.12)'}
-              completedColor={COLORS.pr_blue}
-              percentage={'33%'}
-            />
+            {/* Agency View */}
+            <Text style={[styles.agencyName, {fontSize: 18}]} numberOfLines={1}>
+              Assigned agencies
+            </Text>
+            {renderAgencies()}
           </View>
-          <Text style={styles.progressText}>33% Completed</Text>
-          <View style={styles.border} />
-
-          {/* Agency View */}
-          <Text style={[styles.agencyName, {fontSize: 18}]} numberOfLines={1}>
-            Assigned agencies
-          </Text>
-          {renderAgencies()}
-        </View>
-      </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView>
+      )}
     </SafeAreaView>
   );
 };

@@ -50,8 +50,8 @@ const Dashboard = props => {
     setLoading(false);
   };
 
-  const onCategoryClick = ({title}) => {
-    props.navigation.navigate('ArchitectSelectCategory', {title});
+  const onCategoryClick = ({item}) => {
+    props.navigation.navigate('ArchitectSelectCategory', {item});
   };
 
   const ListEmptyComponent = () => {
@@ -80,7 +80,7 @@ const Dashboard = props => {
     return (
       <TouchableOpacity
         style={{...styles.boxContainer}}
-        onPress={() => onCategoryClick({title: item.title})}>
+        onPress={() => onCategoryClick({item})}>
         <ImageBackground
           source={item?.img || require('../../assets/temp/tempCarpenter.png')}
           style={styles.imgBackGround}

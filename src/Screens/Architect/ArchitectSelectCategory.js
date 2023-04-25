@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   SafeAreaView,
   StyleSheet,
@@ -19,9 +20,32 @@ import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
 import INavBar from '../Components/INavBar';
+import {useDispatch, useSelector} from 'react-redux';
+import {getSubCategory} from '../../redux/dashboard/dashboardActions';
 
 const ArchitectSelectCategory = props => {
-  const title = props.route?.params?.title;
+  const {item} = props.route?.params || {};
+
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const subCategoryData = useSelector(
+    state => state.dashboard?.subCategoryData || [],
+  );
+
+  useEffect(() => {
+    setLoading(true);
+    dispatch(getSubCategory({categoryId: item?.id, onSuccess, onFailure}));
+  }, []);
+
+  const onSuccess = () => {
+    setLoading(false);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
 
   //CLICK EVENTS
   const onBackPress = () => {
@@ -40,6 +64,18 @@ const ArchitectSelectCategory = props => {
     props.navigation.navigate('SelectProjects');
   };
 
+  const renderLoading = () => (
+    <ActivityIndicator size={'small'} color={COLORS.black} />
+  );
+
+  const ListEmptyComponent = () => {
+    return (
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={styles.headerText}>No Data Available.</Text>
+      </View>
+    );
+  };
+
   //RENDER METHODS
   const renderCategoryItem = ({item}) => {
     return (
@@ -47,14 +83,14 @@ const ArchitectSelectCategory = props => {
         style={styles.boxContainer}
         onPress={() => onCategoryPress(item.title)}>
         <FastImage
-          source={item.img}
+          source={require('../../assets/temp/wooden.png')}
           style={{height: 60, width: 60, borderRadius: 50}}
           resizeMode="contain"
         />
         {/* </View> */}
         <HightBox height={10} />
         <Text style={styles.boxText} numberOfLines={2}>
-          {item.title}
+          {item?.subcategory_name}
         </Text>
       </TouchableOpacity>
     );
@@ -71,10 +107,11 @@ const ArchitectSelectCategory = props => {
       <>
         <HightBox height={20} />
         <FlatList
-          data={categoryData}
+          data={subCategoryData}
           renderItem={renderCategoryItem}
           keyExtractor={({id}) => id.toString()}
           numColumns={3}
+          ListEmptyComponent={() => ListEmptyComponent()}
           showsVerticalScrollIndicator={false}
           //   style={{flex: 0.4}}
         />
@@ -97,14 +134,19 @@ const ArchitectSelectCategory = props => {
   return (
     <SafeAreaView style={safeAreaStyle}>
       <View style={{paddingHorizontal: 20, flex: 1}}>
-        <INavBar onBackPress={onBackPress} title={title} />
+        <INavBar onBackPress={onBackPress} title={item?.category_name} />
         <HightBox height={25} />
-        <Text style={styles.headerText}>Select category</Text>
-        <View style={{}}>{renderCategories()}</View>
-        <HightBox height={20} />
-        <Text style={styles.headerText}>Top agencies for you</Text>
-        <HightBox height={20} />
-        {renderAgencies()}
+        {loading && renderLoading()}
+        {!loading && (
+          <>
+            <Text style={styles.headerText}>Select category</Text>
+            <View style={{}}>{renderCategories()}</View>
+            <HightBox height={20} />
+            <Text style={styles.headerText}>Top agencies for you</Text>
+            <HightBox height={20} />
+            {renderAgencies()}
+          </>
+        )}
       </View>
     </SafeAreaView>
   );

@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     flex: 1,
-    paddingTop: Platform.OS == 'android' ? 0 : '10%',
+    paddingTop: Platform.OS == 'android' ? 0 : '12%',
     // paddingBottom: Platform.OS == 'android' ? 15 : 0,
   },
 

@@ -9,7 +9,7 @@ import HightBox from './HightBox';
 
 const ProjectCard = ({onPress = () => {}, data = {}}) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => onPress()}>
+    <TouchableOpacity style={styles.container} onPress={() => onPress(data)}>
       <FastImage
         source={require('../../assets/temp/agencyPic.png')}
         style={styles.img}

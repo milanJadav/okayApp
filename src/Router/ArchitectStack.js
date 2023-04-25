@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     // paddingTop: 15,
-    // paddingBottom: Platform.OS == 'android' ? 15 : 0,
+    paddingTop: Platform.OS == 'android' ? 0 : '12%',
   },
 
   textStyle: {

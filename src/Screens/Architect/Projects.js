@@ -49,8 +49,8 @@ const Projects = props => {
     props.navigation.navigate('CreateProject');
   };
 
-  const onCardPress = () => {
-    props.navigation.navigate('ProjectDetail');
+  const onCardPress = data => {
+    props.navigation.navigate('ProjectDetail', {projectId: data?.id});
   };
 
   const onRefresh = () => {

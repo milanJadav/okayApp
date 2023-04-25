@@ -1,10 +1,18 @@
 import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 import {isFunction} from '../../Utils/Utils';
-import {getCategory, getProjects, searchCategory} from '../../api/dashboardApi';
+import {
+  getCategory,
+  getProjectDetails,
+  getProjects,
+  getSubCategorys,
+  searchCategory,
+} from '../../api/dashboardApi';
 import {
   onCategorySuccess,
+  onGetProjectDetailSuccess,
   onGetProjectsSuccess,
   onSearchCategorySuccess,
+  onSubCategorySuccess,
 } from './dashboardSlice';
 
 export const getDashboardCategory = ({onSuccess, onFailure}) => {
@@ -59,6 +67,37 @@ export const getUserProjects = ({status = 0, onSuccess, onFailure}) => {
   };
 };
 
+export const getUserProjectDetail = ({
+  projectId = null,
+  onSuccess,
+  onFailure,
+}) => {
+  return async dispatch => {
+    try {
+      var formdata = new FormData();
+      formdata.append('project_id', projectId);
+      getProjectDetails(formdata)
+        .then(response => {
+          //   console.log('projects response---', response);
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+            dispatch(onGetProjectDetailSuccess(response?.data));
+          }
+        })
+        .catch(err => {
+          console.log('error in get project detail---', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+    }
+  };
+};
+
 export const searchCategories = ({text, onSuccess, onFailure}) => {
   return async dispatch => {
     var formdata = new FormData();
@@ -78,5 +117,32 @@ export const searchCategories = ({text, onSuccess, onFailure}) => {
           onFailure();
         }
       });
+  };
+};
+
+export const getSubCategory = ({categoryId = null, onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      var formdata = new FormData();
+      formdata.append('category_id', categoryId);
+      getSubCategorys(formdata)
+        .then(response => {
+          //   console.log('projects response---', response);
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+            dispatch(onSubCategorySuccess(response?.data));
+          }
+        })
+        .catch(err => {
+          console.log('error in get sub category---', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+    }
   };
 };
