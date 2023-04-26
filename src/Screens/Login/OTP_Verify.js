@@ -61,7 +61,12 @@ const OTP_Verify = props => {
           initialRoute: 'ArchitectBottomTab',
         });
       } else if (data?.user_type_name == 'Customer') {
-        props.navigation.replace('CustomerStack');
+        props.navigation.replace('CustomerStack', {
+          initialRoute: 'CustomerBottomTab',
+        });
+      } else if (data?.user_type_name == 'Agency') {
+        props.navigation.replace('AgencyStack');
+        //Initial Route name add
       }
     } else {
       props.navigation.navigate('RoleSelection');

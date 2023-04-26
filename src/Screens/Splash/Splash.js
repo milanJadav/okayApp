@@ -21,6 +21,9 @@ const Splash = props => {
               props.navigation.replace('CustomerStack', {
                 initialRoute: 'CustomerBottomTab',
               });
+            } else if (userType == 'Agency') {
+              // Add check for if already purchased plan
+              props.navigation.replace('AgencyStack');
             }
           } else {
             props.navigation.replace('AuthStack');

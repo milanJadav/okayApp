@@ -1,6 +1,15 @@
 export const IMAGES = {
   //Onboarding image
   IC_ONBOARDING_TOP: require('../../assets/images/onboardingTop.png'),
+  //Agency Purchase Plan
+  PAYMENT_1: require('../../assets/images/payment1.png'),
+  PAYMENT_2: require('../../assets/images/payment2.png'),
+  PAYMENT_3: require('../../assets/images/payment3.png'),
+
+  DIAMOND_1: require('../../assets/images/diamond1.png'),
+  DIAMOND_2: require('../../assets/images/diamond2.png'),
+  DIAMOND_3: require('../../assets/images/diamond3.png'),
+
   //ICONS
   IC_ARROW_RIGHT: require('../../assets/images/arrow_right.png'),
   IC_ARROW_LEFT: require('../../assets/images/arrow_left.png'),
@@ -34,4 +43,5 @@ export const IMAGES = {
   UNFILLED_CHECKBOX: require('../../assets/images/UnFilledCheckbox.png'),
   FILLED_RADIO: require('../../assets/images/selectedRadio.png'),
   UNFILLED_RADIO: require('../../assets/images/unselectRadio.png'),
+  AGENCY_GRP: require('../../assets/images/agecyGrp.png'),
 };

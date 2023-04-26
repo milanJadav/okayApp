@@ -69,6 +69,8 @@ const RoleSelection = props => {
       props.navigation.replace('ArchitectStack');
     } else if (roleName == 'Customer') {
       props.navigation.replace('CustomerStack');
+    } else if (roleName == 'Agency') {
+      props.navigation.replace('AgencyStack');
     }
   };
 

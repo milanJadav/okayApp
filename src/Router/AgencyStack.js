@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import CustomerProjectType from '../Screens/Customer/CustomerProjectType';
 import {FONTS} from '../Common/Constants/fonts';
 import {COLORS} from '../Common/Constants/colors';
 import FastImage from 'react-native-fast-image';
@@ -9,13 +8,7 @@ import Dashboard from '../Screens/Architect/Dashboard';
 import Profile from '../Screens/Architect/Profile';
 import {IMAGES} from '../Common/Constants/images';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import ArchitectSelectCategory from '../Screens/Architect/ArchitectSelectCategory';
-import AgencyList from '../Screens/Architect/AgencyList';
-import AgencyDetail from '../Screens/Agency/AgencyDetail';
-import EditProfile from '../Screens/Architect/EditProfile';
-import AccountDelete from '../Screens/Architect/AccountDelete';
-import SelectedAgencies from '../Screens/Agency/SelectedAgencies';
-import PastProjects from '../Screens/Architect/PastProjects';
+import PurchasePlan from '../Screens/Agency/PurchasePlan';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -45,7 +38,7 @@ const TabButton = ({img, color, text, focused}) => {
   );
 };
 
-const CustomerBottomTab = () => {
+const AgencyBottomTab = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -93,27 +86,14 @@ const CustomerBottomTab = () => {
   );
 };
 
-const CustomerStack = props => {
+const AgencyStack = props => {
   const {initialRoute} = props.route.params || {};
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName={initialRoute ? initialRoute : 'CustomerProjectType'}>
-      <Stack.Screen
-        name="CustomerProjectType"
-        component={CustomerProjectType}
-      />
-      <Stack.Screen name="CustomerBottomTab" component={CustomerBottomTab} />
-      <Stack.Screen
-        name="ArchitectSelectCategory"
-        component={ArchitectSelectCategory}
-      />
-      <Stack.Screen name="AgencyList" component={AgencyList} />
-      <Stack.Screen name="AgencyDetail" component={AgencyDetail} />
-      <Stack.Screen name="EditProfile" component={EditProfile} />
-      <Stack.Screen name="AccountDelete" component={AccountDelete} />
-      <Stack.Screen name="SelectedAgencies" component={SelectedAgencies} />
-      <Stack.Screen name="PastProjects" component={PastProjects} />
+      initialRouteName={initialRoute ? initialRoute : 'ArchitectProjectType'}>
+      <Stack.Screen name="PurchasePlan" component={PurchasePlan} />
+      <Stack.Screen name="AgencyBottomTab" component={AgencyBottomTab} />
     </Stack.Navigator>
   );
 };
@@ -134,4 +114,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
-export default CustomerStack;
+export default AgencyStack;
