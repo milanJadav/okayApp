@@ -9,6 +9,7 @@ import {
 } from '../../api/dashboardApi';
 import {
   onCategorySuccess,
+  onGetPastProjectsSuccess,
   onGetProjectDetailSuccess,
   onGetProjectsSuccess,
   onSearchCategorySuccess,
@@ -52,7 +53,11 @@ export const getUserProjects = ({status = 0, onSuccess, onFailure}) => {
             if (isFunction(onSuccess)) {
               onSuccess();
             }
-            dispatch(onGetProjectsSuccess(response?.data));
+            if (status == 1) {
+              dispatch(onGetProjectsSuccess(response?.data));
+            } else {
+              dispatch(onGetPastProjectsSuccess(response?.data));
+            }
           }
         })
         .catch(err => {
