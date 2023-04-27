@@ -163,8 +163,8 @@ const PurchasePlan = props => {
         <View style={styles.bottomContainer}>
           <View style={{marginVertical: 30}}>
             <IButton
-              title={'Continue'}
-              onPress={null}
+              title={'Make a payment'}
+              onPress={() => props.navigation.navigate('Documents')}
               // loading={loading}
             />
           </View>

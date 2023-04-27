@@ -44,4 +44,7 @@ export const IMAGES = {
   FILLED_RADIO: require('../../assets/images/selectedRadio.png'),
   UNFILLED_RADIO: require('../../assets/images/unselectRadio.png'),
   AGENCY_GRP: require('../../assets/images/agecyGrp.png'),
+  IC_PLUS_FILES: require('../../assets/images/plusFiles.png'),
+  IC_ADDPROJECTS: require('../../assets/images/addProjects.png'),
+  IC_UPLOAD: require('../../assets/images/upload.png'),
 };
