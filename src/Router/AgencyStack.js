@@ -10,6 +10,8 @@ import {IMAGES} from '../Common/Constants/images';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import PurchasePlan from '../Screens/Agency/PurchasePlan';
 import Documents from '../Screens/Agency/Documents';
+import UploadPanDoc from '../Screens/Agency/UploadPanDoc';
+import AddProjectDoc from '../Screens/Agency/AddProjectDoc';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -95,6 +97,8 @@ const AgencyStack = props => {
       initialRouteName={initialRoute ? initialRoute : 'ArchitectProjectType'}>
       <Stack.Screen name="PurchasePlan" component={PurchasePlan} />
       <Stack.Screen name="Documents" component={Documents} />
+      <Stack.Screen name="UploadPanDoc" component={UploadPanDoc} />
+      <Stack.Screen name="AddProjectDoc" component={AddProjectDoc} />
       <Stack.Screen name="AgencyBottomTab" component={AgencyBottomTab} />
     </Stack.Navigator>
   );

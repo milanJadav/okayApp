@@ -15,7 +15,7 @@ import FastImage from 'react-native-fast-image';
 import {IMAGES} from '../../Common/Constants/images';
 import IButton from '../Components/IButton';
 
-const Documents = () => {
+const Documents = props => {
   return (
     <SafeAreaView style={safeAreaStyle}>
       <View style={{paddingHorizontal: 20, flex: 1}}>
@@ -28,7 +28,9 @@ const Documents = () => {
         <HightBox height={7} />
         <Text style={styles.subTitleText}>Please upload below documents</Text>
         <HightBox height={25} />
-        <TouchableOpacity style={styles.btnRow}>
+        <TouchableOpacity
+          style={styles.btnRow}
+          onPress={() => props.navigation.navigate('UploadPanDoc')}>
           <FastImage
             source={IMAGES.IC_PLUS_FILES}
             style={{height: 24, width: 24, marginRight: 10}}
@@ -44,7 +46,9 @@ const Documents = () => {
           />
         </TouchableOpacity>
         <HightBox height={15} />
-        <TouchableOpacity style={styles.btnRow}>
+        <TouchableOpacity
+          style={styles.btnRow}
+          onPress={() => props.navigation.navigate('AddProjectDoc')}>
           <FastImage
             source={IMAGES.IC_ADDPROJECTS}
             style={{height: 24, width: 24, marginRight: 10}}
