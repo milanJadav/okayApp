@@ -76,7 +76,10 @@ const Documents = props => {
         <HightBox height={10} />
         <Text style={styles.notes}>File must be in PDF format</Text>
         <HightBox height={50} />
-        <IButton title={'Save'} />
+        <IButton
+          title={'Save'}
+          onPress={() => props.navigation.navigate('AgencyBottomTab')}
+        />
       </View>
     </SafeAreaView>
   );

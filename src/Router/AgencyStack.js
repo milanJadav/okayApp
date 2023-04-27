@@ -12,6 +12,7 @@ import PurchasePlan from '../Screens/Agency/PurchasePlan';
 import Documents from '../Screens/Agency/Documents';
 import UploadPanDoc from '../Screens/Agency/UploadPanDoc';
 import AddProjectDoc from '../Screens/Agency/AddProjectDoc';
+import AgencyHomeScreen from '../Screens/Agency/AgencyHomeScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -56,8 +57,8 @@ const AgencyBottomTab = () => {
         tabBarShowLabel: false,
       }}>
       <Tab.Screen
-        name="Dashboard"
-        component={Dashboard}
+        name="AgencyHomeScreen"
+        component={AgencyHomeScreen}
         initialParams={{rightNavButtons: []}}
         options={{
           tabBarIcon: ({color, focused}) => (
