@@ -13,6 +13,7 @@ import Documents from '../Screens/Agency/Documents';
 import UploadPanDoc from '../Screens/Agency/UploadPanDoc';
 import AddProjectDoc from '../Screens/Agency/AddProjectDoc';
 import AgencyHomeScreen from '../Screens/Agency/AgencyHomeScreen';
+import ClientDetails from '../Screens/Agency/ClientDetails';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -101,6 +102,7 @@ const AgencyStack = props => {
       <Stack.Screen name="UploadPanDoc" component={UploadPanDoc} />
       <Stack.Screen name="AddProjectDoc" component={AddProjectDoc} />
       <Stack.Screen name="AgencyBottomTab" component={AgencyBottomTab} />
+      <Stack.Screen name="ClientDetails" component={ClientDetails} />
     </Stack.Navigator>
   );
 };

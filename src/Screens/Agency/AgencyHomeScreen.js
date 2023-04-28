@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  FlatList,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -13,11 +14,15 @@ import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
 import FastImage from 'react-native-fast-image';
 import {IMAGES} from '../../Common/Constants/images';
+import {agenciesList} from '../../Utils/Data';
+import AgencyCard from '../Components/AgencyCard';
+import UserCard from '../Components/UserCard';
 
-const AgencyHomeScreen = () => {
+const AgencyHomeScreen = props => {
   const [customerSelected, setCustomerSelected] = useState(false);
   const [architectSelected, setArchitectSelected] = useState(true);
 
+  //RENDER METHODS
   const renderButtonRow = () => {
     const onArchitectPress = () => {
       setArchitectSelected(true);
@@ -79,7 +84,12 @@ const AgencyHomeScreen = () => {
 
   const renderEmptyContainer = () => {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <FastImage
           source={IMAGES.MESSAGE_BOX}
           style={{height: '35%', width: '70%'}}
@@ -94,13 +104,33 @@ const AgencyHomeScreen = () => {
     );
   };
 
+  const renderAgency = ({item}) => {
+    return (
+      <UserCard
+        onViewCustomer={() => props.navigation.navigate('ClientDetails')}
+      />
+    );
+  };
+
   return (
     <SafeAreaView style={safeAreaStyle}>
       <View style={{paddingHorizontal: 20, flex: 1}}>
         <LocationNavBar />
         <HightBox height={25} />
         {renderButtonRow()}
-        {renderEmptyContainer()}
+        <HightBox height={15} />
+        <View style={{flex: 1}}>
+          <FlatList
+            data={agenciesList}
+            renderItem={renderAgency}
+            keyExtractor={({id}) => id.toString()}
+            ItemSeparatorComponent={() => <HightBox height={15} />}
+            ListFooterComponent={() => <HightBox height={15} />}
+            style={{flex: 1}}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+        {/* {renderEmptyContainer()} */}
       </View>
     </SafeAreaView>
   );
