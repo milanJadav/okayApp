@@ -63,8 +63,8 @@ const ArchitectSelectCategory = props => {
     props.navigation.navigate('AgencyList', {item});
   };
 
-  const onViewAgency = () => {
-    props.navigation.navigate('AgencyDetail');
+  const onViewAgency = data => {
+    props.navigation.navigate('AgencyDetail', {data});
   };
 
   const onChooseAgency = () => {

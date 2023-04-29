@@ -1,5 +1,6 @@
 import RNFS from 'react-native-fs';
 import _ from 'lodash';
+import {Linking} from 'react-native';
 
 export const isFunction = funCtion => _.isFunction(funCtion);
 
@@ -17,4 +18,17 @@ export const getFileName = (filePath = undefined) => {
   if (filePath == undefined) return;
 
   return filePath.substring(filePath.lastIndexOf('/') + 1, filePath.length);
+};
+
+export const openLinks = async link => {
+  try {
+    const sup = await Linking.canOpenURL(`${link}`);
+    if (sup) {
+      Linking.openURL(`${link}`)
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
+    } else console.log('unable to open url');
+  } catch (err_1) {
+    return console.log('Unable to open URI: ' + err_1);
+  }
 };

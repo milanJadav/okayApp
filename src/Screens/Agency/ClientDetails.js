@@ -54,31 +54,7 @@ const ClientDetails = props => {
     props.navigation.goBack();
   };
 
-  const onViewAgency = () => {
-    // props.navigation.navigate('AgencyDetail');
-  };
-
   //RENDER METHODS
-
-  const RenderAgency = ({item}) => {
-    return (
-      <View style={{marginBottom: 10}}>
-        <AgencyTypeCard onViewAgency={onViewAgency} />
-      </View>
-    );
-  };
-
-  const renderAgencies = () => {
-    return (
-      <View>
-        <HightBox height={20} />
-        {agencies.map(item => {
-          return <RenderAgency key={item.id} />;
-        })}
-      </View>
-    );
-  };
-
   const renderLoading = () => (
     <ActivityIndicator size={'small'} color={COLORS.black} />
   );

@@ -1,6 +1,7 @@
 import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 import {isFunction} from '../../Utils/Utils';
 import {
+  getAgencyDetails,
   getAgencyforCategory,
   getCategory,
   getProjectDetails,
@@ -9,6 +10,7 @@ import {
   searchCategory,
 } from '../../api/dashboardApi';
 import {
+  onAgencyDetailSuccess,
   onAllAgencySuccess,
   onCategorySuccess,
   onCategoryWiseAgencySuccess,
@@ -207,6 +209,33 @@ export const getSubCategoryWiseAgency = ({
         })
         .catch(err => {
           console.log('error in subcategorywise agency---', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+    }
+  };
+};
+
+export const getAgencyDetail = ({agencyId = null, onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      var formdata = new FormData();
+      formdata.append('agency_id', agencyId);
+      getAgencyDetails(formdata)
+        .then(response => {
+          //   console.log('projects response---', response);
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+            dispatch(onAgencyDetailSuccess(response?.data));
+          }
+        })
+        .catch(err => {
+          console.log('error in agency detail---', err.response.data);
           if (isFunction(onFailure)) {
             onFailure();
           }

@@ -47,7 +47,7 @@ const AgencyCard = ({
 
           <TouchableOpacity
             style={[styles.unfilledBtn]}
-            onPress={() => onViewAgency()}>
+            onPress={() => onViewAgency(data)}>
             <FastImage
               source={IMAGES.IC_EYE}
               style={{height: 16, width: 16, marginRight: 5}}

@@ -9,6 +9,7 @@ const initialState = {
   categorySearchData: [],
   categoryWiseAgency: [],
   allAgencyData: [],
+  agencyDetails: {},
 };
 
 export const dashboardSlice = createSlice({
@@ -48,6 +49,10 @@ export const dashboardSlice = createSlice({
       const {payload} = data;
       state.allAgencyData = payload;
     },
+    onAgencyDetailSuccess: (state, data) => {
+      const {payload} = data;
+      state.agencyDetails = payload;
+    },
   },
 });
 
@@ -61,6 +66,7 @@ export const {
   onGetPastProjectsSuccess,
   onCategoryWiseAgencySuccess,
   onAllAgencySuccess,
+  onAgencyDetailSuccess,
 } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

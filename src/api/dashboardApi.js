@@ -17,3 +17,6 @@ export const searchCategory = text =>
 
 export const getAgencyforCategory = data =>
   userAuthFetch.post('/allagency', data).then(extractData);
+
+export const getAgencyDetails = data =>
+  userAuthFetch.post('/agency', data).then(extractData);
