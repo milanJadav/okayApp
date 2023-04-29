@@ -12,16 +12,16 @@ import FastImage from 'react-native-fast-image';
 import {safeAreaStyle} from '../../Common/CommonStyles';
 import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
-import {IMAGES} from '../../Common/Constants/images';
-import {agencies, categoryData} from '../../Utils/Data';
-import {windowHeight, windowWidth} from '../../Utils/Dimentions';
+import {agencies} from '../../Utils/Data';
+import {windowHeight} from '../../Utils/Dimentions';
 import AgencyCard from '../Components/AgencyCard';
 import HightBox from '../Components/HightBox';
-import IBackButton from '../Components/IBackButton';
-import IButton from '../Components/IButton';
 import INavBar from '../Components/INavBar';
 import {useDispatch, useSelector} from 'react-redux';
-import {getSubCategory} from '../../redux/dashboard/dashboardActions';
+import {
+  getCategoryWiseAgency,
+  getSubCategory,
+} from '../../redux/dashboard/dashboardActions';
 
 const ArchitectSelectCategory = props => {
   const {item} = props.route?.params || {};
@@ -34,9 +34,16 @@ const ArchitectSelectCategory = props => {
     state => state.dashboard?.subCategoryData || [],
   );
 
+  const categoryWiseAgencies = useSelector(
+    state => state.dashboard?.categoryWiseAgency || [],
+  );
+
   useEffect(() => {
     setLoading(true);
     dispatch(getSubCategory({categoryId: item?.id, onSuccess, onFailure}));
+    dispatch(
+      getCategoryWiseAgency({categoryId: item?.id, onSuccess, onFailure}),
+    );
   }, []);
 
   const onSuccess = () => {
@@ -52,8 +59,8 @@ const ArchitectSelectCategory = props => {
     props.navigation.goBack();
   };
 
-  const onCategoryPress = title => {
-    props.navigation.navigate('AgencyList', {title});
+  const onCategoryPress = item => {
+    props.navigation.navigate('AgencyList', {item});
   };
 
   const onViewAgency = () => {
@@ -81,7 +88,7 @@ const ArchitectSelectCategory = props => {
     return (
       <TouchableOpacity
         style={styles.boxContainer}
-        onPress={() => onCategoryPress(item.title)}>
+        onPress={() => onCategoryPress(item)}>
         <FastImage
           source={require('../../assets/temp/wooden.png')}
           style={{height: 60, width: 60, borderRadius: 50}}
@@ -98,7 +105,11 @@ const ArchitectSelectCategory = props => {
 
   const renderAgency = ({item}) => {
     return (
-      <AgencyCard onViewAgency={onViewAgency} onChooseAgency={onChooseAgency} />
+      <AgencyCard
+        data={item}
+        onViewAgency={onViewAgency}
+        onChooseAgency={onChooseAgency}
+      />
     );
   };
 
@@ -122,7 +133,7 @@ const ArchitectSelectCategory = props => {
   const renderAgencies = () => {
     return (
       <FlatList
-        data={agencies}
+        data={categoryWiseAgencies}
         renderItem={renderAgency}
         keyExtractor={({id}) => id.toString()}
         ItemSeparatorComponent={() => <HightBox height={15} />}

@@ -6,7 +6,11 @@ import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
 import {windowHeight} from '../../Utils/Dimentions';
 
-const AgencyCard = ({onViewAgency = () => {}, onChooseAgency = () => {}}) => {
+const AgencyCard = ({
+  onViewAgency = () => {},
+  onChooseAgency = () => {},
+  data = {},
+}) => {
   return (
     <TouchableOpacity style={styles.container} disabled>
       <FastImage
@@ -17,7 +21,7 @@ const AgencyCard = ({onViewAgency = () => {}, onChooseAgency = () => {}}) => {
       <View style={styles.rightContainer}>
         <View>
           <Text style={styles.title} numberOfLines={1}>
-            The Beyark agency
+            {data?.agency_name || ''}
           </Text>
           <Text style={styles.subTitle} numberOfLines={1}>
             Year of working: 2 yrs
@@ -64,7 +68,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: COLORS.white,
     borderRadius: 8,
-    height: windowHeight / 5.9,
+    // height: windowHeight / 5.9,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   img: {
-    height: windowHeight / 5.9,
+    height: '100%',
     width: '35%',
     borderBottomLeftRadius: 8,
     borderTopLeftRadius: 8,
@@ -116,6 +120,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   btnRow: {
+    marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
-    paddingVertical: 5,
+    paddingVertical: 7,
     paddingHorizontal: 5,
   },
   unfilledBtn: {
@@ -135,6 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
+    paddingVertical: 7,
     paddingHorizontal: 5,
     borderColor: COLORS.pr_blue,
     borderWidth: 1,

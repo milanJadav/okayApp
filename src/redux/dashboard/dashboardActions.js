@@ -1,6 +1,7 @@
 import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 import {isFunction} from '../../Utils/Utils';
 import {
+  getAgencyforCategory,
   getCategory,
   getProjectDetails,
   getProjects,
@@ -8,7 +9,9 @@ import {
   searchCategory,
 } from '../../api/dashboardApi';
 import {
+  onAllAgencySuccess,
   onCategorySuccess,
+  onCategoryWiseAgencySuccess,
   onGetPastProjectsSuccess,
   onGetProjectDetailSuccess,
   onGetProjectsSuccess,
@@ -142,6 +145,68 @@ export const getSubCategory = ({categoryId = null, onSuccess, onFailure}) => {
         })
         .catch(err => {
           console.log('error in get sub category---', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+    }
+  };
+};
+
+export const getCategoryWiseAgency = ({
+  categoryId = null,
+  onSuccess,
+  onFailure,
+}) => {
+  return async dispatch => {
+    try {
+      var formdata = new FormData();
+      formdata.append('category_id', categoryId);
+      getAgencyforCategory(formdata)
+        .then(response => {
+          //   console.log('projects response---', response);
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+            dispatch(onCategoryWiseAgencySuccess(response?.data));
+          }
+        })
+        .catch(err => {
+          console.log('error in get categorywise agency---', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+    }
+  };
+};
+
+export const getSubCategoryWiseAgency = ({
+  subCategoryId = null,
+  onSuccess,
+  onFailure,
+}) => {
+  return async dispatch => {
+    try {
+      var formdata = new FormData();
+      formdata.append('subcategory_id', subCategoryId);
+      getAgencyforCategory(formdata)
+        .then(response => {
+          //   console.log('projects response---', response);
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+            dispatch(onAllAgencySuccess(response?.data));
+          }
+        })
+        .catch(err => {
+          console.log('error in subcategorywise agency---', err.response.data);
           if (isFunction(onFailure)) {
             onFailure();
           }

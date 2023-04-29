@@ -14,3 +14,6 @@ export const getProjectDetails = data =>
 
 export const searchCategory = text =>
   userAuthFetch.post('/searchcategory', text).then(extractData);
+
+export const getAgencyforCategory = data =>
+  userAuthFetch.post('/allagency', data).then(extractData);
