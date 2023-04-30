@@ -16,6 +16,7 @@ import {IMAGES} from '../../Common/Constants/images';
 import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 import {useDispatch, useSelector} from 'react-redux';
 import {getProfileData} from '../../redux/profile/profileActions';
+import {logoutAction} from '../../redux/auth/authActions';
 
 const profileData = [
   {
@@ -71,16 +72,24 @@ const Profile = props => {
   const onFailure = () => {
     setLoading(false);
   };
+
+  const onSuccessLogout = () => {
+    localStorageHelper.clearStorage().then(resp => {
+      console.log('Logout done');
+      props.navigation.replace('Splash');
+    });
+  };
+  const onFailureLogout = () => {};
+
   //CLICK EVENTS
   const onEditProfile = () => {
     props.navigation.navigate('EditProfile', {userProfileData});
   };
 
   const onLogout = () => {
-    localStorageHelper.clearStorage().then(resp => {
-      console.log('Logout done');
-      props.navigation.replace('Splash');
-    });
+    dispatch(
+      logoutAction({onSuccess: onSuccessLogout, onFailure: onFailureLogout}),
+    );
   };
 
   const onProfileSettingClick = id => {

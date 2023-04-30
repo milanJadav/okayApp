@@ -5,19 +5,23 @@ import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
 import {windowHeight} from '../../Utils/Dimentions';
+import {ASSET_URL} from '../../Environment';
 
-const AgencyTypeCard = ({onViewAgency = () => {}}) => {
+const AgencyTypeCard = ({data, onViewAgency = () => {}}) => {
+  const {agency_image, agency_name} = data || {};
   return (
-    <TouchableOpacity style={styles.container} onPress={() => onViewAgency()}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => onViewAgency(data)}>
       <FastImage
-        source={require('../../assets/temp/agency1Temp.png')}
+        source={{uri: `${ASSET_URL}${agency_image}`}}
         style={styles.img}
         resizeMode="cover"
       />
       <View style={styles.rightContainer}>
         <View>
           <Text style={styles.title} numberOfLines={1}>
-            The Beyark agency
+            {agency_name}
           </Text>
           <Text style={styles.subTitle} numberOfLines={1}>
             Type : Interior design{' '}

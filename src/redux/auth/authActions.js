@@ -8,11 +8,13 @@ import {isFunction} from '../../Utils/Utils';
 import {
   getArchitectWorkTypes,
   getCustomerWorkTypes,
+  logout,
   saveArchitectWorkTypes,
   saveCustomerWorkTypes,
   saveProject,
   signIn,
   updateUserType,
+  userDelete,
   verifyOtp,
 } from '../../api/authApis';
 
@@ -267,6 +269,67 @@ export const saveCustomerWorkType = ({payload, onSuccess, onFailure}) => {
           if (isFunction(onFailure)) {
             onFailure();
           }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+      if (isFunction(onFailure)) {
+        onFailure();
+      }
+    }
+  };
+};
+
+export const logoutAction = ({onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      logout()
+        .then(response => {
+          console.log('logout response ', response);
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+          }
+        })
+        .catch(err => {
+          console.log('error in logout', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+      if (isFunction(onFailure)) {
+        onFailure();
+      }
+    }
+  };
+};
+
+export const deleteAccountAction = ({onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      var formdata = new FormData();
+
+      localStorageHelper
+        .getItemFromStorage(StorageKeys.USER_ID)
+        .then(async userId => {
+          formdata.append('user_id', userId);
+          return userDelete(formdata)
+            .then(response => {
+              console.log('delte ac ', response);
+              if (response?.status == 200) {
+                if (isFunction(onSuccess)) {
+                  onSuccess();
+                }
+              }
+            })
+            .catch(err => {
+              console.log('error in update user type', err.response.data);
+              if (isFunction(onFailure)) {
+                onFailure();
+              }
+            });
         });
     } catch (error) {
       console.log('Error!', error);

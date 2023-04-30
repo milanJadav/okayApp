@@ -1,6 +1,7 @@
 import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 import {isFunction} from '../../Utils/Utils';
 import {
+  getAgencyByProject,
   getAgencyDetails,
   getAgencyforCategory,
   getCategory,
@@ -16,6 +17,7 @@ import {
   onCategorySuccess,
   onCategoryWiseAgencySuccess,
   onGetPastProjectsSuccess,
+  onGetProjectAssignedAgencyList,
   onGetProjectDetailSuccess,
   onGetProjectsSuccess,
   onSearchCategorySuccess,
@@ -99,6 +101,37 @@ export const getUserProjectDetail = ({
         })
         .catch(err => {
           console.log('error in get project detail---', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+    }
+  };
+};
+
+export const getProjectAssignedAgencyList = ({
+  projectId = null,
+  onSuccess,
+  onFailure,
+}) => {
+  return async dispatch => {
+    try {
+      var formdata = new FormData();
+      formdata.append('project_id', projectId);
+      getAgencyByProject(formdata)
+        .then(response => {
+          //   console.log('projects response---', response);
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+            dispatch(onGetProjectAssignedAgencyList(response?.data));
+          }
+        })
+        .catch(err => {
+          console.log('error  get project agency detail---', err.response.data);
           if (isFunction(onFailure)) {
             onFailure();
           }

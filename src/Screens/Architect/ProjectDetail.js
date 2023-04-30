@@ -23,7 +23,10 @@ import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import ProgressBar from '../Components/ProgressBar';
 import {useDispatch, useSelector} from 'react-redux';
-import {getUserProjectDetail} from '../../redux/dashboard/dashboardActions';
+import {
+  getProjectAssignedAgencyList,
+  getUserProjectDetail,
+} from '../../redux/dashboard/dashboardActions';
 
 const ProjectDetail = props => {
   const {projectId} = props.route.params || {};
@@ -36,9 +39,14 @@ const ProjectDetail = props => {
     state => state.dashboard?.projectDetail || {},
   );
 
+  const projectAgency = useSelector(
+    state => state.dashboard?.projectAssignedAgencyList || {},
+  );
+
   useEffect(() => {
     setLoading(true);
     dispatch(getUserProjectDetail({projectId, onSuccess, onFailure}));
+    dispatch(getProjectAssignedAgencyList({projectId}));
   }, []);
 
   const onSuccess = () => {
@@ -54,8 +62,8 @@ const ProjectDetail = props => {
     props.navigation.goBack();
   };
 
-  const onViewAgency = () => {
-    props.navigation.navigate('AgencyDetail');
+  const onViewAgency = data => {
+    props.navigation.navigate('AgencyDetail', {data});
   };
 
   //RENDER METHODS
@@ -63,7 +71,7 @@ const ProjectDetail = props => {
   const RenderAgency = ({item}) => {
     return (
       <View style={{marginBottom: 10}}>
-        <AgencyTypeCard onViewAgency={onViewAgency} />
+        <AgencyTypeCard onViewAgency={onViewAgency} data={item} />
       </View>
     );
   };
@@ -72,8 +80,8 @@ const ProjectDetail = props => {
     return (
       <View>
         <HightBox height={20} />
-        {agencies.map(item => {
-          return <RenderAgency key={item.id} />;
+        {projectAgency.map(item => {
+          return <RenderAgency key={item.id} item={item} />;
         })}
       </View>
     );

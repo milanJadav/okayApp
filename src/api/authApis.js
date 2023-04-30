@@ -23,3 +23,8 @@ export const getCustomerWorkTypes = data =>
 
 export const saveCustomerWorkTypes = data =>
   userRawFetch.post('/savecustomerworktype', data).then(extractData);
+
+export const userDelete = data =>
+  userAuthFetch.post('/deleteaccount', data).then(extractData);
+
+export const logout = () => userAuthFetch.post('/logout').then(extractData);

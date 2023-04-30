@@ -1,5 +1,5 @@
-import React from 'react';
-import {SafeAreaView, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {ActivityIndicator, SafeAreaView, TouchableOpacity} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
 import {safeAreaStyle} from '../../Common/CommonStyles';
 import INavBar from '../Components/INavBar';
@@ -9,8 +9,32 @@ import FastImage from 'react-native-fast-image';
 import {windowHeight} from '../../Utils/Dimentions';
 import {FONTS} from '../../Common/Constants/fonts';
 import {COLORS} from '../../Common/Constants/colors';
+import {useDispatch} from 'react-redux';
+import {deleteAccountAction} from '../../redux/auth/authActions';
+import {localStorageHelper} from '../../Common/localStorageHelper';
 
 const AccountDelete = props => {
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const onSuccess = () => {
+    setLoading(false);
+    localStorageHelper.clearStorage().then(resp => {
+      console.log('Logout done');
+      props.navigation.replace('Splash');
+    });
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
+
+  const onDeleteAccount = () => {
+    setLoading(true);
+    dispatch(deleteAccountAction({onSuccess, onFailure}));
+  };
+
   //CLICK EVENTS
   const onBackPress = () => {
     props.navigation.goBack();
@@ -34,8 +58,14 @@ const AccountDelete = props => {
           All of your data and information will be deleted
         </Text>
         <HightBox height={50} />
-        <TouchableOpacity style={styles.btnContainer}>
-          <Text style={styles.btnText}>Confirm delete</Text>
+        <TouchableOpacity
+          style={styles.btnContainer}
+          onPress={() => onDeleteAccount()}>
+          {loading ? (
+            <ActivityIndicator size={'small'} color={COLORS.white} />
+          ) : (
+            <Text style={styles.btnText}>Confirm delete</Text>
+          )}
         </TouchableOpacity>
       </View>
     </SafeAreaView>
