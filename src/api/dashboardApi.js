@@ -1,4 +1,4 @@
-import {extractData, userAuthFetch} from './server';
+import {extractData, userAuthFetch, userRawFetch} from './server';
 
 export const getCategory = () =>
   userAuthFetch.get('/viewcategory').then(extractData);
@@ -20,3 +20,6 @@ export const getAgencyforCategory = data =>
 
 export const getAgencyDetails = data =>
   userAuthFetch.post('/agency', data).then(extractData);
+
+export const saveArchitectWorkProject = data =>
+  userRawFetch.post('/saveproject_agencies', data).then(extractData);

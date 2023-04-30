@@ -33,10 +33,8 @@ const AgencyDetail = props => {
     state => state.dashboard?.agencyDetails || [],
   );
 
-  const {
-    detail: {agency_name, agency_image, pricelist, mobile, address},
-    totalReviews,
-  } = agencyDetail || {};
+  const {agency_name, agency_image, pricelist, mobile, address} =
+    agencyDetail?.detail || {};
 
   useEffect(() => {
     setLoading(true);
@@ -109,7 +107,7 @@ const AgencyDetail = props => {
                 <Text style={styles.rating}>Rating . </Text>
                 <Text
                   style={{...styles.rating, textDecorationLine: 'underline'}}>
-                  {totalReviews || '0'} reviews
+                  {agencyDetail?.totalReviews || '0'} reviews
                 </Text>
               </View>
               <HightBox height={10} />

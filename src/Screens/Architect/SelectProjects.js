@@ -1,7 +1,8 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Animated,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -13,25 +14,69 @@ import {safeAreaStyle} from '../../Common/CommonStyles';
 import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
-import {projectsData} from '../../Utils/Data';
 import HightBox from '../Components/HightBox';
 import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
 import ICheckBox from '../Components/ICheckBox';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getUserProjects,
+  saveArchitectProject_Agencies,
+} from '../../redux/dashboard/dashboardActions';
 
 const SelectProjects = props => {
+  const {data} = props.route?.params || {};
+
+  const projectDataRedux = useSelector(
+    state => state.dashboard?.projectsData || [],
+  );
   const [showSearch, setShowSearch] = useState(false);
   const [showSelectedPro, setShowSelectedPro] = useState(false);
-  const [projectData, setProjectData] = useState(projectsData);
+  const [searchText, setSearchText] = useState('');
+  const [projectData, setProjectData] = useState([]);
   const [selectedProject, setSelectedProject] = useState([]);
   const [fadeAnim, setFadeAnim] = useState(new Animated.Value(0));
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserProjects({status: 1}));
+  }, []);
+
+  useEffect(() => {
+    if (projectDataRedux) {
+      setProjectData(projectDataRedux);
+    }
+  }, [projectDataRedux]);
+
+  const onSuccess = () => {
+    setLoading(false);
+    props.navigation.pop(2);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
+
   //CLICK EVENTS
   const onBackPress = () => {
     props.navigation.goBack();
   };
 
   const onContinue = () => {
-    // props.navigation.navigate('CreateProject');
+    if (selectedProject.length > 0) {
+      const payload = selectedProject.map(item => {
+        return {
+          agency_id: data?.id || '',
+          project_id: item.id,
+        };
+      });
+
+      dispatch(saveArchitectProject_Agencies({payload, onSuccess, onFailure}));
+    } else {
+      alert('Please Select Project First!');
+    }
   };
 
   const onShowSearch = value => {
@@ -56,9 +101,30 @@ const SelectProjects = props => {
     }
   };
 
+  const onSearchTextChange = text => {
+    setSearchText(text);
+    filterItemsList(text);
+  };
+
+  const filterItemsList = text => {
+    let tempArr = [...projectDataRedux];
+    let updatedList = [];
+    tempArr.map(item => {
+      let tempItem = {
+        ...item,
+        selected: false,
+      };
+
+      if (item.project_name.toLowerCase().includes(text.toLowerCase()))
+        updatedList.push(tempItem);
+    });
+
+    setProjectData(updatedList);
+  };
+
   const onCheckBoxClick = name => {
     const newArray = projectData.map(i => {
-      if (i.name == name) {
+      if (i.project_name == name) {
         return {
           ...i,
           selected: !i.selected,
@@ -90,7 +156,7 @@ const SelectProjects = props => {
   };
 
   const onRemoveProject = value => {
-    const filterData = selectedProject.filter(i => i.name !== value);
+    const filterData = selectedProject.filter(i => i.project_name !== value);
     setSelectedProject(filterData);
   };
   return (
@@ -129,24 +195,30 @@ const SelectProjects = props => {
                 />
 
                 <TextInput
+                  value={searchText}
+                  onChangeText={t => onSearchTextChange(t)}
                   style={styles.inputStyle}
                   placeholder={'Search projects'}
                   placeholderTextColor={COLORS.textColor44}
                 />
               </View>
               <HightBox height={15.5} />
-              {projectData.map(item => {
-                return (
-                  <View key={item.id} style={styles.projectRow}>
-                    <ICheckBox
-                      value={item.selected}
-                      onCheckClick={() => onCheckBoxClick(item.name)}
-                    />
-                    <View style={{width: 10}} />
-                    <Text style={styles.projectNameText}>{item.name}</Text>
-                  </View>
-                );
-              })}
+              <ScrollView style={{maxHeight: '50%'}}>
+                {projectData.map(item => {
+                  return (
+                    <View key={item.id} style={styles.projectRow}>
+                      <ICheckBox
+                        value={item.selected}
+                        onCheckClick={() => onCheckBoxClick(item.project_name)}
+                      />
+                      <View style={{width: 10}} />
+                      <Text style={styles.projectNameText}>
+                        {item.project_name}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </ScrollView>
               <HightBox height={15} />
               <View style={[styles.projectRow, {marginBottom: 0}]}>
                 <TouchableOpacity
@@ -172,8 +244,9 @@ const SelectProjects = props => {
               {selectedProject.map(i => {
                 return (
                   <View key={i.id} style={styles.selectedProRow}>
-                    <Text style={styles.projectNameText}>{i.name}</Text>
-                    <TouchableOpacity onPress={() => onRemoveProject(i.name)}>
+                    <Text style={styles.projectNameText}>{i.project_name}</Text>
+                    <TouchableOpacity
+                      onPress={() => onRemoveProject(i.project_name)}>
                       <FastImage
                         source={IMAGES.IC_CROSS}
                         style={{height: 16, width: 16, marginLeft: 5}}
@@ -188,9 +261,11 @@ const SelectProjects = props => {
         </View>
 
         <View style={styles.bottomContainer}>
-          <View style={{marginTop: 30}}>
-            <IButton title={'Save'} onPress={onContinue} />
-          </View>
+          {showSelectedPro && (
+            <View style={{marginTop: 30}}>
+              <IButton title={'Save'} onPress={onContinue} loading={loading} />
+            </View>
+          )}
         </View>
       </View>
     </SafeAreaView>

@@ -39,7 +39,7 @@ const AgencyCard = ({
         <View style={styles.btnRow}>
           <TouchableOpacity
             style={[styles.filledBtn]}
-            onPress={() => onChooseAgency()}>
+            onPress={() => onChooseAgency(data)}>
             <Text style={styles.btnText} numberOfLines={1}>
               {'Choose this'}
             </Text>

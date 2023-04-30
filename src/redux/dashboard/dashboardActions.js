@@ -7,6 +7,7 @@ import {
   getProjectDetails,
   getProjects,
   getSubCategorys,
+  saveArchitectWorkProject,
   searchCategory,
 } from '../../api/dashboardApi';
 import {
@@ -236,6 +237,34 @@ export const getAgencyDetail = ({agencyId = null, onSuccess, onFailure}) => {
         })
         .catch(err => {
           console.log('error in agency detail---', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+    }
+  };
+};
+
+export const saveArchitectProject_Agencies = ({
+  payload,
+  onSuccess,
+  onFailure,
+}) => {
+  return async dispatch => {
+    try {
+      saveArchitectWorkProject(payload)
+        .then(response => {
+          // console.log('projects save response---', response);
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+          }
+        })
+        .catch(err => {
+          console.log('error in architect save project---', err.response.data);
           if (isFunction(onFailure)) {
             onFailure();
           }

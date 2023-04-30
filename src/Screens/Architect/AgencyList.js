@@ -48,6 +48,14 @@ const AgencyList = props => {
     props.navigation.goBack();
   };
 
+  const onViewAgency = data => {
+    props.navigation.navigate('AgencyDetail', {data});
+  };
+
+  const onChooseAgency = data => {
+    props.navigation.navigate('SelectProjects', {data});
+  };
+
   //RENDER METHODS
   const renderLoading = () => (
     <ActivityIndicator size={'small'} color={COLORS.black} />
@@ -62,7 +70,13 @@ const AgencyList = props => {
   };
 
   const renderAgency = ({item}) => {
-    return <AgencyCard data={item} />;
+    return (
+      <AgencyCard
+        data={item}
+        onViewAgency={onViewAgency}
+        onChooseAgency={onChooseAgency}
+      />
+    );
   };
 
   return (
