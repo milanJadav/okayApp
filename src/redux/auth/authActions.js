@@ -317,7 +317,6 @@ export const deleteAccountAction = ({onSuccess, onFailure}) => {
           formdata.append('user_id', userId);
           return userDelete(formdata)
             .then(response => {
-              console.log('delte ac ', response);
               if (response?.status == 200) {
                 if (isFunction(onSuccess)) {
                   onSuccess();

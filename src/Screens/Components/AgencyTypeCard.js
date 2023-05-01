@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: COLORS.white,
     borderRadius: 8,
-    height: windowHeight / 8.7,
+    // height: windowHeight / 8.7,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   img: {
-    height: windowHeight / 8.7,
+    height: '100%',
     width: '35%',
     borderBottomLeftRadius: 8,
     borderTopLeftRadius: 8,

@@ -26,3 +26,6 @@ export const getAgencyDetails = data =>
 
 export const saveArchitectWorkProject = data =>
   userRawFetch.post('/saveproject_agencies', data).then(extractData);
+
+export const getAssignedAgencyOfuser = data =>
+  userAuthFetch.post('/getagenciesbyuserid', data).then(extractData);

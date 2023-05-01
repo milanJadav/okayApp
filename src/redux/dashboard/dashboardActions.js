@@ -4,6 +4,7 @@ import {
   getAgencyByProject,
   getAgencyDetails,
   getAgencyforCategory,
+  getAssignedAgencyOfuser,
   getCategory,
   getProjectDetails,
   getProjects,
@@ -14,6 +15,7 @@ import {
 import {
   onAgencyDetailSuccess,
   onAllAgencySuccess,
+  onAssignedAgencyListSuccess,
   onCategorySuccess,
   onCategoryWiseAgencySuccess,
   onGetPastProjectsSuccess,
@@ -304,6 +306,40 @@ export const saveArchitectProject_Agencies = ({
         });
     } catch (error) {
       console.log('Error!', error);
+    }
+  };
+};
+
+export const getSelectedAgenciesofUser = ({onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      var formdata = new FormData();
+
+      localStorageHelper
+        .getItemFromStorage(StorageKeys.USER_ID)
+        .then(async userId => {
+          formdata.append('user_id', userId);
+          return getAssignedAgencyOfuser(formdata)
+            .then(response => {
+              if (response?.status == 200) {
+                if (isFunction(onSuccess)) {
+                  onSuccess();
+                }
+                dispatch(onAssignedAgencyListSuccess(response?.data));
+              }
+            })
+            .catch(err => {
+              console.log('error in user agency', err.response.data);
+              if (isFunction(onFailure)) {
+                onFailure();
+              }
+            });
+        });
+    } catch (error) {
+      console.log('Error!', error);
+      if (isFunction(onFailure)) {
+        onFailure();
+      }
     }
   };
 };

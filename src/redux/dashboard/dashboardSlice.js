@@ -11,6 +11,7 @@ const initialState = {
   categoryWiseAgency: [],
   allAgencyData: [],
   agencyDetails: {},
+  userAssignedAgencyList: [],
 };
 
 export const dashboardSlice = createSlice({
@@ -57,6 +58,10 @@ export const dashboardSlice = createSlice({
       const {payload} = data;
       state.agencyDetails = payload;
     },
+    onAssignedAgencyListSuccess: (state, data) => {
+      const {payload} = data;
+      state.userAssignedAgencyList = payload;
+    },
   },
 });
 
@@ -72,6 +77,7 @@ export const {
   onAllAgencySuccess,
   onAgencyDetailSuccess,
   onGetProjectAssignedAgencyList,
+  onAssignedAgencyListSuccess,
 } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;
