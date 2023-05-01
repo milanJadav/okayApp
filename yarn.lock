@@ -6021,6 +6021,11 @@ react-native-permissions@^3.8.0:
     picocolors "^1.0.0"
     pkg-dir "^5.0.0"
 
+react-native-razorpay@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-razorpay/-/react-native-razorpay-2.3.0.tgz#e89f3c635e439bc85e4c7972eb2d67e2c0e0abc3"
+  integrity sha512-xxiZCPuZmiRq5UHDr+D4OoyxEjMu0ujC+RaE+rYo938EK0Vc21dZRUVxMVP1L2WgzA8PYwmD5FWvdHNtWLQC4Q==
+
 react-native-reanimated@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-3.0.2.tgz#8f7284fab2b0cd949779429e48f32d19a966bbd6"

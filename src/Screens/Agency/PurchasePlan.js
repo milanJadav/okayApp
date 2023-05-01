@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import RazorpayCheckout from 'react-native-razorpay';
+
 import {safeAreaStyle} from '../../Common/CommonStyles';
 import INavBar from '../Components/INavBar';
 import HightBox from '../Components/HightBox';
@@ -87,10 +89,39 @@ const data = [
   },
 ];
 
+var options = {
+  description: 'Credits towards consultation',
+  image: 'https://i.imgur.com/3g7nmJC.png',
+  currency: 'INR',
+  key: 'rzp_test_OIr0Tqto8rXMCT', // Your api key
+  amount: '5000',
+  name: 'foo',
+  prefill: {
+    email: 'void@razorpay.com',
+    contact: '9191919191',
+    name: 'Milan',
+  },
+  theme: {color: COLORS.pr_blue},
+};
+
 const PurchasePlan = props => {
   //CLICK EVENTS
   const onBackPress = () => {
     props.navigation.goBack();
+  };
+
+  const onMakePayment = () => {
+    // props.navigation.navigate('Documents');
+    // RazorpayCheckout.open(options)
+    //   .then(data => {
+    //     // handle success
+    //     console.log(data);
+    //     alert(`Success: ${data.razorpay_payment_id}`);
+    //   })
+    //   .catch(error => {
+    //     // handle failure
+    //     alert(`Error: ${error.code} | ${error.description}`);
+    //   });
   };
   //RENDER
   const PriceBox = ({item}) => {
@@ -164,7 +195,7 @@ const PurchasePlan = props => {
           <View style={{marginVertical: 30}}>
             <IButton
               title={'Make a payment'}
-              onPress={() => props.navigation.navigate('Documents')}
+              onPress={() => onMakePayment()}
               // loading={loading}
             />
           </View>
