@@ -1,7 +1,7 @@
 import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 import {plansData} from '../../Utils/Data';
 import {isFunction} from '../../Utils/Utils';
-import {getPlans} from '../../api/agencyApis';
+import {getPlans, savePlanPayment} from '../../api/agencyApis';
 import {onPlansListSuccess} from './agencySlice';
 
 // import {onProfileDataSuccess} from './agencySlice';
@@ -39,6 +39,36 @@ export const getPlansList = ({onSuccess, onFailure}) => {
         });
     } catch (error) {
       console.log('Error!', error);
+    }
+  };
+};
+
+export const saveAgencyPayment = ({payload, onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      savePlanPayment(JSON.stringify(payload))
+        .then(response => {
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+          } else {
+            if (isFunction(onFailure)) {
+              onFailure();
+            }
+          }
+        })
+        .catch(err => {
+          console.log('error in save payment', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+      if (isFunction(onFailure)) {
+        onFailure();
+      }
     }
   };
 };

@@ -20,7 +20,12 @@ import {COLORS} from '../../Common/Constants/colors';
 import FastImage from 'react-native-fast-image';
 import {IMAGES} from '../../Common/Constants/images';
 import {useDispatch, useSelector} from 'react-redux';
-import {getPlansList} from '../../redux/agency/agencyActions';
+import {
+  getPlansList,
+  saveAgencyPayment,
+} from '../../redux/agency/agencyActions';
+import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
+import moment from 'moment';
 
 var options = {
   description: 'Credits towards consultation',
@@ -39,6 +44,7 @@ var options = {
 
 const PurchasePlan = props => {
   const [loading, setLoading] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
   const [planData, setPlanData] = useState([]);
   const dispatch = useDispatch();
 
@@ -62,6 +68,15 @@ const PurchasePlan = props => {
   const onFailure = () => {
     setLoading(false);
   };
+
+  const onSuccessSavePayment = () => {
+    setBtnLoading(false);
+    props.navigation.replace('Documents');
+  };
+
+  const onFailureSavePayment = () => {
+    setBtnLoading(false);
+  };
   //CLICK EVENTS
   const onBackPress = () => {
     props.navigation.goBack();
@@ -82,12 +97,30 @@ const PurchasePlan = props => {
       name: selectedItem?.plan_name || 'Plan',
       theme: {color: COLORS.pr_blue},
     };
-    // props.navigation.navigate('Documents');
+
     RazorpayCheckout.open(options) //
       .then(data => {
-        // handle success
-        console.log(data);
-        alert(`Success: ${data.razorpay_payment_id}`);
+        // console.log(data);
+        setBtnLoading(true);
+
+        localStorageHelper
+          .getItemFromStorage(StorageKeys.USER_ID)
+          .then(async userId => {
+            const payload = {
+              agencyId: userId,
+              paymentPlanId: selectedItem?.id,
+              paymentStatus: 'Success',
+              paymentAmount: selectedItem.plan_price,
+              paymentTime: moment().format('YYYY-MM-DD'),
+            };
+            dispatch(
+              saveAgencyPayment({
+                payload,
+                onSuccess: onSuccessSavePayment,
+                onFailure: onFailureSavePayment,
+              }),
+            );
+          });
       })
       .catch(error => {
         // handle failure
@@ -208,7 +241,7 @@ const PurchasePlan = props => {
             <IButton
               title={'Make a payment'}
               onPress={() => onMakePayment()}
-              // loading={loading}
+              loading={btnLoading}
             />
           </View>
         </View>
