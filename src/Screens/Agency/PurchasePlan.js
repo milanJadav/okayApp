@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   ImageBackground,
   SafeAreaView,
   ScrollView,
@@ -18,76 +19,8 @@ import {FONTS} from '../../Common/Constants/fonts';
 import {COLORS} from '../../Common/Constants/colors';
 import FastImage from 'react-native-fast-image';
 import {IMAGES} from '../../Common/Constants/images';
-
-const data = [
-  {
-    id: 1,
-    bgImg: IMAGES.PAYMENT_1,
-    diamondImg: IMAGES.DIAMOND_1,
-    name: 'Gold',
-    price: 'Rs. 15000',
-    detailsArr: [
-      {
-        id: 1,
-        title: 'All free inquires',
-      },
-      {
-        id: 2,
-        title: 'Unlimited access',
-      },
-      {
-        id: 3,
-        title: 'Best ranking to your agency',
-      },
-      {
-        id: 4,
-        title: 'Premium features access',
-      },
-    ],
-  },
-  {
-    id: 2,
-    bgImg: IMAGES.PAYMENT_2,
-    diamondImg: IMAGES.DIAMOND_2,
-    name: 'Silver',
-    price: 'Rs. 10000',
-    detailsArr: [
-      {
-        id: 1,
-        title: 'All free inquires',
-      },
-      {
-        id: 2,
-        title: 'Unlimited access',
-      },
-      {
-        id: 3,
-        title: 'Best ranking to your agency',
-      },
-    ],
-  },
-  {
-    id: 3,
-    bgImg: IMAGES.PAYMENT_3,
-    diamondImg: IMAGES.DIAMOND_3,
-    name: 'Silver',
-    price: 'Rs. 10000',
-    detailsArr: [
-      {
-        id: 1,
-        title: 'All free inquires',
-      },
-      {
-        id: 2,
-        title: 'Unlimited access',
-      },
-      {
-        id: 3,
-        title: 'Best ranking to your agency',
-      },
-    ],
-  },
-];
+import {useDispatch, useSelector} from 'react-redux';
+import {getPlansList} from '../../redux/agency/agencyActions';
 
 var options = {
   description: 'Credits towards consultation',
@@ -105,28 +38,86 @@ var options = {
 };
 
 const PurchasePlan = props => {
+  const [loading, setLoading] = useState(false);
+  const [planData, setPlanData] = useState([]);
+  const dispatch = useDispatch();
+
+  const plansData = useSelector(state => state.agency?.plans || []);
+
+  useEffect(() => {
+    setLoading(true);
+    dispatch(getPlansList({onSuccess, onFailure}));
+  }, []);
+
+  useEffect(() => {
+    if (plansData) {
+      setPlanData(plansData);
+    }
+  }, [plansData]);
+
+  const onSuccess = () => {
+    setLoading(false);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
   //CLICK EVENTS
   const onBackPress = () => {
     props.navigation.goBack();
   };
 
   const onMakePayment = () => {
+    const selectedItem = planData.find(i => i.selected);
+    if (!selectedItem) {
+      alert('Please Select Plan!!');
+      return;
+    }
+    var options = {
+      description: 'Purchase Plan for Membership',
+      image: 'https://i.imgur.com/3g7nmJC.png',
+      currency: 'INR',
+      key: 'rzp_test_OIr0Tqto8rXMCT', // Your api key
+      amount: Number(`${selectedItem.plan_price}00`),
+      name: selectedItem?.plan_name || 'Plan',
+      theme: {color: COLORS.pr_blue},
+    };
     // props.navigation.navigate('Documents');
-    // RazorpayCheckout.open(options) //
-    //   .then(data => {
-    //     // handle success
-    //     console.log(data);
-    //     alert(`Success: ${data.razorpay_payment_id}`);
-    //   })
-    //   .catch(error => {
-    //     // handle failure
-    //     alert(`Error: ${error.code} | ${error.description}`);
-    //   });
+    RazorpayCheckout.open(options) //
+      .then(data => {
+        // handle success
+        console.log(data);
+        alert(`Success: ${data.razorpay_payment_id}`);
+      })
+      .catch(error => {
+        // handle failure
+        alert(`Error: ${error.code} | ${error.description}`);
+      });
   };
+
+  const onClickPlan = data => {
+    const plans = planData.map(item => {
+      if (item.plan_name == data) {
+        item.selected = true;
+      } else {
+        item.selected = false;
+      }
+      return item;
+    });
+    setPlanData(plans);
+  };
+
   //RENDER
+
+  const renderLoading = () => (
+    <ActivityIndicator size={'small'} color={COLORS.black} />
+  );
+
   const PriceBox = ({item}) => {
     return (
-      <TouchableOpacity style={{marginBottom: 10}}>
+      <TouchableOpacity
+        style={{marginBottom: 10}}
+        onPress={() => onClickPlan(item.plan_name)}>
         <ImageBackground
           source={item.bgImg}
           resizeMode="cover"
@@ -141,11 +132,29 @@ const PurchasePlan = props => {
               />
             </View>
             <View style={styles.priceTag}>
-              <Text style={styles.priceTitleText}>{item.name}</Text>
+              <Text style={styles.priceTitleText}>{item.plan_name}</Text>
               <HightBox height={4} />
               <Text style={styles.priceSubTitleText}>
-                <Text style={styles.priceTitleText}>{item.price}</Text> /year
+                <Text style={styles.priceTitleText}>{item.plan_price}</Text>{' '}
+                /year
               </Text>
+            </View>
+            <View style={styles.selectView}>
+              {item.selected ? (
+                <FastImage
+                  source={IMAGES.FILLED_RADIO}
+                  style={{height: 16, width: 16}}
+                  resizeMode="contain"
+                  tintColor={COLORS.white}
+                />
+              ) : (
+                <FastImage
+                  source={IMAGES.UNFILLED_RADIO}
+                  style={{height: 16, width: 16}}
+                  resizeMode="contain"
+                  tintColor={COLORS.white}
+                />
+              )}
             </View>
           </View>
           <HightBox height={15} />
@@ -188,9 +197,12 @@ const PurchasePlan = props => {
           Select plan that best suits your need
         </Text>
         <HightBox height={27} />
-        {data.map(item => {
-          return <PriceBox item={item} key={item.id} />;
-        })}
+
+        {loading
+          ? renderLoading()
+          : planData.map(item => {
+              return <PriceBox item={item} key={item.id} />;
+            })}
         <View style={styles.bottomContainer}>
           <View style={{marginVertical: 30}}>
             <IButton
@@ -227,6 +239,12 @@ const styles = StyleSheet.create({
   boxTopContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  selectView: {
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start',
+    height: '100%',
   },
   priceTag: {
     marginLeft: 10,

@@ -1,6 +1,8 @@
 // [9:30 PM, 4/25/2023] F. Mohil: Status 0 means - Past project
 // [9:30 PM, 4/25/2023] F. Mohil: and status 1 means ongoing project
 
+import {IMAGES} from '../Common/Constants/images';
+
 export const dashboadData = [
   {
     id: 1,
@@ -153,5 +155,75 @@ export const projectsData = [
     project_name: 'Test 2',
     project_status: '1',
     updated_at: '2023-04-23T06:55:45.000000Z',
+  },
+];
+
+export const plansData = [
+  {
+    // id: 1,
+    bgImg: IMAGES.PAYMENT_1,
+    diamondImg: IMAGES.DIAMOND_1,
+    // name: 'Gold',
+    // price: 'Rs. 15000',
+    detailsArr: [
+      {
+        id: 1,
+        title: 'All free inquires',
+      },
+      {
+        id: 2,
+        title: 'Unlimited access',
+      },
+      {
+        id: 3,
+        title: 'Best ranking to your agency',
+      },
+      {
+        id: 4,
+        title: 'Premium features access',
+      },
+    ],
+  },
+  {
+    // id: 2,
+    bgImg: IMAGES.PAYMENT_2,
+    diamondImg: IMAGES.DIAMOND_2,
+    // name: 'Silver',
+    // price: 'Rs. 10000',
+    detailsArr: [
+      {
+        id: 1,
+        title: 'All free inquires',
+      },
+      {
+        id: 2,
+        title: 'Unlimited access',
+      },
+      {
+        id: 3,
+        title: 'Best ranking to your agency',
+      },
+    ],
+  },
+  {
+    // id: 3,
+    bgImg: IMAGES.PAYMENT_3,
+    diamondImg: IMAGES.DIAMOND_3,
+    // name: 'Silver',
+    // price: 'Rs. 10000',
+    detailsArr: [
+      {
+        id: 1,
+        title: 'All free inquires',
+      },
+      {
+        id: 2,
+        title: 'Unlimited access',
+      },
+      {
+        id: 3,
+        title: 'Best ranking to your agency',
+      },
+    ],
   },
 ];
