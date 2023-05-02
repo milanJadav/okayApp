@@ -112,7 +112,7 @@ const PurchasePlan = props => {
 
   const onMakePayment = () => {
     // props.navigation.navigate('Documents');
-    // RazorpayCheckout.open(options)
+    // RazorpayCheckout.open(options) //
     //   .then(data => {
     //     // handle success
     //     console.log(data);
