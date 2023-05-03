@@ -10,6 +10,11 @@ const initialState = {
     agencyName: '',
     gstNum: '',
   },
+  agencyAddProjectData: {
+    projectName: '',
+    address: '',
+    images: [],
+  },
 };
 
 export const agencySlice = createSlice({
@@ -24,10 +29,15 @@ export const agencySlice = createSlice({
       const {payload} = data;
       state.agencyDocData = payload;
     },
+    setAgencyProjectData: (state, data) => {
+      const {payload} = data;
+      state.agencyAddProjectData = payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {onPlansListSuccess, setAgencyDocData} = agencySlice.actions;
+export const {onPlansListSuccess, setAgencyProjectData, setAgencyDocData} =
+  agencySlice.actions;
 
 export default agencySlice.reducer;

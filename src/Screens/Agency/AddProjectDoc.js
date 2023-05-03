@@ -24,16 +24,21 @@ import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
 import ITextField from '../Components/ITextField';
 import {ImageBackground} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {saveArchitectProject} from '../../redux/auth/authActions';
 import {getFileName} from '../../Utils/Utils';
 import INavBar from '../Components/INavBar';
+import {setAgencyProjectData} from '../../redux/agency/agencySlice';
 
 const AddProjectDoc = props => {
-  const [projectName, setProjectName] = useState('');
-  const [clientName, setClientName] = useState('');
-  const [address, setAddress] = useState('');
-  const [images, setImages] = useState([]);
+  const agencyProjectData = useSelector(
+    state => state.agency?.agencyAddProjectData || {},
+  );
+  const [projectName, setProjectName] = useState(
+    agencyProjectData?.projectName,
+  );
+  const [address, setAddress] = useState(agencyProjectData?.address);
+  const [images, setImages] = useState(agencyProjectData?.images);
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -45,13 +50,18 @@ const AddProjectDoc = props => {
   const onCreate = () => {
     if (!projectName) {
       alert('Please Add Project Name!');
-    } else if (!clientName) {
-      alert('Please Add Client Name!');
     } else if (!address) {
       alert('Please Add Address!');
     } else if (images.length == 0) {
       alert('Please Select atleast 1 Image!');
     } else {
+      const data = {
+        projectName,
+        address,
+        images,
+      };
+      dispatch(setAgencyProjectData(data));
+
       const photos = images.map(item => {
         let filename = getFileName(item?.path);
         return {
@@ -62,7 +72,7 @@ const AddProjectDoc = props => {
 
       const payload = {
         name: projectName,
-        client_name: clientName,
+        client_name: 'temp',
         address: address,
         photos,
       };
@@ -74,7 +84,7 @@ const AddProjectDoc = props => {
 
   const onSuccess = () => {
     setLoading(false);
-    props.navigation.replace('ArchitectBottomTab');
+    onBackPress();
   };
 
   const onFailure = () => {
@@ -164,7 +174,7 @@ const AddProjectDoc = props => {
       <View style={{paddingHorizontal: 20}}>
         <INavBar onBackPress={onBackPress} title="Add project" />
       </View>
-      {/* <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> */}
+
       <View
         style={{
           flex: 1,
@@ -176,12 +186,7 @@ const AddProjectDoc = props => {
           showsVerticalScrollIndicator={false}>
           <View style={{paddingHorizontal: 20, flex: 1}}>
             <HightBox height={30} />
-            {/* <Text style={styles.titleText}>Let’s create your project</Text>
-            <Text style={[styles.subTitleText, {textAlign: 'center'}]}>
-              We’ll need some information regarding your project, please give us
-              details below
-            </Text>
-            <HightBox height={22} /> */}
+
             <Text style={styles.subTitleText}>Client/project name</Text>
             <ITextField
               value={projectName}
@@ -229,7 +234,6 @@ const AddProjectDoc = props => {
           </View>
         </KeyboardAwareScrollView>
       </View>
-      {/* </TouchableWithoutFeedback> */}
     </SafeAreaView>
   );
 };

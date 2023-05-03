@@ -18,7 +18,9 @@ import {useSelector} from 'react-redux';
 
 const Documents = props => {
   const agencyDocData = useSelector(state => state.agency?.agencyDocData || {});
-
+  const agencyProjectData = useSelector(
+    state => state.agency?.agencyAddProjectData || {},
+  );
   return (
     <SafeAreaView style={safeAreaStyle}>
       <View style={{paddingHorizontal: 20, flex: 1}}>
@@ -71,11 +73,22 @@ const Documents = props => {
           <View style={{flex: 1}}>
             <Text style={styles.btnTitle}>Add projects</Text>
           </View>
-          <FastImage
-            source={IMAGES.IC_ARROW_DOWN}
-            style={{height: 24, width: 24, transform: [{rotate: '-90deg'}]}}
-            resizeMode="contain"
-          />
+          {agencyProjectData?.projectName ? (
+            <View style={styles.checkBG}>
+              <FastImage
+                source={IMAGES.IC_CHECK}
+                style={{height: 10, width: 10}}
+                resizeMode="contain"
+                tintColor={COLORS.white}
+              />
+            </View>
+          ) : (
+            <FastImage
+              source={IMAGES.IC_ARROW_DOWN}
+              style={{height: 24, width: 24, transform: [{rotate: '-90deg'}]}}
+              resizeMode="contain"
+            />
+          )}
         </TouchableOpacity>
         <HightBox height={15} />
         <TouchableOpacity style={styles.uploadBtn} onPress={() => {}}>
