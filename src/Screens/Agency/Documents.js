@@ -14,8 +14,11 @@ import {COLORS} from '../../Common/Constants/colors';
 import FastImage from 'react-native-fast-image';
 import {IMAGES} from '../../Common/Constants/images';
 import IButton from '../Components/IButton';
+import {useSelector} from 'react-redux';
 
 const Documents = props => {
+  const agencyDocData = useSelector(state => state.agency?.agencyDocData || {});
+
   return (
     <SafeAreaView style={safeAreaStyle}>
       <View style={{paddingHorizontal: 20, flex: 1}}>
@@ -39,11 +42,22 @@ const Documents = props => {
           <View style={{flex: 1}}>
             <Text style={styles.btnTitle}>Upload documents</Text>
           </View>
-          <FastImage
-            source={IMAGES.IC_ARROW_DOWN}
-            style={{height: 24, width: 24, transform: [{rotate: '-90deg'}]}}
-            resizeMode="contain"
-          />
+          {agencyDocData?.agencyName ? (
+            <View style={styles.checkBG}>
+              <FastImage
+                source={IMAGES.IC_CHECK}
+                style={{height: 10, width: 10}}
+                resizeMode="contain"
+                tintColor={COLORS.white}
+              />
+            </View>
+          ) : (
+            <FastImage
+              source={IMAGES.IC_ARROW_DOWN}
+              style={{height: 24, width: 24, transform: [{rotate: '-90deg'}]}}
+              resizeMode="contain"
+            />
+          )}
         </TouchableOpacity>
         <HightBox height={15} />
         <TouchableOpacity
@@ -140,5 +154,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 15,
     color: 'rgba(0, 0, 0, 0.44)',
+  },
+  checkBG: {
+    padding: 4,
+    backgroundColor: '#13A53C',
+    borderRadius: 50,
+    marginRight: 4,
   },
 });

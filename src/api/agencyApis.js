@@ -5,3 +5,6 @@ export const getPlans = () =>
 
 export const savePlanPayment = data =>
   userRawFetch.post('/addagencypayment', data).then(extractData);
+
+export const saveAgencyDoc = data =>
+  userRawFetch.post('/addagency', data).then(extractData);

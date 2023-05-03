@@ -240,7 +240,10 @@ const PurchasePlan = props => {
           <View style={{marginVertical: 30}}>
             <IButton
               title={'Make a payment'}
-              onPress={() => onMakePayment()}
+              onPress={() => {
+                props.navigation.replace('Documents');
+                // onMakePayment()
+              }}
               loading={btnLoading}
             />
           </View>
