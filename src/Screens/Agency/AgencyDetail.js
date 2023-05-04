@@ -160,7 +160,8 @@ const AgencyDetail = props => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[styles.filledBtn, {backgroundColor: COLORS.orange}]}>
+                style={[styles.filledBtn, {backgroundColor: COLORS.orange}]}
+                onPress={() => openLinks(`whatsapp://send?phone=91${mobile}`)}>
                 <FastImage
                   source={IMAGES.IC_MESSAGE}
                   style={{height: 19, width: 19, marginRight: 5}}

@@ -14,6 +14,7 @@ export const getProfileData = ({onSuccess, onFailure}) => {
           formdata.append('user_id', userId);
           getProfile(formdata)
             .then(response => {
+              // console.log('profile response', response);
               if (response?.status == 200) {
                 if (isFunction(onSuccess)) {
                   onSuccess();

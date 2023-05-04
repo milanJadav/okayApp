@@ -24,9 +24,10 @@ import IBackButton from '../Components/IBackButton';
 import ProgressBar from '../Components/ProgressBar';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUserProjectDetail} from '../../redux/dashboard/dashboardActions';
+import {openLinks} from '../../Utils/Utils';
 
 const ClientDetails = props => {
-  const {projectId} = props.route.params || {};
+  const {data} = props.route.params || {};
 
   const [loading, setLoading] = useState(false);
 
@@ -93,7 +94,7 @@ const ClientDetails = props => {
             }}>
             <View>
               <Text style={styles.agencyName} numberOfLines={1}>
-                {'Xevior neoman'}
+                {data?.full_name}
               </Text>
 
               <View style={styles.border} />
@@ -113,10 +114,7 @@ const ClientDetails = props => {
                   />
                 </View>
                 <View style={{width: '70%', marginLeft: 10}}>
-                  <Text style={styles.address}>
-                    {/* {projectDetail?.location} */}
-                    106 - City plaza 2, near sciencity,sola, Ahmedabad - 9008
-                  </Text>
+                  <Text style={styles.address}>{data?.address}</Text>
                 </View>
               </View>
             </View>
@@ -132,7 +130,10 @@ const ClientDetails = props => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[styles.filledBtn, {backgroundColor: COLORS.orange}]}>
+                style={[styles.filledBtn, {backgroundColor: COLORS.orange}]}
+                onPress={() =>
+                  openLinks(`whatsapp://send?phone=91${data?.mobile}`)
+                }>
                 <FastImage
                   source={IMAGES.IC_MESSAGE}
                   style={{height: 19, width: 19, marginRight: 5}}

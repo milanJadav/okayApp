@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   FlatList,
+  RefreshControl,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -17,10 +19,41 @@ import {IMAGES} from '../../Common/Constants/images';
 import {agenciesList} from '../../Utils/Data';
 import AgencyCard from '../Components/AgencyCard';
 import UserCard from '../Components/UserCard';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getAgencyArchitects,
+  getAgencyCustomers,
+} from '../../redux/agency/agencyActions';
+import {windowHeight} from '../../Utils/Dimentions';
 
 const AgencyHomeScreen = props => {
   const [customerSelected, setCustomerSelected] = useState(false);
   const [architectSelected, setArchitectSelected] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const architectData = useSelector(state => state.agency?.architectList || []);
+  const customerData = useSelector(state => state.agency?.customerList || []);
+
+  useEffect(() => {
+    setLoading(true);
+    dispatch(getAgencyArchitects({onSuccess, onFailure}));
+    dispatch(getAgencyCustomers({onSuccess, onFailure}));
+  }, []);
+
+  const onSuccess = () => {
+    setLoading(false);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
+
+  const onRefresh = () => {
+    dispatch(getAgencyArchitects({onSuccess, onFailure}));
+    dispatch(getAgencyCustomers({onSuccess, onFailure}));
+  };
 
   //RENDER METHODS
   const renderButtonRow = () => {
@@ -87,6 +120,7 @@ const AgencyHomeScreen = props => {
       <View
         style={{
           flex: 1,
+          height: windowHeight / 1.5,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
@@ -107,10 +141,17 @@ const AgencyHomeScreen = props => {
   const renderAgency = ({item}) => {
     return (
       <UserCard
-        onViewCustomer={() => props.navigation.navigate('ClientDetails')}
+        data={item}
+        onViewCustomer={data =>
+          props.navigation.navigate('ClientDetails', {data})
+        }
       />
     );
   };
+
+  const renderLoading = () => (
+    <ActivityIndicator size={'small'} color={COLORS.black} />
+  );
 
   return (
     <SafeAreaView style={safeAreaStyle}>
@@ -120,17 +161,28 @@ const AgencyHomeScreen = props => {
         {renderButtonRow()}
         <HightBox height={15} />
         <View style={{flex: 1}}>
-          <FlatList
-            data={agenciesList}
-            renderItem={renderAgency}
-            keyExtractor={({id}) => id.toString()}
-            ItemSeparatorComponent={() => <HightBox height={15} />}
-            ListFooterComponent={() => <HightBox height={15} />}
-            style={{flex: 1}}
-            showsVerticalScrollIndicator={false}
-          />
+          {loading ? (
+            renderLoading()
+          ) : (
+            <FlatList
+              data={architectSelected ? architectData : customerData}
+              renderItem={renderAgency}
+              keyExtractor={({id}) => id.toString()}
+              refreshControl={
+                <RefreshControl
+                  refreshing={loading}
+                  colors={[COLORS.black]}
+                  onRefresh={() => onRefresh()}
+                />
+              }
+              ItemSeparatorComponent={() => <HightBox height={15} />}
+              ListFooterComponent={() => <HightBox height={15} />}
+              ListEmptyComponent={() => renderEmptyContainer()}
+              style={{flex: 1}}
+              showsVerticalScrollIndicator={false}
+            />
+          )}
         </View>
-        {/* {renderEmptyContainer()} */}
       </View>
     </SafeAreaView>
   );

@@ -24,6 +24,11 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>whatsapp</string>
+		<string>tel</string>
+	</array>
 	<key>NSCameraUsageDescription</key>
   	<string>OkayApp requires access to your phone’s camera.</string>
   	<key>NSPhotoLibraryUsageDescription</key>

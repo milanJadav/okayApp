@@ -8,3 +8,15 @@ export const savePlanPayment = data =>
 
 export const saveAgencyDoc = data =>
   userRawFetch.post('/addagency', data).then(extractData);
+
+export const agencyArchitectureList = data =>
+  userAuthFetch.post('/getarchitect', data).then(extractData);
+
+export const agencyCustomerList = data =>
+  userAuthFetch.post('/getcustomers', data).then(extractData);
+
+export const agencyPastCustomerList = data =>
+  userAuthFetch.post('/getpastcustomers', data).then(extractData);
+
+export const agencyPastArchitectList = data =>
+  userAuthFetch.post('/getpastarchitect', data).then(extractData);

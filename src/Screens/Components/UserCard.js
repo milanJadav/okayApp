@@ -6,27 +6,27 @@ import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
 import {windowHeight} from '../../Utils/Dimentions';
 
-const UserCard = ({onViewCustomer = () => {}}) => {
+const UserCard = ({onViewCustomer = () => {}, data}) => {
   return (
     <TouchableOpacity style={styles.container} disabled>
       <FastImage
-        source={require('../../assets/temp/agencyPic.png')}
+        source={require('../../assets/temp/tempprofilePic.png')}
         style={styles.img}
-        resizeMode="cover"
+        resizeMode="stretch"
       />
       <View style={styles.rightContainer}>
         <View>
           <Text style={styles.title} numberOfLines={1}>
-            Malvika menon
+            {data?.full_name || ''}
           </Text>
           <Text style={styles.subTitle} numberOfLines={2}>
-            101/City center 2/ opp. enclave, chandlodida-38340
+            {data?.address || ''}
           </Text>
         </View>
         <View style={styles.btnRow}>
           <TouchableOpacity
             style={[styles.unfilledBtn]}
-            onPress={() => onViewCustomer()}>
+            onPress={() => onViewCustomer(data)}>
             <FastImage
               source={IMAGES.IC_EYE}
               style={{height: 16, width: 16, marginRight: 5}}

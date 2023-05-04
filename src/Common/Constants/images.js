@@ -48,4 +48,6 @@ export const IMAGES = {
   IC_ADDPROJECTS: require('../../assets/images/addProjects.png'),
   IC_UPLOAD: require('../../assets/images/upload.png'),
   MESSAGE_BOX: require('../../assets/images/messageBox.png'),
+  IC_USERS: require('../../assets/images/users.png'),
+  IC_SCALE: require('../../assets/images/scale.png'),
 };

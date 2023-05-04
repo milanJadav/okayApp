@@ -1,8 +1,22 @@
 import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 import {plansData} from '../../Utils/Data';
 import {isFunction} from '../../Utils/Utils';
-import {getPlans, saveAgencyDoc, savePlanPayment} from '../../api/agencyApis';
-import {onPlansListSuccess} from './agencySlice';
+import {
+  agencyArchitectureList,
+  agencyCustomerList,
+  agencyPastArchitectList,
+  agencyPastCustomerList,
+  getPlans,
+  saveAgencyDoc,
+  savePlanPayment,
+} from '../../api/agencyApis';
+import {
+  getAgencyArchitectList,
+  getAgencyCustomerList,
+  getAgencyPastArchitectList,
+  getAgencyPastCustomerList,
+  onPlansListSuccess,
+} from './agencySlice';
 
 // import {onProfileDataSuccess} from './agencySlice';
 
@@ -93,6 +107,142 @@ export const saveAgencyDocuments = ({payload, onSuccess, onFailure}) => {
           if (isFunction(onFailure)) {
             onFailure();
           }
+        });
+    } catch (error) {
+      console.log('Error!', error);
+      if (isFunction(onFailure)) {
+        onFailure();
+      }
+    }
+  };
+};
+
+export const getAgencyArchitects = ({onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      var formdata = new FormData();
+
+      localStorageHelper
+        .getItemFromStorage(StorageKeys.USER_ID)
+        .then(async userId => {
+          formdata.append('agency_id', userId);
+          return agencyArchitectureList(formdata)
+            .then(response => {
+              if (response?.status == 200) {
+                if (isFunction(onSuccess)) {
+                  onSuccess();
+                }
+                dispatch(getAgencyArchitectList(response?.data || []));
+              }
+            })
+            .catch(err => {
+              console.log('error in get agency Artchitect', err.response.data);
+              if (isFunction(onFailure)) {
+                onFailure();
+              }
+            });
+        });
+    } catch (error) {
+      console.log('Error!', error);
+      if (isFunction(onFailure)) {
+        onFailure();
+      }
+    }
+  };
+};
+
+export const getAgencyCustomers = ({onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      var formdata = new FormData();
+
+      localStorageHelper
+        .getItemFromStorage(StorageKeys.USER_ID)
+        .then(async userId => {
+          formdata.append('agency_id', userId);
+          return agencyCustomerList(formdata)
+            .then(response => {
+              if (response?.status == 200) {
+                if (isFunction(onSuccess)) {
+                  onSuccess();
+                }
+                dispatch(getAgencyCustomerList(response?.data || []));
+              }
+            })
+            .catch(err => {
+              console.log('error in get agency customer', err.response.data);
+              if (isFunction(onFailure)) {
+                onFailure();
+              }
+            });
+        });
+    } catch (error) {
+      console.log('Error!', error);
+      if (isFunction(onFailure)) {
+        onFailure();
+      }
+    }
+  };
+};
+
+export const getAgencyPastCustomers = ({onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      var formdata = new FormData();
+
+      localStorageHelper
+        .getItemFromStorage(StorageKeys.USER_ID)
+        .then(async userId => {
+          formdata.append('agency_id', userId);
+          return agencyPastCustomerList(formdata)
+            .then(response => {
+              if (response?.status == 200) {
+                if (isFunction(onSuccess)) {
+                  onSuccess();
+                }
+                dispatch(getAgencyPastCustomerList(response?.data || []));
+              }
+            })
+            .catch(err => {
+              console.log('error in get agency customer', err.response.data);
+              if (isFunction(onFailure)) {
+                onFailure();
+              }
+            });
+        });
+    } catch (error) {
+      console.log('Error!', error);
+      if (isFunction(onFailure)) {
+        onFailure();
+      }
+    }
+  };
+};
+
+export const getAgencyPastArchitect = ({onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      var formdata = new FormData();
+
+      localStorageHelper
+        .getItemFromStorage(StorageKeys.USER_ID)
+        .then(async userId => {
+          formdata.append('agency_id', userId);
+          return agencyPastArchitectList(formdata)
+            .then(response => {
+              if (response?.status == 200) {
+                if (isFunction(onSuccess)) {
+                  onSuccess();
+                }
+                dispatch(getAgencyPastArchitectList(response?.data || []));
+              }
+            })
+            .catch(err => {
+              console.log('error in get agency customer', err.response.data);
+              if (isFunction(onFailure)) {
+                onFailure();
+              }
+            });
         });
     } catch (error) {
       console.log('Error!', error);

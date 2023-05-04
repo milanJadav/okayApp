@@ -14,6 +14,11 @@ import UploadPanDoc from '../Screens/Agency/UploadPanDoc';
 import AddProjectDoc from '../Screens/Agency/AddProjectDoc';
 import AgencyHomeScreen from '../Screens/Agency/AgencyHomeScreen';
 import ClientDetails from '../Screens/Agency/ClientDetails';
+import EditProfile from '../Screens/Architect/EditProfile';
+import AccountDelete from '../Screens/Architect/AccountDelete';
+import AgencyProfile from '../Screens/Agency/AgencyProfile';
+import PastArchitects from '../Screens/Agency/PastArchitects';
+import PastCustomers from '../Screens/Agency/PastCustomers';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -74,8 +79,8 @@ const AgencyBottomTab = () => {
       />
 
       <Tab.Screen
-        name="Profile"
-        component={Profile}
+        name="AgencyProfile"
+        component={AgencyProfile}
         options={{
           tabBarIcon: ({color, focused}) => (
             <TabButton
@@ -103,6 +108,10 @@ const AgencyStack = props => {
       <Stack.Screen name="AddProjectDoc" component={AddProjectDoc} />
       <Stack.Screen name="AgencyBottomTab" component={AgencyBottomTab} />
       <Stack.Screen name="ClientDetails" component={ClientDetails} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="AccountDelete" component={AccountDelete} />
+      <Stack.Screen name="PastArchitects" component={PastArchitects} />
+      <Stack.Screen name="PastCustomers" component={PastCustomers} />
     </Stack.Navigator>
   );
 };
