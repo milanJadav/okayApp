@@ -6,6 +6,7 @@ import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
 import {windowHeight} from '../../Utils/Dimentions';
 import {ASSET_URL} from '../../Environment';
+import {noImag} from '../../Utils/Utils';
 
 const AgencyCard = ({
   onViewAgency = () => {},
@@ -15,7 +16,7 @@ const AgencyCard = ({
   return (
     <TouchableOpacity style={styles.container} disabled>
       <FastImage
-        source={{uri: `${ASSET_URL}${data?.agency_image}`}}
+        source={{uri: `${ASSET_URL}${data?.agency_image} || ${noImag}`}}
         style={styles.img}
         resizeMode="cover"
       />

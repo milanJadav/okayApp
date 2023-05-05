@@ -235,6 +235,7 @@ const UploadPanDoc = props => {
             selectedTextStyle={styles.selectedTextStyle}
             iconStyle={styles.iconStyle}
             data={categoryDataRedux}
+            itemTextStyle={{color: COLORS.textColor}}
             // value={categoryName}
             maxHeight={200}
             labelField="category_name"
@@ -255,6 +256,7 @@ const UploadPanDoc = props => {
             iconStyle={styles.iconStyle}
             data={subCategoryData}
             disable={categoryId == null}
+            itemTextStyle={{color: COLORS.textColor}}
             maxHeight={200}
             labelField="subcategory_name"
             valueField={'id'}

@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Animated,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -325,6 +326,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTS.OUTFIT_LIGHT,
     color: COLORS.textColor,
+    padding: Platform.OS == 'android' ? 0 : 0,
   },
   projectRow: {
     flexDirection: 'row',

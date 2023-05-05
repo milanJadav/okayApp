@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import RNFS from 'react-native-fs';
+import DocumentPicker from 'react-native-document-picker';
 import {safeAreaStyle} from '../../Common/CommonStyles';
 import LocationNavBar from '../Components/LocationNavBar';
 import HightBox from '../Components/HightBox';
@@ -14,13 +16,73 @@ import {COLORS} from '../../Common/Constants/colors';
 import FastImage from 'react-native-fast-image';
 import {IMAGES} from '../../Common/Constants/images';
 import IButton from '../Components/IButton';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {getBase64} from '../../Utils/Utils';
+import {uploadPriceList} from '../../redux/agency/agencyActions';
 
 const Documents = props => {
+  const [pdf, setPdf] = useState(null);
+  const [pdfbase64, setPdfBase64] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
   const agencyDocData = useSelector(state => state.agency?.agencyDocData || {});
   const agencyProjectData = useSelector(
     state => state.agency?.agencyAddProjectData || {},
   );
+
+  const selectOneFile = async () => {
+    try {
+      const res = await DocumentPicker.pickSingle({
+        type: [DocumentPicker.types.pdf],
+        copyTo: 'documentDirectory',
+      });
+
+      console.log('res : ' + JSON.stringify(res));
+
+      RNFS.readFile(res.uri, 'base64').then(res => {
+        setPdfBase64(res);
+      });
+      setPdf(res);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        //If user canceled the document selection
+        alert('User Canceled document picker');
+      } else {
+        //For Unknown Error
+        alert('Unknown Error: ' + JSON.stringify(err));
+        throw err;
+      }
+    }
+  };
+
+  const onSuccess = () => {
+    setLoading(false);
+    props.navigation.replace('AgencyBottomTab');
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
+
+  const onSave = () => {
+    if (pdf == null) {
+      alert('Please select pricelist!');
+      return;
+    }
+
+    const payload = {
+      pricelist: {
+        filename: pdf?.name,
+        data: pdfbase64,
+      },
+    };
+    setLoading(true);
+    // console.log('payload', payload);
+    props.navigation.replace('AgencyBottomTab');
+    // dispatch(uploadPriceList({payload, onSuccess, onFailure}));
+  };
+
   return (
     <SafeAreaView style={safeAreaStyle}>
       <View style={{paddingHorizontal: 20, flex: 1}}>
@@ -91,21 +153,49 @@ const Documents = props => {
           )}
         </TouchableOpacity>
         <HightBox height={15} />
-        <TouchableOpacity style={styles.uploadBtn} onPress={() => {}}>
-          <FastImage
-            source={IMAGES.IC_UPLOAD}
-            style={{height: 20, width: 20, marginRight: 5}}
-            resizeMode="contain"
-            tintColor={COLORS.pr_blue}
-          />
-          <Text style={styles.uploadText}>Upload price list</Text>
-        </TouchableOpacity>
+
+        {pdf == null ? (
+          <TouchableOpacity
+            style={styles.uploadBtn}
+            onPress={() => selectOneFile()}>
+            <FastImage
+              source={IMAGES.IC_UPLOAD}
+              style={{height: 20, width: 20, marginRight: 5}}
+              resizeMode="contain"
+              tintColor={COLORS.pr_blue}
+            />
+            <Text style={styles.uploadText}>Upload price list</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.btnRow} disabled>
+            <FastImage
+              source={IMAGES.IC_FILE}
+              style={{height: 24, width: 24, marginRight: 10}}
+              resizeMode="contain"
+              tintColor={COLORS.black}
+            />
+            <View style={{flex: 1}}>
+              <Text style={styles.btnTitle}>{pdf?.name}</Text>
+            </View>
+            <TouchableOpacity onPress={() => setPdf(null)}>
+              <FastImage
+                source={IMAGES.IC_CROSS}
+                style={{height: 20, width: 20}}
+                resizeMode="contain"
+                tintColor={COLORS.black}
+              />
+            </TouchableOpacity>
+          </TouchableOpacity>
+        )}
         <HightBox height={10} />
         <Text style={styles.notes}>File must be in PDF format</Text>
         <HightBox height={50} />
         <IButton
           title={'Save'}
-          onPress={() => props.navigation.navigate('AgencyBottomTab')}
+          onPress={() => {
+            onSave();
+          }}
+          loading={loading}
         />
       </View>
     </SafeAreaView>

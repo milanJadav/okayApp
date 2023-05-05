@@ -32,3 +32,6 @@ export const openLinks = async link => {
     return console.log('Unable to open URI: ' + err_1);
   }
 };
+
+export const noImag =
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png';

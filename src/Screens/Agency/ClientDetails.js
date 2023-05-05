@@ -119,7 +119,9 @@ const ClientDetails = props => {
               </View>
             </View>
             <View style={styles.agencyRow}>
-              <TouchableOpacity style={[styles.filledBtn]}>
+              <TouchableOpacity
+                style={[styles.filledBtn]}
+                onPress={() => openLinks(`tel:${data?.mobile}`)}>
                 <FastImage
                   source={IMAGES.IC_CALL}
                   style={{height: 19, width: 19, marginRight: 10}}

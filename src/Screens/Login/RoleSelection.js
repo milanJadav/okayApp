@@ -22,19 +22,19 @@ import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 
 var roles = [
   {
-    id: 1,
+    id: 2,
     title: 'Architect / Interior',
     selected: true,
     img: IMAGES.IC_ARCHITECT,
   },
   {
-    id: 2,
+    id: 3,
     title: 'Agency',
     selected: false,
     img: IMAGES.IC_AGENCY,
   },
   {
-    id: 3,
+    id: 1,
     title: 'Customer',
     selected: false,
     img: IMAGES.IC_CUSTOMER,

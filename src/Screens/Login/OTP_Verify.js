@@ -21,6 +21,8 @@ import IBackButton from '../Components/IBackButton';
 import IButton from '../Components/IButton';
 import {useDispatch} from 'react-redux';
 import {VerifyOTP} from '../../redux/auth/authActions';
+import {setAgencyDocData} from '../../redux/agency/agencySlice';
+import {setAgencyProjectData} from '../../redux/agency/agencySlice';
 
 const CELL_COUNT = 4;
 
@@ -65,8 +67,25 @@ const OTP_Verify = props => {
           initialRoute: 'CustomerBottomTab',
         });
       } else if (data?.user_type_name == 'Agency') {
-        props.navigation.replace('AgencyStack');
-        //Initial Route name add
+        var route = 'PurchasePlan';
+        if (data?.payment_status == '0' && data?.flag == '3') {
+          route = 'AgencyBottomTab';
+        } else if (data?.payment_status == '0' && data?.flag == '1') {
+          route = 'Documents';
+          const data = {
+            agencyName: 'temp',
+          };
+          dispatch(setAgencyDocData(data));
+        } else if (data?.payment_status == '0' && data?.flag == '2') {
+          route = 'Documents';
+          const data = {
+            projectName: 'temp',
+          };
+          dispatch(setAgencyProjectData(data));
+        }
+        props.navigation.replace('AgencyStack', {
+          initialRoute: route,
+        });
       }
     } else {
       props.navigation.navigate('RoleSelection');
