@@ -149,7 +149,9 @@ const AgencyDetail = props => {
             </View>
 
             <View style={styles.agencyRow}>
-              <TouchableOpacity style={[styles.filledBtn]}>
+              <TouchableOpacity
+                style={[styles.filledBtn]}
+                onPress={() => openLinks(`tel:${mobile}`)}>
                 <FastImage
                   source={IMAGES.IC_CALL}
                   style={{height: 19, width: 19, marginRight: 10}}

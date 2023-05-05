@@ -9,6 +9,7 @@ import {
   getPlans,
   saveAgencyDoc,
   savePlanPayment,
+  uploadAgencyPriceList,
 } from '../../api/agencyApis';
 import {
   getAgencyArchitectList,
@@ -243,6 +244,37 @@ export const getAgencyPastArchitect = ({onSuccess, onFailure}) => {
                 onFailure();
               }
             });
+        });
+    } catch (error) {
+      console.log('Error!', error);
+      if (isFunction(onFailure)) {
+        onFailure();
+      }
+    }
+  };
+};
+
+export const uploadPriceList = ({payload, onSuccess, onFailure}) => {
+  return async dispatch => {
+    try {
+      uploadAgencyPriceList(JSON.stringify(payload))
+        .then(response => {
+          console.log('------', response);
+          if (response?.status == 200) {
+            if (isFunction(onSuccess)) {
+              onSuccess();
+            }
+          } else {
+            if (isFunction(onFailure)) {
+              onFailure();
+            }
+          }
+        })
+        .catch(err => {
+          console.log('error in save price list', err.response.data);
+          if (isFunction(onFailure)) {
+            onFailure();
+          }
         });
     } catch (error) {
       console.log('Error!', error);

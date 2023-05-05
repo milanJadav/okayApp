@@ -20,3 +20,6 @@ export const agencyPastCustomerList = data =>
 
 export const agencyPastArchitectList = data =>
   userAuthFetch.post('/getpastarchitect', data).then(extractData);
+
+export const uploadAgencyPriceList = data =>
+  userRawFetch.post('/uploadpricelist', data).then(extractData);
