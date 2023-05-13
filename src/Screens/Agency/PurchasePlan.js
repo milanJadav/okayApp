@@ -71,6 +71,11 @@ const PurchasePlan = props => {
 
   const onSuccessSavePayment = () => {
     setBtnLoading(false);
+    localStorageHelper
+      .setStorageItem({key: StorageKeys.PAYMENT_DONE, value: 'true'})
+      .then(res => {
+        console.log('payment set success');
+      });
     props.navigation.replace('Documents');
   };
 
@@ -241,8 +246,8 @@ const PurchasePlan = props => {
             <IButton
               title={'Make a payment'}
               onPress={() => {
-                props.navigation.replace('Documents');
-                // onMakePayment()
+                // props.navigation.replace('Documents');
+                onMakePayment();
               }}
               loading={btnLoading}
             />

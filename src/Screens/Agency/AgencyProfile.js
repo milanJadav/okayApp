@@ -17,6 +17,8 @@ import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 import {useDispatch, useSelector} from 'react-redux';
 import {getProfileData} from '../../redux/profile/profileActions';
 import {logoutAction} from '../../redux/auth/authActions';
+import {noImag} from '../../Utils/Utils';
+import {ASSET_URL} from '../../Environment';
 
 const profileData = [
   {
@@ -116,7 +118,11 @@ const AgencyProfile = props => {
     return (
       <View style={styles.profileContainer}>
         <FastImage
-          source={require('../../assets/temp/profileTemp.png')}
+          source={{
+            uri: userProfileData?.profile_pic
+              ? `${ASSET_URL}${userProfileData?.profile_pic}`
+              : noImag,
+          }}
           style={styles.img}
           resizeMode="contain"
         />

@@ -19,6 +19,7 @@ import IButton from '../Components/IButton';
 import {useDispatch, useSelector} from 'react-redux';
 import {getBase64} from '../../Utils/Utils';
 import {uploadPriceList} from '../../redux/agency/agencyActions';
+import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 
 const Documents = props => {
   const [pdf, setPdf] = useState(null);
@@ -58,7 +59,7 @@ const Documents = props => {
 
   const onSuccess = () => {
     setLoading(false);
-    props.navigation.replace('AgencyBottomTab');
+    // props.navigation.replace('AgencyBottomTab');
   };
 
   const onFailure = () => {
@@ -66,21 +67,37 @@ const Documents = props => {
   };
 
   const onSave = () => {
-    if (pdf == null) {
-      alert('Please select pricelist!');
+    if (!agencyDocData?.agencyName) {
+      alert('Please Add Agency Data!');
       return;
     }
+    if (!agencyProjectData?.projectName) {
+      alert('Please Add Projects Data!');
+      return;
+    }
+    // if (pdf == null) {
+    //   alert('Please select pricelist!');
+    //   return;
+    // }
+
+    localStorageHelper
+      .setStorageItem({key: StorageKeys.FLAG, value: '3'})
+      .then(res => {
+        console.log('Flag set success');
+      });
 
     const payload = {
       pricelist: {
         filename: pdf?.name,
         data: pdfbase64,
+        flag: '3',
       },
     };
+
     setLoading(true);
     // console.log('payload', payload);
+    dispatch(uploadPriceList({payload, onSuccess, onFailure}));
     props.navigation.replace('AgencyBottomTab');
-    // dispatch(uploadPriceList({payload, onSuccess, onFailure}));
   };
 
   return (

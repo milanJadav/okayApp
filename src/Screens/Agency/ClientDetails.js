@@ -24,7 +24,8 @@ import IBackButton from '../Components/IBackButton';
 import ProgressBar from '../Components/ProgressBar';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUserProjectDetail} from '../../redux/dashboard/dashboardActions';
-import {openLinks} from '../../Utils/Utils';
+import {noImag, openLinks} from '../../Utils/Utils';
+import {ASSET_URL} from '../../Environment';
 
 const ClientDetails = props => {
   const {data} = props.route.params || {};
@@ -74,7 +75,11 @@ const ClientDetails = props => {
               backgroundColor: 'red',
             }}> */}
           <ImageBackground
-            source={require('../../assets/temp/agencyDetail.png')}
+            source={{
+              uri: data?.profile_pic
+                ? `${ASSET_URL}${data?.profile_pic}`
+                : noImag,
+            }}
             style={styles.topImg}
             imageStyle={{
               borderBottomLeftRadius: 20,

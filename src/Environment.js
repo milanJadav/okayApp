@@ -1,5 +1,5 @@
 export const DEV_URL = 'https://apiproduct.datahayinfotech.com/api';
-export const ASSET_URL = 'https://assets.datahayinfotech.com/';
+export const ASSET_URL = 'https://datahayinfotech.com/storage/';
 
 const ENVIRONMENT_LIST = {
   DEV_STAGING_MAIN: {

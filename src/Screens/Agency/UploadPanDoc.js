@@ -62,6 +62,11 @@ const UploadPanDoc = props => {
 
   const onSuccessAgencySave = () => {
     setLoading(false);
+    localStorageHelper
+      .setStorageItem({key: StorageKeys.FLAG, value: '1'})
+      .then(res => {
+        console.log('Flag set success');
+      });
     onBackPress();
   };
 

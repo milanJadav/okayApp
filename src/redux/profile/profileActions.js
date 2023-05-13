@@ -14,7 +14,7 @@ export const getProfileData = ({onSuccess, onFailure}) => {
           formdata.append('user_id', userId);
           getProfile(formdata)
             .then(response => {
-              // console.log('profile response', response);
+              console.log('profile response', response);
               if (response?.status == 200) {
                 if (isFunction(onSuccess)) {
                   onSuccess();
@@ -35,25 +35,15 @@ export const getProfileData = ({onSuccess, onFailure}) => {
   };
 };
 
-export const saveUserDetails = ({
-  name,
-  email,
-  mobileNum,
-  onSuccess,
-  onFailure,
-}) => {
+export const saveUserDetails = ({payload, onSuccess, onFailure}) => {
   return async dispatch => {
     try {
-      var formdata = new FormData();
       localStorageHelper
         .getItemFromStorage(StorageKeys.USER_ID)
         .then(async userId => {
-          formdata.append('user_id', userId);
-          formdata.append('full_name', name);
-          formdata.append('email', email);
-          formdata.append('mobile', mobileNum);
+          const data = {...payload, user_id: userId};
 
-          updateProfileData(formdata)
+          updateProfileData(data)
             .then(response => {
               if (response?.status == 200) {
                 if (isFunction(onSuccess)) {

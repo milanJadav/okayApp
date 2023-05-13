@@ -29,6 +29,7 @@ import {saveArchitectProject} from '../../redux/auth/authActions';
 import {getFileName} from '../../Utils/Utils';
 import INavBar from '../Components/INavBar';
 import {setAgencyProjectData} from '../../redux/agency/agencySlice';
+import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 
 const AddProjectDoc = props => {
   const agencyProjectData = useSelector(
@@ -84,6 +85,11 @@ const AddProjectDoc = props => {
 
   const onSuccess = () => {
     setLoading(false);
+    localStorageHelper
+      .setStorageItem({key: StorageKeys.FLAG, value: '2'})
+      .then(res => {
+        console.log('Flag set success');
+      });
     onBackPress();
   };
 

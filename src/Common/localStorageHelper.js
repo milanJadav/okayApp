@@ -10,6 +10,8 @@ export const StorageKeys = {
   NAME: 'NAME',
   IS_LOGGED: 'IS_LOGGED',
   FIRST_TIME_LOGIN: 'FIRST_TIME_LOGIN',
+  PAYMENT_DONE: 'PAYMENT_DONE',
+  FLAG: 'FLAG',
 };
 
 class LocalStorageHelper {

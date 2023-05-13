@@ -38,6 +38,8 @@ const ArchitectSelectCategory = props => {
     state => state.dashboard?.categoryWiseAgency || [],
   );
 
+  console.log(categoryWiseAgencies);
+
   useEffect(() => {
     setLoading(true);
     dispatch(getSubCategory({categoryId: item?.id, onSuccess, onFailure}));

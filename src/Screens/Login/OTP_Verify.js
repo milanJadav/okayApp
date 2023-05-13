@@ -23,6 +23,7 @@ import {useDispatch} from 'react-redux';
 import {VerifyOTP} from '../../redux/auth/authActions';
 import {setAgencyDocData} from '../../redux/agency/agencySlice';
 import {setAgencyProjectData} from '../../redux/agency/agencySlice';
+import {StorageKeys, localStorageHelper} from '../../Common/localStorageHelper';
 
 const CELL_COUNT = 4;
 
@@ -82,7 +83,19 @@ const OTP_Verify = props => {
             projectName: 'temp',
           };
           dispatch(setAgencyProjectData(data));
+        } else if (data?.payment_status == '0' && data?.flag == '0') {
+          route = 'Documents';
         }
+
+        const storageData = {};
+
+        storageData[StorageKeys.PAYMENT_DONE] =
+          data?.payment_status == '0' ? 'true' : '';
+        storageData[StorageKeys.FLAG] = String(data?.flag);
+        localStorageHelper.setStorageItems(storageData).then(() => {
+          console.log('Saved agency detail localstorage');
+        });
+
         props.navigation.replace('AgencyStack', {
           initialRoute: route,
         });

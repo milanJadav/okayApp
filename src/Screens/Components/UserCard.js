@@ -5,12 +5,16 @@ import {COLORS} from '../../Common/Constants/colors';
 import {FONTS} from '../../Common/Constants/fonts';
 import {IMAGES} from '../../Common/Constants/images';
 import {windowHeight} from '../../Utils/Dimentions';
+import {ASSET_URL} from '../../Environment';
+import {noImag} from '../../Utils/Utils';
 
 const UserCard = ({onViewCustomer = () => {}, data}) => {
   return (
     <TouchableOpacity style={styles.container} disabled>
       <FastImage
-        source={require('../../assets/temp/tempprofilePic.png')}
+        source={{
+          uri: data?.profile_pic ? `${ASSET_URL}${data?.profile_pic}` : noImag,
+        }}
         style={styles.img}
         resizeMode="stretch"
       />

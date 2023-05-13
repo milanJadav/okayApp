@@ -16,7 +16,7 @@ const AgencyCard = ({
   return (
     <TouchableOpacity style={styles.container} disabled>
       <FastImage
-        source={{uri: `${ASSET_URL}${data?.agency_image} || ${noImag}`}}
+        source={{uri: `${ASSET_URL}${data?.agency_image}`}}
         style={styles.img}
         resizeMode="cover"
       />
