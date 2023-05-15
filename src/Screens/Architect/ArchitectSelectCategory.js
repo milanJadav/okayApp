@@ -93,7 +93,11 @@ const ArchitectSelectCategory = props => {
         onPress={() => onCategoryPress(item)}>
         <FastImage
           source={require('../../assets/temp/wooden.png')}
-          style={{height: 60, width: 60, borderRadius: 50}}
+          style={{
+            height: 60,
+            width: 60,
+            borderRadius: 50,
+          }}
           resizeMode="contain"
         />
         {/* </View> */}
@@ -176,10 +180,10 @@ const styles = StyleSheet.create({
   boxContainer: {
     backgroundColor: COLORS.white,
     width: '31.5%',
-    height: windowHeight / 6,
     marginRight: 8,
     marginBottom: 10,
     paddingTop: 25,
+    paddingBottom: 13,
     alignItems: 'center',
     borderRadius: 8,
     shadowOffset: {

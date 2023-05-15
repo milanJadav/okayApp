@@ -143,7 +143,9 @@ const AgencyDetail = props => {
                   />
                 </View>
                 <View style={{width: '70%', marginLeft: 10}}>
-                  <Text style={styles.address}>{address || ''}</Text>
+                  <Text style={styles.address}>
+                    {address || 'No Location Found'}
+                  </Text>
                 </View>
               </View>
             </View>

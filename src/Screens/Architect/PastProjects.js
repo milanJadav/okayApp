@@ -56,6 +56,14 @@ const PastProjects = props => {
     <ActivityIndicator size={'small'} color={COLORS.black} />
   );
 
+  const ListEmptyComponent = () => {
+    return (
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={styles.titleText}>No Projects Found.</Text>
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView style={{...safeAreaStyle}}>
       <View style={{paddingHorizontal: 20, flex: 1}}>
@@ -72,6 +80,7 @@ const PastProjects = props => {
             showsVerticalScrollIndicator={false}
             ItemSeparatorComponent={() => <HightBox height={15} />}
             ListFooterComponent={() => <HightBox height={15} />}
+            ListEmptyComponent={() => ListEmptyComponent()}
           />
         )}
       </View>

@@ -176,7 +176,7 @@ const EditProfile = props => {
                 marginTop: 5,
               }}
               keyboardType={'numeric'}
-              maxLength={10}
+              maxLength={13}
             />
             <HightBox height={25} />
           </View>

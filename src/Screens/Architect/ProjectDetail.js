@@ -152,7 +152,7 @@ const ProjectDetail = props => {
               </View>
               <View style={{width: '70%', marginLeft: 10}}>
                 <Text style={styles.address}>
-                  {projectDetail?.location}
+                  {projectDetail?.location || 'No Location Found'}
                   {/* 106 - City plaza 2, near sciencity,sola, Ahmedabad - 9008 */}
                 </Text>
               </View>

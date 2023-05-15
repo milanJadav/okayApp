@@ -87,12 +87,13 @@ const PurchasePlan = props => {
     props.navigation.goBack();
   };
 
-  const onMakePayment = () => {
-    const selectedItem = planData.find(i => i.selected);
-    if (!selectedItem) {
-      alert('Please Select Plan!!');
-      return;
-    }
+  const onMakePayment = data => {
+    // const selectedItem = planData.find(i => i.selected);
+    const selectedItem = data;
+    // if (!selectedItem) {
+    //   alert('Please Select Plan!!');
+    //   return;
+    // }
     var options = {
       description: 'Purchase Plan for Membership',
       image: 'https://i.imgur.com/3g7nmJC.png',
@@ -155,7 +156,7 @@ const PurchasePlan = props => {
     return (
       <TouchableOpacity
         style={{marginBottom: 10}}
-        onPress={() => onClickPlan(item.plan_name)}>
+        onPress={() => onMakePayment(item)}>
         <ImageBackground
           source={item.bgImg}
           resizeMode="cover"
@@ -247,7 +248,7 @@ const PurchasePlan = props => {
               title={'Make a payment'}
               onPress={() => {
                 // props.navigation.replace('Documents');
-                onMakePayment();
+                // onMakePayment();
               }}
               loading={btnLoading}
             />

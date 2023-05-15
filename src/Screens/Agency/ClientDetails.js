@@ -119,7 +119,9 @@ const ClientDetails = props => {
                   />
                 </View>
                 <View style={{width: '70%', marginLeft: 10}}>
-                  <Text style={styles.address}>{data?.address}</Text>
+                  <Text style={styles.address}>
+                    {data?.address || 'No Location Found'}
+                  </Text>
                 </View>
               </View>
             </View>

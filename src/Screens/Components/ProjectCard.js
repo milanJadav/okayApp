@@ -26,7 +26,9 @@ const ProjectCard = ({onPress = () => {}, data = {}}) => {
           />
 
           <View style={{width: '90%', marginLeft: 10}}>
-            <Text style={styles.address}>{data?.location || ''}</Text>
+            <Text style={styles.address}>
+              {data?.location || 'No Location'}
+            </Text>
           </View>
         </View>
 
