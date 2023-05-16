@@ -54,11 +54,18 @@ var types = [
 ];
 
 const ArchitectProjectType = props => {
+  const workTypes = useSelector(state => state.auth?.architectWorkType || []);
+
   const [type, setType] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
-  const workTypes = useSelector(state => state.auth?.architectWorkType || []);
+
+  useEffect(() => {
+    if (workTypes) {
+      setType(workTypes);
+    }
+  }, [workTypes]);
 
   useEffect(() => {
     dispatch(getArchitectWorkType({onSuccess, onFailure}));
@@ -100,15 +107,26 @@ const ArchitectProjectType = props => {
     props.navigation.navigate('CreateProject', {showSkipBtn: true});
   };
 
-  const onTypePress = async text => {
-    const type = workTypes.map(data => {
-      if (data.work_type_name == text) {
-        data.selected = !data.selected;
-      }
-      return data;
-    });
+  const onTypePress = text => {
+    // const  = type.map(data => {
+    //   if (data.work_type_name == text) {
+    //     data.selected = !data.selected;
+    //   }
+    //   return data;
+    // });
 
-    setType(type);
+    const newArray = type.map(i => {
+      if (i.work_type_name == text) {
+        return {
+          ...i,
+          selected: !i.selected,
+        };
+      } else {
+        return {...i};
+      }
+    });
+    console.log('-----Name', text, '-----', newArray);
+    setType(newArray);
   };
 
   //RENDER METHODS
@@ -151,7 +169,7 @@ const ArchitectProjectType = props => {
           <HightBox height={27} />
 
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            {workTypes.map(data => {
+            {type.map(data => {
               return <RenderItem key={data.id} item={data} />;
             })}
           </View>

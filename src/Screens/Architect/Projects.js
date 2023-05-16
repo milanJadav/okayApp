@@ -25,11 +25,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getUserProjects} from '../../redux/dashboard/dashboardActions';
 
 const Projects = props => {
+  const projectDataRedux = useSelector(
+    state => state.dashboard?.projectsData || [],
+  );
+
   const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [projectData, setProjectData] = useState([]);
 
   const dispatch = useDispatch();
 
-  const projectData = useSelector(state => state.dashboard?.projectsData || []);
+  useEffect(() => {
+    if (projectDataRedux) {
+      setProjectData(projectDataRedux);
+    }
+  }, [projectDataRedux]);
 
   useEffect(() => {
     setLoading(true);
@@ -53,6 +63,26 @@ const Projects = props => {
     props.navigation.navigate('ProjectDetail', {projectId: data?.id});
   };
 
+  const onSearchTextChange = text => {
+    setSearchText(text);
+    filterItemsList(text);
+  };
+
+  const filterItemsList = text => {
+    let tempArr = [...projectDataRedux];
+    let updatedList = [];
+    tempArr.map(item => {
+      let tempItem = {
+        ...item,
+      };
+
+      if (item.project_name.toLowerCase().includes(text.toLowerCase()))
+        updatedList.push(tempItem);
+    });
+
+    setProjectData(updatedList);
+  };
+
   const onRefresh = () => {
     dispatch(getUserProjects({status: 1, onSuccess, onFailure}));
   };
@@ -60,6 +90,14 @@ const Projects = props => {
   const renderLoading = () => (
     <ActivityIndicator size={'small'} color={COLORS.black} />
   );
+
+  const ListEmptyComponent = () => {
+    return (
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={styles.titleText}>No Projects Found.</Text>
+      </View>
+    );
+  };
 
   const renderItem = ({item}) => {
     return <ProjectCard onPress={onCardPress} data={item} />;
@@ -70,7 +108,10 @@ const Projects = props => {
       <View style={{paddingHorizontal: 20, flex: 1}}>
         <LocationNavBar />
         <HightBox height={25} />
-        <ISearchBar />
+        <ISearchBar
+          value={searchText}
+          onChangeText={text => onSearchTextChange(text)}
+        />
         <HightBox height={25} />
 
         {loading ? (
@@ -87,6 +128,7 @@ const Projects = props => {
               />
             }
             keyExtractor={({id}) => id.toString()}
+            ListEmptyComponent={() => ListEmptyComponent()}
             style={{flex: 1}}
             showsVerticalScrollIndicator={false}
             ItemSeparatorComponent={() => <HightBox height={15} />}

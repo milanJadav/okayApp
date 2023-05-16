@@ -27,6 +27,7 @@ import {
   getProjectAssignedAgencyList,
   getUserProjectDetail,
 } from '../../redux/dashboard/dashboardActions';
+import {tempNumber} from '../../Utils/Utils';
 
 const ProjectDetail = props => {
   const {projectId} = props.route.params || {};
@@ -81,8 +82,10 @@ const ProjectDetail = props => {
       <View>
         <HightBox height={20} />
         {projectAgency.map(item => {
-          return <RenderAgency key={item.id} item={item} />;
+          const value = tempNumber();
+          return <RenderAgency key={item.id + value} item={item} />;
         })}
+        <HightBox height={20} />
       </View>
     );
   };
@@ -153,13 +156,12 @@ const ProjectDetail = props => {
               <View style={{width: '70%', marginLeft: 10}}>
                 <Text style={styles.address}>
                   {projectDetail?.location || 'No Location Found'}
-                  {/* 106 - City plaza 2, near sciencity,sola, Ahmedabad - 9008 */}
                 </Text>
               </View>
             </View>
-            <HightBox height={20} />
+            {/* <HightBox height={20} /> */}
 
-            <Text style={[styles.agencyName, {fontSize: 18}]} numberOfLines={1}>
+            {/* <Text style={[styles.agencyName, {fontSize: 18}]} numberOfLines={1}>
               Progress
             </Text>
             <View style={{marginVertical: 10}}>
@@ -169,10 +171,10 @@ const ProjectDetail = props => {
                 completedColor={COLORS.pr_blue}
                 percentage={`${projectDetail?.progress}%`}
               />
-            </View>
-            <Text style={styles.progressText}>
+            </View> */}
+            {/* <Text style={styles.progressText}>
               {projectDetail?.progress}% Completed
-            </Text>
+            </Text> */}
             <View style={styles.border} />
 
             {/* Agency View */}

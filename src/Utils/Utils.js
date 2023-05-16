@@ -35,3 +35,8 @@ export const openLinks = async link => {
 
 export const noImag =
   'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png';
+
+export const tempNumber = () => {
+  var val = Math.floor(1000 + Math.random() * 9000);
+  return val.toString();
+};
